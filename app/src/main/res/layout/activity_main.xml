@@ -160,5 +160,18 @@
         app:layout_constraintTop_toBottomOf="@+id/label_name3"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/darker_gray"
+        android:text="Submit"
+        android:textColor="#090909"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coordinate3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
