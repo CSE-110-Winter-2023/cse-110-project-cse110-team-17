@@ -166,6 +166,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/darker_gray"
         android:text="Submit"
+        android:onClick="onSubmitbtnClicked"
         android:textColor="#090909"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
