@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadInputs();
+        // loadInputs(); should we load inputs instead of just checking if there are coordinates
+        // saved and jump to the second activity based on that?
     }
 
     @Override
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
             }
         }
-        finish();
     }
 
     public void loadInputs() {
