@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
+                finish()
             }
         }
     }
