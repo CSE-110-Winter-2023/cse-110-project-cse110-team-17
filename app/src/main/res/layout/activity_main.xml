@@ -8,17 +8,12 @@
     tools:context=".MainActivity">
 
     <!--Label #1-->
-
-    <!--Label #2-->
-
-    <!--Label #3-->
-
     <TextView
         android:id="@+id/label1"
         android:layout_width="196dp"
         android:layout_height="19dp"
-        android:layout_marginTop="60dp"
-        android:text="LABEL #1"
+        android:layout_marginTop="50dp"
+        android:text="LABEL #1 *"
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,6 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/label1"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!--Label #2-->
     <EditText
         android:id="@+id/coordinate1"
         android:layout_width="358dp"
@@ -66,7 +62,7 @@
         android:id="@+id/label2"
         android:layout_width="196dp"
         android:layout_height="19dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:text="LABEL #2"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -75,7 +71,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coordinate1"
-        app:layout_constraintVertical_bias="0.002" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/label_name2"
@@ -111,11 +107,13 @@
         app:layout_constraintTop_toBottomOf="@+id/label_name2"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!--Label #3-->
+
     <TextView
         android:id="@+id/label3"
         android:layout_width="196dp"
         android:layout_height="19dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:text="LABEL #3"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -143,6 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/label3"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!--Button-->
     <EditText
         android:id="@+id/coordinate3"
         android:layout_width="358dp"
@@ -164,15 +163,18 @@
         android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/darker_gray"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/burgundy"
+        android:onClick="onSubmitClicked"
         android:text="Submit"
-        android:onClick="onSubmitbtnClicked"
-        android:textColor="#090909"
+        android:textColor="@color/beige"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coordinate3" />
+        app:layout_constraintTop_toBottomOf="@+id/coordinate3"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
