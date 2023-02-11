@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CSE110-Team17-Project</string>
+    <string name="app_name">Social Compass</string>
+    <string name="coordinates">Coordinates</string>
+    <string name="label_name">Label Name</string>
 </resources>
