@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // loadInputs(); should we load inputs instead of just checking if there are coordinates
+        loadInputs();
+        // should we load inputs instead of just checking if there are coordinates
         // saved and jump to the second activity based on that?
     }
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         name_entered[0] = checkEmpty(name_label1);
         name_entered[1] = checkEmpty(name_label2);
         name_entered[2] = checkEmpty(name_label3);
+
+        saveInputs();
 
         if(name_entered[0] && coordinate_entered[0] && name_entered[1] &&
                 coordinate_entered[1] && name_entered[2] && coordinate_entered[2]){
@@ -76,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 // Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
-
 
                 Intent compassIntent = new Intent(this, CompassActivity.class);
                 compassIntent.putExtra("label_1", name_label1.getText().toString());
