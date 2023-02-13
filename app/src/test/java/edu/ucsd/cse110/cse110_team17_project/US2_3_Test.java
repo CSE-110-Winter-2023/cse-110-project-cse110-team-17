@@ -25,17 +25,77 @@ import org.robolectric.android.controller.ActivityController;
 public class US2_3_Test {
     Intent intent = new Intent(getApplicationContext(), CompassActivity.class);
 
-
+    final String TEST_LABEL1 = "Test Label1";
+    final String TEST_COORDINATE1 = "Test Coordinate1";
+    final String TEST_LABEL2 = "Test Label2";
+    final String TEST_COORDINATE2 = "Test Coordinate2";
+    final String TEST_LABEL3 = "Test Label3";
+    final String TEST_COORDINATE3 = "Test Coordinate3";
+    final String EMPTY_STRING = "";
     @Test
-    public void testBackButtom(){
+    public void testBackButton(){
         intent.putExtra("label_1","1");
         intent.putExtra("label_2","1");
         intent.putExtra("label_3","1");
         ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            Button BackButtom = (Button) activity.findViewById(R.id.back_btn);
-            BackButtom.performClick();
+            Button BackButton = (Button) activity.findViewById(R.id.back_btn);
+            BackButton.performClick();
             assertTrue(activity.isFinishing());
         });
+    }
+
+    @Test
+    public void testAllLabelsPresent() {
+        intent.putExtra("label_1",TEST_LABEL1);
+        intent.putExtra("label_2",TEST_LABEL2);
+        intent.putExtra("label_3",TEST_LABEL3);
+        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            TextView label_1 = (TextView) activity.findViewById(R.id.label_1);
+            TextView label_2 = (TextView) activity.findViewById(R.id.label_2);
+            TextView label_3 = (TextView) activity.findViewById(R.id.label_3);
+
+            assertEquals(TEST_LABEL1, label_1.getText().toString());
+            assertEquals(TEST_LABEL2, label_2.getText().toString());
+            assertEquals(TEST_LABEL3, label_3.getText().toString());
+        });
+
+    }
+
+    @Test
+    public void testOnlyFirstLabel() {
+        intent.putExtra("label_1",TEST_LABEL1);
+        intent.putExtra("label_2",EMPTY_STRING);
+        intent.putExtra("label_3",EMPTY_STRING);
+        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            TextView label_1 = (TextView) activity.findViewById(R.id.label_1);
+            TextView label_2 = (TextView) activity.findViewById(R.id.label_2);
+            TextView label_3 = (TextView) activity.findViewById(R.id.label_3);
+
+            assertEquals(TEST_LABEL1, label_1.getText().toString());
+            assertEquals(EMPTY_STRING, label_2.getText().toString());
+            assertEquals(EMPTY_STRING, label_3.getText().toString());
+        });
+
+    }
+
+    @Test
+    public void testOnlyFirstLabelMissing() {
+        intent.putExtra("label_1",EMPTY_STRING);
+        intent.putExtra("label_2",TEST_LABEL2);
+        intent.putExtra("label_3",TEST_LABEL3);
+        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            TextView label_1 = (TextView) activity.findViewById(R.id.label_1);
+            TextView label_2 = (TextView) activity.findViewById(R.id.label_2);
+            TextView label_3 = (TextView) activity.findViewById(R.id.label_3);
+
+            assertEquals(EMPTY_STRING, label_1.getText().toString());
+            assertEquals(TEST_LABEL2, label_2.getText().toString());
+            assertEquals(TEST_LABEL3, label_3.getText().toString());
+        });
+
     }
 }

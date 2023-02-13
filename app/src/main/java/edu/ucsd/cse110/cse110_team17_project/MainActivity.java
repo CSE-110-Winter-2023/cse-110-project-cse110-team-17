@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -17,9 +18,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         loadInputs();
-        // should we load inputs instead of just checking if there are coordinates
-        // saved and jump to the second activity based on that?
     }
 
     @Override
@@ -56,26 +56,23 @@ public class MainActivity extends AppCompatActivity {
             Utilities.showError(this, "Please Enter at least one set of coordinates.");
         }
         else {
-            // check if label 1 entered
-            if(!name_entered[0]){
-                if(coordinate_entered[0]){
-                    showError = true;
-                }
+            if(name_entered[0] != coordinate_entered[0]){
+                showError = true;
+                if(name_entered[0]) name_label1.setError("Missing Label!");
+                if(coordinate_entered[0]) coordinate_1.setError("Missing Coordinate!");
             }
-            // check if label 2 entered
-            if(!name_entered[1]){
-                if(coordinate_entered[1]){
-                    showError = true;
-                }
+            if(name_entered[1] != coordinate_entered[1]){
+                showError = true;
+                if(name_entered[1]) name_label2.setError("Missing Label!");
+                if(coordinate_entered[1]) coordinate_2.setError("Missing Coordinate!");
             }
-            // check if label 3 entered
-            if(!name_entered[2]){
-                if(coordinate_entered[2]){
-                    showError = true;
-                }
+            if(name_entered[2] != coordinate_entered[2]){
+                showError = true;
+                if(name_entered[2]) name_label3.setError("Missing Label!");
+                if(coordinate_entered[2]) coordinate_3.setError("Missing Coordinate!");
             }
             if(showError){
-                Utilities.showError(this, "Please Enter the Coordinates for Named Labels.");
+                Utilities.showError(this, "Please enter missing coordinates/labels.");
             }
             else{
                 // Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
