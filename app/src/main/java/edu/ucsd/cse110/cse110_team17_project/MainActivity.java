@@ -1,7 +1,9 @@
 package edu.ucsd.cse110.cse110_team17_project;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -73,8 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 Utilities.showError(this, "Please enter missing coordinates/labels.");
             }
             else{
-                Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
+                Intent compassIntent = new Intent(this, CompassActivity.class);
+                compassIntent.putExtra("label_1", name_label1.getText().toString());
+                compassIntent.putExtra("label_2", name_label2.getText().toString());
+                compassIntent.putExtra("label_3", name_label3.getText().toString());
+
                 saveInputs();
+
+                startActivity(compassIntent);
             }
         }
     }
