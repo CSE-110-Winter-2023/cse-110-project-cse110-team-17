@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         name_entered[1] = checkEmpty(name_label2);
         name_entered[2] = checkEmpty(name_label3);
 
-        saveInputs();
-
         if(name_entered[0] && coordinate_entered[0] && name_entered[1] &&
                 coordinate_entered[1] && name_entered[2] && coordinate_entered[2]){
             name_label1.setError("Missing Label!");

@@ -93,7 +93,7 @@ public class US1_2UnitTest {
                 label1.setText(TEST_LABEL1);
                 submitBtn.performClick();
                 SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
-                assertEquals(preferences.getString("label1", ""), TEST_LABEL1);
+                assertEquals(preferences.getString("label1", ""), EMPTY_STRING);
                 assertEquals(preferences.getString("coordinate1", ""), EMPTY_STRING);
             });
         }
@@ -108,7 +108,7 @@ public class US1_2UnitTest {
                 submitBtn.performClick();
                 SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
                 assertEquals(preferences.getString("label1", ""), EMPTY_STRING);
-                assertEquals(preferences.getString("coordinate1", ""), TEST_COORDINATE1);
+                assertEquals(preferences.getString("coordinate1", ""), EMPTY_STRING);
             });
         }
     }

@@ -22,7 +22,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 
 @RunWith(RobolectricTestRunner.class)
-public class US2_3_Test {
+public class US2_3UnitTest {
     Intent intent = new Intent(getApplicationContext(), CompassActivity.class);
 
     final String TEST_LABEL1 = "Test Label1";
