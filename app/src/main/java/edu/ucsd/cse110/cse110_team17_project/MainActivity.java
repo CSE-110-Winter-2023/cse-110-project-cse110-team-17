@@ -1,10 +1,12 @@
 package edu.ucsd.cse110.cse110_team17_project;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 coordinate_entered[1] && name_entered[2] && coordinate_entered[2]){
             name_label1.setError("Missing Label!");
             coordinate_1.setError("Missing Coordinate!");
-            Utilities.showError(this, "Please Enter at least one set of coordinates.");
+            Utilities.showError(this, "Please enter at least one label and coordinate.");
         }
         else {
             if(name_entered[0] != coordinate_entered[0]){
@@ -75,16 +77,14 @@ public class MainActivity extends AppCompatActivity {
                 Utilities.showError(this, "Please enter missing coordinates/labels.");
             }
             else{
-                // Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
-
                 Intent compassIntent = new Intent(this, CompassActivity.class);
                 compassIntent.putExtra("label_1", name_label1.getText().toString());
                 compassIntent.putExtra("label_2", name_label2.getText().toString());
                 compassIntent.putExtra("label_3", name_label3.getText().toString());
 
-                startActivity(compassIntent);
+                saveInputs();
 
-                //finish();
+                startActivity(compassIntent);
             }
         }
     }
