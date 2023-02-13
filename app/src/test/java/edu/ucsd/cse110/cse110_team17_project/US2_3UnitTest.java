@@ -34,9 +34,9 @@ public class US2_3UnitTest {
     final String EMPTY_STRING = "";
     @Test
     public void testBackButton(){
-        intent.putExtra("label_1","1");
-        intent.putExtra("label_2","1");
-        intent.putExtra("label_3","1");
+        intent.putExtra("label_1",TEST_LABEL1);
+        intent.putExtra("label_2",TEST_LABEL2);
+        intent.putExtra("label_3",TEST_LABEL3);
         ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             Button BackButton = (Button) activity.findViewById(R.id.back_btn);

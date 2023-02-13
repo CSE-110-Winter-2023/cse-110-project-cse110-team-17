@@ -22,13 +22,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/compass_face"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="30dp"
+            android:rotation="300"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,4 +92,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/compass"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="20dp"
+        android:onClick="onAngleConfirmClicked"
+        android:text="Confirm"
+        app:layout_constraintBottom_toTopOf="@+id/back_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/input_angle"
+        app:layout_constraintTop_toBottomOf="@+id/compass" />
+
+    <EditText
+        android:id="@+id/input_angle"
+        android:layout_width="184dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="6dp"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Angle"
+        app:layout_constraintBottom_toTopOf="@+id/confirmBtn"
+        app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/compass" />
+
+    <Button
+        android:id="@+id/rotateTest_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="70dp"
+        android:text="Rotation Test!"
+        android:onClick="onRotateTestClicked"
+        app:layout_constraintBottom_toTopOf="@+id/compass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
