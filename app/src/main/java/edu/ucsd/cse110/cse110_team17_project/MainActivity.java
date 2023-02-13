@@ -52,33 +52,52 @@ public class MainActivity extends AppCompatActivity {
                 coordinate_entered[1] && name_entered[2] && coordinate_entered[2]){
             name_label1.setError("Missing Label!");
             coordinate_1.setError("Missing Coordinate!");
-            Utilities.showError(this, "Please Enter at least one set of coordinates.");
+            Utilities.showError(this, "Please enter at least one label and coordinate.");
         }
         else {
-            // check if label 1 entered
-            if(!name_entered[0]){
-                if(coordinate_entered[0]){
-                    showError = true;
-                }
+            if(name_entered[0] != coordinate_entered[0]){
+                showError = true;
+                if(name_entered[0]) name_label1.setError("Missing Label!");
+                if(coordinate_entered[0]) coordinate_1.setError("Missing Coordinate!");
             }
-            // check if label 2 entered
-            if(!name_entered[1]){
-                if(coordinate_entered[1]){
-                    showError = true;
-                }
+            if(name_entered[1] != coordinate_entered[1]){
+                showError = true;
+                if(name_entered[1]) name_label2.setError("Missing Label!");
+                if(coordinate_entered[1]) coordinate_2.setError("Missing Coordinate!");
             }
-            // check if label 3 entered
-            if(!name_entered[2]){
-                if(coordinate_entered[2]){
-                    showError = true;
-                }
+            if(name_entered[2] != coordinate_entered[2]){
+                showError = true;
+                if(name_entered[2]) name_label3.setError("Missing Label!");
+                if(coordinate_entered[2]) coordinate_3.setError("Missing Coordinate!");
             }
             if(showError){
-                Utilities.showError(this, "Please Enter the Coordinates for Named Labels.");
+                Utilities.showError(this, "Please enter missing coordinates/labels.");
             }
+            // check if label 1 entered
+//            if(!name_entered[0]){
+//                if(coordinate_entered[0]){
+//                    showError = true;
+//                }
+//            }
+            // check if label 2 entered
+//            if(!name_entered[1]){
+//                if(coordinate_entered[1]){
+//                    showError = true;
+//                }
+//            }
+            // check if label 3 entered
+//            if(!name_entered[2]){
+//                if(coordinate_entered[2]){
+//                    showError = true;
+//                }
+//            }
+//            if(showError){
+//                Utilities.showError(this, "Please Enter the Coordinates for Named Labels.");
+//            }
             else{
                 Utilities.showSuccess(this, "Click \"Ok\" to proceed.");
-                finish();
+//                finish();
+                saveInputs();
             }
         }
     }
