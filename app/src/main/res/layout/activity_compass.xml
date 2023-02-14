@@ -29,7 +29,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="30dp"
-            android:rotation="300"
+            android:rotation="0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,36 +40,36 @@
             android:id="@+id/label_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="270"
+            android:rotation="0"
             android:text="Label #1"
             android:textColor="@color/burgundy"
             android:textSize="20dp"
             app:layout_constraintCircle="@+id/compass"
-            app:layout_constraintCircleAngle="270"
+            app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="170dp"/>
 
         <TextView
             android:id="@+id/label_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="180"
+            android:rotation="90"
             android:text="Label #2"
             android:textColor="@color/burgundy"
             android:textSize="20dp"
             app:layout_constraintCircle="@+id/compass"
-            app:layout_constraintCircleAngle="180"
+            app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="170dp"/>
 
         <TextView
             android:id="@+id/label_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="0"
+            android:rotation="180"
             android:text="Label #3"
             android:textColor="@color/burgundy"
             android:textSize="20dp"
             app:layout_constraintCircle="@+id/compass"
-            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleAngle="180"
             app:layout_constraintCircleRadius="170dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
