@@ -1,11 +1,15 @@
 package edu.ucsd.cse110.cse110_team17_project;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        }
         loadInputs();
     }
 
@@ -79,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                 compassIntent.putExtra("label_1", name_label1.getText().toString());
                 compassIntent.putExtra("label_2", name_label2.getText().toString());
                 compassIntent.putExtra("label_3", name_label3.getText().toString());
+                compassIntent.putExtra("coordinate_1", coordinate_1.getText().toString());
+                compassIntent.putExtra("coordinate_2", coordinate_2.getText().toString());
+                compassIntent.putExtra("coordinate_3", coordinate_3.getText().toString());
 
                 saveInputs();
 

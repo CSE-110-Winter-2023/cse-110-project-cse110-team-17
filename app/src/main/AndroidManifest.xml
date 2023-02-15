@@ -12,7 +12,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE110Team17Project"
-        tools:targetApi="31">
+        tools:targetApi="32">
         <activity
             android:name=".CompassActivity"
             android:exported="false" />
@@ -30,5 +30,6 @@
                 android:value="" />
         </activity>
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>
