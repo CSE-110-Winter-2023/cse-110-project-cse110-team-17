@@ -23,7 +23,7 @@ import org.robolectric.android.controller.ActivityController;
 
 @RunWith(RobolectricTestRunner.class)
 public class US2_3UnitTest {
-    Intent intent = new Intent(getApplicationContext(), CompassActivity.class);
+    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
     final String TEST_LABEL1 = "Test Label1";
     final String TEST_COORDINATE1 = "Test Coordinate1";
@@ -37,7 +37,7 @@ public class US2_3UnitTest {
         intent.putExtra("label_1","1");
         intent.putExtra("label_2","1");
         intent.putExtra("label_3","1");
-        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             Button BackButton = (Button) activity.findViewById(R.id.back_btn);
             BackButton.performClick();
@@ -50,7 +50,7 @@ public class US2_3UnitTest {
         intent.putExtra("label_1",TEST_LABEL1);
         intent.putExtra("label_2",TEST_LABEL2);
         intent.putExtra("label_3",TEST_LABEL3);
-        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             TextView label_1 = (TextView) activity.findViewById(R.id.label_1);
             TextView label_2 = (TextView) activity.findViewById(R.id.label_2);
@@ -68,7 +68,7 @@ public class US2_3UnitTest {
         intent.putExtra("label_1",TEST_LABEL1);
         intent.putExtra("label_2",EMPTY_STRING);
         intent.putExtra("label_3",EMPTY_STRING);
-        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             TextView label_1 = (TextView) activity.findViewById(R.id.label_1);
             TextView label_2 = (TextView) activity.findViewById(R.id.label_2);
@@ -86,7 +86,7 @@ public class US2_3UnitTest {
         intent.putExtra("label_1",EMPTY_STRING);
         intent.putExtra("label_2",TEST_LABEL2);
         intent.putExtra("label_3",TEST_LABEL3);
-        ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             TextView label_1 = (TextView) activity.findViewById(R.id.label_1);
             TextView label_2 = (TextView) activity.findViewById(R.id.label_2);
