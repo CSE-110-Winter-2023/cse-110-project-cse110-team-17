@@ -42,6 +42,14 @@ public class Utilities {
         alertDialog.show();
     }
 
+    public static double updateCoordinates(double lat_1, double lon_1, double lat_2, double lon_2) {
+        double y = Math.sin(Math.toRadians(lon_2 - lon_1)) * Math.cos(Math.toRadians(lat_2));
+        double x = Math.cos(Math.toRadians(lat_1))*Math.sin(Math.toRadians(lat_2)) -
+                Math.sin(Math.toRadians(lat_1))*Math.cos(Math.toRadians(lat_2))*Math.cos(Math.toRadians(lon_2 - lon_1));
+        double res = (Math.atan2(y, x) * 180/Math.PI + 360) % 360;
+        return res;
+    }
+
     public static Pair<Double, Double> validCoordinate(String coordinate) {
         if (!coordinate.contains(",")){
             System.out.println("Place enter both longitudes and latitudes coordinates");

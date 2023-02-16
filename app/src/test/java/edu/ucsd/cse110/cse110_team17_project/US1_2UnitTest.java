@@ -25,7 +25,7 @@ public class US1_2UnitTest {
 
     @Test
     public void testInputOneSavedOnSubmitClicked(){
-        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+        try (ActivityScenario<InputActivity> scenario = ActivityScenario.launch(InputActivity.class)) {
             scenario.onActivity(activity -> {
                 EditText label1 = activity.findViewById(R.id.label_name1);
                 EditText coordinate1 = activity.findViewById(R.id.coordinate1);
@@ -33,7 +33,7 @@ public class US1_2UnitTest {
                 label1.setText(TEST_LABEL1);
                 coordinate1.setText(TEST_COORDINATE1);
                 submitBtn.performClick();
-                SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
+                SharedPreferences preferences = activity.getSharedPreferences("MAIN", MODE_PRIVATE);
                 assertEquals(preferences.getString("label1", ""), TEST_LABEL1);
                 assertEquals(preferences.getString("coordinate1", ""), TEST_COORDINATE1);
             });
@@ -42,7 +42,7 @@ public class US1_2UnitTest {
 
     @Test
     public void testAllInputsSavedOnSubmitClicked(){
-        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+        try (ActivityScenario<InputActivity> scenario = ActivityScenario.launch(InputActivity.class)) {
             scenario.onActivity(activity -> {
                 EditText label1 = activity.findViewById(R.id.label_name1);
                 EditText coordinate1 = activity.findViewById(R.id.coordinate1);
@@ -58,7 +58,7 @@ public class US1_2UnitTest {
                 label3.setText(TEST_LABEL3);
                 coordinate3.setText(TEST_COORDINATE3);
                 submitBtn.performClick();
-                SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
+                SharedPreferences preferences = activity.getSharedPreferences("MAIN", MODE_PRIVATE);
                 assertEquals(TEST_LABEL1, preferences.getString("label1", ""));
                 assertEquals(TEST_COORDINATE1, preferences.getString("coordinate1", ""));
                 assertEquals(TEST_LABEL2, preferences.getString("label2", ""));
@@ -70,11 +70,11 @@ public class US1_2UnitTest {
     }
     @Test
     public void testNoInputsOnSubmitClicked(){
-        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+        try (ActivityScenario<InputActivity> scenario = ActivityScenario.launch(InputActivity.class)) {
             scenario.onActivity(activity -> {
                 Button submitBtn = activity.findViewById(R.id.submitBtn);
                 submitBtn.performClick();
-                SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
+                SharedPreferences preferences = activity.getSharedPreferences("MAIN", MODE_PRIVATE);
                 assertEquals(preferences.getString("label1", ""), EMPTY_STRING);
                 assertEquals(preferences.getString("coordinate1", ""), EMPTY_STRING);
                 assertEquals(preferences.getString("label2", ""), EMPTY_STRING);
@@ -86,13 +86,13 @@ public class US1_2UnitTest {
     }
     @Test
     public void testMissingCoordinateOnSubmitClicked(){
-        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+        try (ActivityScenario<InputActivity> scenario = ActivityScenario.launch(InputActivity.class)) {
             scenario.onActivity(activity -> {
                 EditText label1 = activity.findViewById(R.id.label_name1);
                 Button submitBtn = activity.findViewById(R.id.submitBtn);
                 label1.setText(TEST_LABEL1);
                 submitBtn.performClick();
-                SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
+                SharedPreferences preferences = activity.getSharedPreferences("MAIN", MODE_PRIVATE);
                 assertEquals(preferences.getString("label1", ""), EMPTY_STRING);
                 assertEquals(preferences.getString("coordinate1", ""), EMPTY_STRING);
             });
@@ -100,13 +100,13 @@ public class US1_2UnitTest {
     }
     @Test
     public void testMissingLabelOnSubmitClicked(){
-        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+        try (ActivityScenario<InputActivity> scenario = ActivityScenario.launch(InputActivity.class)) {
             scenario.onActivity(activity -> {
                 EditText coordinate1 = activity.findViewById(R.id.coordinate1);
                 Button submitBtn = activity.findViewById(R.id.submitBtn);
                 coordinate1.setText(TEST_COORDINATE1);
                 submitBtn.performClick();
-                SharedPreferences preferences = activity.getPreferences(MODE_PRIVATE);
+                SharedPreferences preferences = activity.getSharedPreferences("MAIN", MODE_PRIVATE);
                 assertEquals(preferences.getString("label1", ""), EMPTY_STRING);
                 assertEquals(preferences.getString("coordinate1", ""), EMPTY_STRING);
             });

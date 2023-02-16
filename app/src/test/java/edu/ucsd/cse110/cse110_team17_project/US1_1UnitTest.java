@@ -23,7 +23,7 @@ import androidx.test.platform.device.DeviceController;
 public class US1_1UnitTest {
     @Test
     public void testOnSubmitClicked() {
-        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+        try (ActivityScenario<InputActivity> scenario = ActivityScenario.launch(InputActivity.class)) {
             scenario.onActivity(activity -> {
                 TextView label_name1 = activity.findViewById(R.id.label_name1);
                 TextView label_name2 = activity.findViewById(R.id.label_name2);

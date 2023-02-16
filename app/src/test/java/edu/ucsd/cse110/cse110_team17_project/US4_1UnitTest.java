@@ -19,7 +19,7 @@ import org.robolectric.RobolectricTestRunner;
 public class US4_1UnitTest {
 
     @Test
-    public void testBackButton(){
+    public void testCoordinateEntered(){
         String input = "0.0001,12.345";
         String input2 = "0.1234567,12.3450908";
         Pair<Double, Double>p1 = new Pair<>(0.0001, 12.345);
