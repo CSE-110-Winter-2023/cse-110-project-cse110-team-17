@@ -41,10 +41,10 @@ public class CompassActivity extends AppCompatActivity {
         locationService.getLocation().observe(this, loc -> {
             lat_local = loc.first;
             lon_local = loc.second;
-            var y = Math.sin(coordinate_1_lon - lon_local) * Math.cos(coordinate_1_lat);
-            var x = Math.cos(lat_local)*Math.sin(coordinate_1_lat) -
+            double y = Math.sin(coordinate_1_lon - lon_local) * Math.cos(coordinate_1_lat);
+            double x = Math.cos(lat_local)*Math.sin(coordinate_1_lat) -
                     Math.sin(lat_local)*Math.cos(coordinate_1_lat)*Math.cos(coordinate_1_lon - lon_local);
-            var res = Math.atan2(y, x) * 180/Math.PI;
+            double res = Math.atan2(y, x) * 180/Math.PI;
             // show angle of coordinate
             System.out.println("Local: " + lat_local + " " + lon_local);
             System.out.println("Coordinate1: " + coordinate_1_lat + " " + coordinate_1_lon);
