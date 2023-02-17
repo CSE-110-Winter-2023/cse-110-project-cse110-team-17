@@ -58,6 +58,18 @@ public class Utilities {
         String[] coordinates = coordinate.split(",");
         String latitudeStr = coordinates[0];
         String longitudeStr = coordinates[1];
+        try {
+            Double test = Double.parseDouble(latitudeStr);
+        }catch (NumberFormatException ex) {
+            System.out.println("Given Latitude is not a number!");
+            return null;
+        }
+        try {
+            Double test2 = Double.parseDouble(longitudeStr);
+        }catch (NumberFormatException ex) {
+            System.out.println("Given Longitude is not a number!");
+            return null;
+        }
         double latitude = Double.parseDouble(latitudeStr);
         double longitude = Double.parseDouble(longitudeStr);
         int decimalPlacesLati = 0;
