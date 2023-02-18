@@ -11,14 +11,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 public class MainActivity extends AppCompatActivity {
-
-    private ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
-    private Future<Void> future;
     private double lat;
     private double lon;
 

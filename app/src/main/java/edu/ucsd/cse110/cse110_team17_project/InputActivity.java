@@ -135,4 +135,8 @@ public class InputActivity extends AppCompatActivity {
     public boolean checkEmpty(EditText text){
         return text.getText().toString().isEmpty();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9f8f9b669e5430e724cc367151cf2db7c1423da8
