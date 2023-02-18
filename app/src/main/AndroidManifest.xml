@@ -17,15 +17,11 @@
         tools:targetApi="32">
         <activity
             android:name=".InputActivity"
-<<<<<<< HEAD
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-=======
-            android:exported="false" />
->>>>>>> 9f8f9b669e5430e724cc367151cf2db7c1423da8
         <activity
             android:name=".MainActivity"
             android:exported="true">

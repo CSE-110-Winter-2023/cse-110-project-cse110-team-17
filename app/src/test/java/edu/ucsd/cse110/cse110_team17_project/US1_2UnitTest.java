@@ -16,11 +16,11 @@ import org.robolectric.RobolectricTestRunner;
 @RunWith(RobolectricTestRunner.class)
 public class US1_2UnitTest {
     final String TEST_LABEL1 = "Test Label1";
-    final String TEST_COORDINATE1 = "Test Coordinate1";
+    final String TEST_COORDINATE1 = "12,12";
     final String TEST_LABEL2 = "Test Label2";
-    final String TEST_COORDINATE2 = "Test Coordinate2";
+    final String TEST_COORDINATE2 = "12,12";
     final String TEST_LABEL3 = "Test Label3";
-    final String TEST_COORDINATE3 = "Test Coordinate3";
+    final String TEST_COORDINATE3 = "12,12";
     final String EMPTY_STRING = "";
 
     @Test

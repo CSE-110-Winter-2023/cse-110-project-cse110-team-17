@@ -64,14 +64,20 @@ public class InputActivity extends AppCompatActivity {
                 if(name_entered[2]) name_label3.setError("Missing Label!");
                 if(coordinate_entered[2]) coordinate_3.setError("Missing Coordinate!");
             }
-            if(Utilities.validCoordinate(coordinate_1.getText().toString()) == null){
+            if(!checkEmpty(coordinate_1) &&
+                Utilities.validCoordinate(coordinate_1.getText().toString()) == null){
                 showError = true;
+                // save coordinates to shared preferences
             }
-            if(Utilities.validCoordinate(coordinate_2.getText().toString()) == null){
+            if(!checkEmpty(coordinate_2) &&
+                    Utilities.validCoordinate(coordinate_2.getText().toString()) == null){
                 showError = true;
+                // save coordinates to shared preferences
             }
-            if(Utilities.validCoordinate(coordinate_3.getText().toString()) == null){
+            if(!checkEmpty(coordinate_3) &&
+                    Utilities.validCoordinate(coordinate_3.getText().toString()) == null){
                 showError = true;
+                // save coordinates to shared preferences
             }
             if(showError){
                 Utilities.showError(this, "Please enter valid coordinates/labels.");
@@ -135,8 +141,4 @@ public class InputActivity extends AppCompatActivity {
     public boolean checkEmpty(EditText text){
         return text.getText().toString().isEmpty();
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 9f8f9b669e5430e724cc367151cf2db7c1423da8
