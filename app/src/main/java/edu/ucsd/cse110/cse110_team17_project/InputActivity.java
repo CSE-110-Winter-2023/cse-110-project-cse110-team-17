@@ -64,19 +64,19 @@ public class InputActivity extends AppCompatActivity {
                 if(name_entered[2]) name_label3.setError("Missing Label!");
                 if(coordinate_entered[2]) coordinate_3.setError("Missing Coordinate!");
             }
+            if(Utilities.validCoordinate(coordinate_1.getText().toString()) == null){
+                showError = true;
+            }
+            if(Utilities.validCoordinate(coordinate_2.getText().toString()) == null){
+                showError = true;
+            }
+            if(Utilities.validCoordinate(coordinate_3.getText().toString()) == null){
+                showError = true;
+            }
             if(showError){
-                Utilities.showError(this, "Please enter missing coordinates/labels.");
+                Utilities.showError(this, "Please enter valid coordinates/labels.");
             }
             else{
-                if(Utilities.validCoordinate(coordinate_1.toString()) == null){
-                    Utilities.showError(this, "Please enter valid coordinates!");
-                }
-                else if(Utilities.validCoordinate(coordinate_2.toString()) == null){
-                    Utilities.showError(this, "Please enter valid coordinates!");
-                }
-                else if(Utilities.validCoordinate(coordinate_3.toString()) == null){
-                    Utilities.showError(this, "Please enter valid coordinates!");
-                }
                 saveInputs();
                 finish();
             }
