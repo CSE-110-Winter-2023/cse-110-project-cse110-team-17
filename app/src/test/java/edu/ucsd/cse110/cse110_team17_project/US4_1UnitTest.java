@@ -32,10 +32,6 @@ public class US4_1UnitTest {
         Pair<Double, Double>p3 = new Pair<>(0.0, 0.0);
         assertEquals(p3, Utilities.validCoordinate(manyZero));
 
-        String largeNum = "12345,9808";
-        Pair<Double, Double>p4 = null;
-        assertEquals(p4, Utilities.validCoordinate(largeNum));
-
         String smallNum = "0.000000000002,0.00000000000156";
         Pair<Double, Double>p5 = new Pair<>(0.0, 0.0);
         assertEquals(p5, Utilities.validCoordinate(smallNum));
@@ -44,33 +40,89 @@ public class US4_1UnitTest {
         Pair<Double, Double>p6 = new Pair<>(-30.0, -78.000009);
         assertEquals(p6, Utilities.validCoordinate(negativeInput));
 
-        String negativeLatiPosLong = "-10.5349849,20.80840909";
+        String negativeLatPosLong = "-10.5349849,20.80840909";
         Pair<Double, Double>p7 = new Pair<>(-10.534985, 20.808409);
-        assertEquals(p7, Utilities.validCoordinate(negativeLatiPosLong));
+        assertEquals(p7, Utilities.validCoordinate(negativeLatPosLong));
 
-        String posLatiNegativeLong = "79,-59.900932";
+        String posLatNegativeLong = "79,-59.900932";
         Pair<Double, Double>p8 = new Pair<>(79.0, -59.900932);
-        assertEquals(p8, Utilities.validCoordinate(posLatiNegativeLong));
+        assertEquals(p8, Utilities.validCoordinate(posLatNegativeLong));
 
-        String LatiOutRange = "100000,10";
-        Pair<Double, Double>p9 = null;
-        assertEquals(p9, Utilities.validCoordinate(LatiOutRange));
+        String latOutRange = "100000,10";
+        assertEquals(null, Utilities.validCoordinate(latOutRange));
 
-        String LongOutRange = "10,-100000";
-        Pair<Double, Double>p10 = null;
-        assertEquals(p10, Utilities.validCoordinate(LongOutRange));
+        String longOutRange = "10,-100000";
+        assertEquals(null, Utilities.validCoordinate(longOutRange));
+
+        String bothOutRange = "12345,9808";
+        assertEquals(null, Utilities.validCoordinate(bothOutRange));
 
         String notNumberLatitude = "abc,23";
-        Pair<Double, Double>p11 = null;
-        assertEquals(p11, Utilities.validCoordinate(notNumberLatitude));
+        assertEquals(null, Utilities.validCoordinate(notNumberLatitude));
 
         String notNumberLongitude = "23,abc";
-        Pair<Double, Double>p12 = null;
-        assertEquals(p12, Utilities.validCoordinate(notNumberLongitude));
+        assertEquals(null, Utilities.validCoordinate(notNumberLongitude));
 
         String notNumber = "aa, bb";
-        Pair<Double, Double>p13 = null;
-        assertEquals(p13, Utilities.validCoordinate(notNumber));
+        assertEquals(null, Utilities.validCoordinate(notNumber));
+    }
+
+    @Test
+    public void testUpdateCoordinates(){
+        double currentLat_northHemisphere = 32;
+        double currentLat_southHemisphere = -32;
+        double currentLon = -117;
+        //small distance results in small bearing angle, so a delta value around 5 degrees is given for testing
+        //north, same hemisphere
+        double angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere + 0.1, currentLon);
+        assertEquals(0.0, angle, 0);
+        //south, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere - 0.1, currentLon);
+        assertEquals(180.0, angle, 0);
+        //east, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere, currentLon + 0.1);
+        assertEquals(90.0, angle, 0.05);
+        //west, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere, currentLon - 0.1);
+        assertEquals(270.0, angle, 0.05);
+        //north-east, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere + 0.1, currentLon + 0.1);
+        assertEquals(45, angle, 5);
+        //north-west, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere + 0.1, currentLon - 0.1);
+        assertEquals(315.0, angle, 5);
+        //south-east, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere - 0.1, currentLon + 0.1);
+        assertEquals(135.0, angle, 5);
+        //south-west, same hemisphere
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere - 0.1, currentLon - 0.1);
+        assertEquals(225.0, angle, 5);
+
+        //large distance results in large bearing angle, so if the angle is only tested against for the correct quadrant
+        //north
+        angle = Utilities.updateAngle(currentLat_southHemisphere, currentLon, currentLat_northHemisphere, currentLon);
+        assertEquals(0.0, angle, 0);
+        //south
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_southHemisphere, currentLon);
+        assertEquals(180.0, angle, 0);
+        //east
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere, currentLon + 90);
+        assertEquals(45, angle, 45);
+        //west
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_northHemisphere, currentLon - 90);
+        assertEquals(315, angle, 45);
+        //north-east
+        angle = Utilities.updateAngle(currentLat_southHemisphere, currentLon, currentLat_northHemisphere, currentLon + 90);
+        assertEquals(45, angle, 45);
+        //north-west
+        angle = Utilities.updateAngle(currentLat_southHemisphere, currentLon, currentLat_northHemisphere, currentLon - 90);
+        assertEquals(315, angle, 45);
+        //south-east
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_southHemisphere, currentLon + 90);
+        assertEquals(135, angle, 45);
+        //south-west
+        angle = Utilities.updateAngle(currentLat_northHemisphere, currentLon, currentLat_southHemisphere, currentLon - 90);
+        assertEquals(225, angle, 45);
     }
 
 }

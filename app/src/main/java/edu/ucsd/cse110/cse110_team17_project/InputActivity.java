@@ -68,6 +68,15 @@ public class InputActivity extends AppCompatActivity {
                 Utilities.showError(this, "Please enter missing coordinates/labels.");
             }
             else{
+                if(Utilities.validCoordinate(coordinate_1.toString()) == null){
+                    Utilities.showError(this, "Please enter valid coordinates!");
+                }
+                else if(Utilities.validCoordinate(coordinate_2.toString()) == null){
+                    Utilities.showError(this, "Please enter valid coordinates!");
+                }
+                else if(Utilities.validCoordinate(coordinate_3.toString()) == null){
+                    Utilities.showError(this, "Please enter valid coordinates!");
+                }
                 saveInputs();
                 finish();
             }
