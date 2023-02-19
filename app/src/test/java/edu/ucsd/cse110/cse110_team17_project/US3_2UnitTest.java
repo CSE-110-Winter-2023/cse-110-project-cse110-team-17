@@ -54,12 +54,12 @@ public class US3_2UnitTest{
     public void createPref() {
 
         SharedPreferences sharedPreferences = RuntimeEnvironment.getApplication().getSharedPreferences("Main", Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString("label1", TEST_LABEL1).commit();
-        sharedPreferences.edit().putString("coordinate1", TEST_COORDINATE1).commit();
-        sharedPreferences.edit().putString("label2", TEST_LABEL2).commit();
-        sharedPreferences.edit().putString("coordinate2", TEST_COORDINATE2).commit();
-        sharedPreferences.edit().putString("label3", TEST_LABEL3).commit();
-        sharedPreferences.edit().putString("coordinate3", TEST_COORDINATE3).commit();
+        sharedPreferences.edit().putString("label1", TEST_LABEL1).apply();
+        sharedPreferences.edit().putString("coordinate1", TEST_COORDINATE1).apply();
+        sharedPreferences.edit().putString("label2", TEST_LABEL2).apply();
+        sharedPreferences.edit().putString("coordinate2", TEST_COORDINATE2).apply();
+        sharedPreferences.edit().putString("label3", TEST_LABEL3).apply();
+        sharedPreferences.edit().putString("coordinate3", TEST_COORDINATE3).apply();
 
     }
 
@@ -71,6 +71,7 @@ public class US3_2UnitTest{
     @Test
     public void TestSharePre(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.STARTED);
         scenario.onActivity(activity -> {
             TextView label1 = (TextView) activity.findViewById(R.id.label_1);
             TextView label2 = (TextView) activity.findViewById(R.id.label_2);
