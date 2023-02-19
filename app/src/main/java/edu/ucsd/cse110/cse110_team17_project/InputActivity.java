@@ -42,6 +42,9 @@ public class InputActivity extends AppCompatActivity {
         name_entered[0] = checkEmpty(name_label1);
         name_entered[1] = checkEmpty(name_label2);
         name_entered[2] = checkEmpty(name_label3);
+
+        // Check for the validity of the inputs given
+        // For the inputs to be valid, at least one pair of label and coordinate should be filled and each label should have a coordinate.
         if(name_entered[0] && coordinate_entered[0] && name_entered[1] &&
                 coordinate_entered[1] && name_entered[2] && coordinate_entered[2]){
             name_label1.setError("Missing Label!");

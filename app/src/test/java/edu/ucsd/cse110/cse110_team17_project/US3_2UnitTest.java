@@ -53,13 +53,13 @@ public class US3_2UnitTest{
     @Before
     public void createPref() {
 
-//        SharedPreferences sharedPreferences = RuntimeEnvironment.getApplication().getSharedPreferences("Main", MODE_PRIVATE);
-//        sharedPreferences.edit().putString("label1", TEST_LABEL1).apply();
-//        sharedPreferences.edit().putString("coordinate1", TEST_COORDINATE1).apply();
-//        sharedPreferences.edit().putString("label2", TEST_LABEL2).apply();
-//        sharedPreferences.edit().putString("coordinate2", TEST_COORDINATE2).apply();
-//        sharedPreferences.edit().putString("label3", TEST_LABEL3).apply();
-//        sharedPreferences.edit().putString("coordinate3", TEST_COORDINATE3).apply();
+        SharedPreferences sharedPreferences = RuntimeEnvironment.getApplication().getSharedPreferences("Main", MODE_PRIVATE);
+        sharedPreferences.edit().putString("label1", TEST_LABEL1).apply();
+        sharedPreferences.edit().putString("coordinate1", TEST_COORDINATE1).apply();
+        sharedPreferences.edit().putString("label2", TEST_LABEL2).apply();
+        sharedPreferences.edit().putString("coordinate2", TEST_COORDINATE2).apply();
+        sharedPreferences.edit().putString("label3", TEST_LABEL3).apply();
+        sharedPreferences.edit().putString("coordinate3", TEST_COORDINATE3).apply();
 
     }
 
@@ -69,19 +69,19 @@ public class US3_2UnitTest{
 
     // It tests if Main get SharePreference Data
     // It runs fine in my local, but failed in the remote action
-//    @Test
-//    public void TestSharePre(){
-//        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-//        scenario.moveToState(Lifecycle.State.STARTED);
-//        scenario.onActivity(activity -> {
-//            TextView label1 = (TextView) activity.findViewById(R.id.label_1);
-//            TextView label2 = (TextView) activity.findViewById(R.id.label_2);
-//            TextView label3 = (TextView) activity.findViewById(R.id.label_3);
-//            assertEquals(TEST_LABEL1,label1.getText().toString());
-//            assertEquals(TEST_LABEL2,label2.getText().toString());
-//            assertEquals(TEST_LABEL3,label3.getText().toString());
-//        });
-//    }
+    @Test
+    public void TestSharePre(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.STARTED);
+        scenario.onActivity(activity -> {
+            TextView label1 = (TextView) activity.findViewById(R.id.label_1);
+            TextView label2 = (TextView) activity.findViewById(R.id.label_2);
+            TextView label3 = (TextView) activity.findViewById(R.id.label_3);
+            assertEquals(TEST_LABEL1,label1.getText().toString());
+            assertEquals(TEST_LABEL2,label2.getText().toString());
+            assertEquals(TEST_LABEL3,label3.getText().toString());
+        });
+    }
 
     // It test if angle can rotate compassFace
     @Test

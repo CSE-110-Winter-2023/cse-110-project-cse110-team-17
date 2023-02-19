@@ -10,6 +10,8 @@ import android.hardware.SensorManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+// This is the orientation service code provided by Demo 5
+// Author: CSE 110 Instructor and Tutors
 public class OrientationService implements SensorEventListener {
 
     private static OrientationService instance;
@@ -34,6 +36,7 @@ public class OrientationService implements SensorEventListener {
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    // This is how we create a new orientationService object in MainActivity and testing
     public static OrientationService singleton(Activity activity) {
         if (instance == null) {
             instance = new OrientationService(activity);
@@ -90,6 +93,7 @@ public class OrientationService implements SensorEventListener {
         return this.azimuth;
     }
 
+    // For mock Object testing
     public void setMockOrientationSource(MutableLiveData<Float> mockDataSource) {
         unregisterSensorListeners();
         this.azimuth = mockDataSource;
