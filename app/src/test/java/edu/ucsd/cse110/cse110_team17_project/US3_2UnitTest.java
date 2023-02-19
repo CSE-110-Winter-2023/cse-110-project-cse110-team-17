@@ -53,7 +53,7 @@ public class US3_2UnitTest{
     @Before
     public void createPref() {
 
-        SharedPreferences sharedPreferences = RuntimeEnvironment.application.getSharedPreferences("Main", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = RuntimeEnvironment.getApplication().getSharedPreferences("Main", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("label1", TEST_LABEL1).commit();
         sharedPreferences.edit().putString("coordinate1", TEST_COORDINATE1).commit();
         sharedPreferences.edit().putString("label2", TEST_LABEL2).commit();
