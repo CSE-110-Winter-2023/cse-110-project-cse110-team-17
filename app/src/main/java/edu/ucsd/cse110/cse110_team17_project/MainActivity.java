@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private OrientationService orientationService;
+    public OrientationService orientationService;
     private boolean isSensorActivated = false;
 
     // Right now these are arbitrary values, when we got 3-1 done we should have specific values for these
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        //onResume();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(inputIntent);
         }
 
-        orientationService = new OrientationService(this);
+        orientationService = OrientationService.singleton(this);
 
         startOrientationSensor(orientationService);
 
