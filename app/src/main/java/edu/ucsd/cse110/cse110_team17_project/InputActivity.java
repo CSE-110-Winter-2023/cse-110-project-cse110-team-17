@@ -14,7 +14,7 @@ public class InputActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_input);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         loadInputs();
     }
@@ -64,8 +64,23 @@ public class InputActivity extends AppCompatActivity {
                 if(name_entered[2]) name_label3.setError("Missing Label!");
                 if(coordinate_entered[2]) coordinate_3.setError("Missing Coordinate!");
             }
+            if(!checkEmpty(coordinate_1) &&
+                Utilities.validCoordinate(coordinate_1.getText().toString()) == null){
+                showError = true;
+                // save coordinates to shared preferences
+            }
+            if(!checkEmpty(coordinate_2) &&
+                    Utilities.validCoordinate(coordinate_2.getText().toString()) == null){
+                showError = true;
+                // save coordinates to shared preferences
+            }
+            if(!checkEmpty(coordinate_3) &&
+                    Utilities.validCoordinate(coordinate_3.getText().toString()) == null){
+                showError = true;
+                // save coordinates to shared preferences
+            }
             if(showError){
-                Utilities.showError(this, "Please enter missing coordinates/labels.");
+                Utilities.showError(this, "Please enter valid coordinates/labels.");
             }
             else{
                 saveInputs();

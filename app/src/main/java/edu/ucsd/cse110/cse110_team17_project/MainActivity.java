@@ -5,17 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
+    private double lat;
+    private double lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compass);
+        setContentView(R.layout.activity_main);
 
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         String label1 = preferences.getString("label1", "");
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         name_label2.setText(label2);
         name_label3.setText(label3);
     }
+
     public void onBackClicked(View view) {
         Intent inputIntent = new Intent(this, InputActivity.class);
         startActivity(inputIntent);
