@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
+    private double lat;
+    private double lon;
 
     public OrientationService orientationService;
     private boolean isSensorActivated = false;
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         // Stop the motion sensor to not drain battery on the background
         orientationService.unregisterSensorListeners();
     }
+
 
     // This method is used when we want to get back to edit the coordinates and stuff
     public void onBackClicked(View view) {

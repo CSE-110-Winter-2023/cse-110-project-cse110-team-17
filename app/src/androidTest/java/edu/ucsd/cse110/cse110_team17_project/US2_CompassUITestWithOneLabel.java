@@ -169,3 +169,4 @@ public class US2_CompassUITestWithOneLabel {
         };
     }
 }
+
