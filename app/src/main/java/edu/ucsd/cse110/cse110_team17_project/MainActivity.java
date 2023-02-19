@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isSensorActivated) {
 //            orientationService = new OrientationService(this);
+            orientationService.registerSensorListeners();
+            isSensorActivated = true;
 
             TextView name_label1 = (TextView) findViewById(R.id.label_1);
             TextView name_label2 = (TextView) findViewById(R.id.label_2);
@@ -142,13 +144,12 @@ public class MainActivity extends AppCompatActivity {
                 name_label3.setLayoutParams(layoutParams3);
             });
 
-            isSensorActivated = true;
+
         }
     }
 
     public void onResumeSensorsClicked(View view) {
-        orientationService = new OrientationService(this);
-
+//        orientationService = new OrientationService(this);
         startOrientationSensor(orientationService);
     }
 
