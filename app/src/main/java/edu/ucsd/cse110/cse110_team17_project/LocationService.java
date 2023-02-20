@@ -53,9 +53,11 @@ public class LocationService implements LocationListener {
     }
     public LiveData<Pair<Double, Double>> getLocation(){return this.locationValue;}
 
-    public void setMockOrientationSource(MutableLiveData<Pair<Double, Double>> mockDataSource) {
+    public void setMockLocationSource(MutableLiveData<Pair<Double, Double>> mockDataSource) {
+        System.out.println(this.locationValue.getValue());
         unregisterLocationListener();
         this.locationValue = mockDataSource;
+        System.out.println(this.locationValue.getValue());
     }
 }
 

@@ -5,11 +5,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -27,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
 //    private boolean isSensorActivated = false;
 
     // Right now these are arbitrary values, when we got 3-1 done we should have specific values for these
-//    private Float cord1Angle = null;
-//    private Float cord2Angle = null;
-//    private Float cord3Angle = null;
+    private float cord1Angle;
+    private float cord2Angle;
+    private float cord3Angle;
     private float compassNorthAngle = 0;
 
     private LocationService locationService;
@@ -58,6 +61,50 @@ public class MainActivity extends AppCompatActivity {
             currentLocation = loc;
         });
 
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        String label1 = preferences.getString("label1", "");
+        String label2 = preferences.getString("label2", "");
+        String label3 = preferences.getString("label3", "");
+        coordinate1 = Utilities.validCoordinate(preferences.getString("coordinate1", ""));
+        coordinate2 = Utilities.validCoordinate(preferences.getString("coordinate2", ""));
+        coordinate3 = Utilities.validCoordinate(preferences.getString("coordinate3", ""));
+        TextView name_label1 = (TextView) findViewById(R.id.label_1);
+        TextView name_label2 = (TextView) findViewById(R.id.label_2);
+        TextView name_label3 = (TextView) findViewById(R.id.label_3);
+        ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) name_label1.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) name_label2.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams3 = (ConstraintLayout.LayoutParams) name_label3.getLayoutParams();
+
+        // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
+        if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
+            Intent inputIntent = new Intent(this, InputActivity.class);
+            startActivity(inputIntent);
+        }
+
+
+        cord1Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
+                 currentLocation.second.floatValue(), coordinate1.first.floatValue(), coordinate1.second.floatValue());
+        cord2Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
+                currentLocation.second.floatValue(), coordinate2.first.floatValue(), coordinate2.second.floatValue());
+        cord3Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
+                currentLocation.second.floatValue(), coordinate3.first.floatValue(), coordinate3.second.floatValue());
+
+        name_label1.setRotation(cord1Angle);
+        layoutParams1.circleAngle = cord1Angle;
+        name_label1.setLayoutParams(layoutParams1);
+
+        name_label2.setRotation(cord2Angle);
+        layoutParams2.circleAngle = cord2Angle;
+        name_label2.setLayoutParams(layoutParams2);
+
+        name_label3.setRotation(cord3Angle);
+        layoutParams3.circleAngle = cord3Angle;
+        name_label3.setLayoutParams(layoutParams3);
+
+        // Set label texts to their saved names
+        name_label1.setText(label1);
+        name_label2.setText(label2);
+        name_label3.setText(label3);
     }
 
     @Override
@@ -125,7 +172,9 @@ public class MainActivity extends AppCompatActivity {
         TextView AngleInput = (TextView) findViewById(R.id.input_angle);
         Integer angle = Integer.parseInt(AngleInput.getText().toString());
 
-        setAllLabelRotations(angle);
+        // Changing it to negative to imitate phone rotation
+        float actualAngle = (float) -angle;
+        setAllLabelRotations(actualAngle);
     }
 
     // This method starts the orientation sensor
@@ -137,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         orientationService.getOrientation().observe(this, orientation -> {
             float actualAngle = -orientation / (float) Math.PI * 180;
+            System.out.println(actualAngle);
             setAllLabelRotations(actualAngle);
         });
 
