@@ -68,12 +68,6 @@ public class MainActivity extends AppCompatActivity {
         coordinate1 = Utilities.validCoordinate(preferences.getString("coordinate1", ""));
         coordinate2 = Utilities.validCoordinate(preferences.getString("coordinate2", ""));
         coordinate3 = Utilities.validCoordinate(preferences.getString("coordinate3", ""));
-        TextView name_label1 = (TextView) findViewById(R.id.label_1);
-        TextView name_label2 = (TextView) findViewById(R.id.label_2);
-        TextView name_label3 = (TextView) findViewById(R.id.label_3);
-        ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) name_label1.getLayoutParams();
-        ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) name_label2.getLayoutParams();
-        ConstraintLayout.LayoutParams layoutParams3 = (ConstraintLayout.LayoutParams) name_label3.getLayoutParams();
 
         // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
         if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
@@ -89,22 +83,9 @@ public class MainActivity extends AppCompatActivity {
         cord3Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
                 currentLocation.second.floatValue(), coordinate3.first.floatValue(), coordinate3.second.floatValue());
 
-        name_label1.setRotation(cord1Angle);
-        layoutParams1.circleAngle = cord1Angle;
-        name_label1.setLayoutParams(layoutParams1);
+        //Initialize angles
+        setAllLabelRotations((float) 0.0);
 
-        name_label2.setRotation(cord2Angle);
-        layoutParams2.circleAngle = cord2Angle;
-        name_label2.setLayoutParams(layoutParams2);
-
-        name_label3.setRotation(cord3Angle);
-        layoutParams3.circleAngle = cord3Angle;
-        name_label3.setLayoutParams(layoutParams3);
-
-        // Set label texts to their saved names
-        name_label1.setText(label1);
-        name_label2.setText(label2);
-        name_label3.setText(label3);
     }
 
     @Override
@@ -131,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
         orientationService = OrientationService.singleton(this);
         startOrientationSensor(orientationService);
-
 
         // Set label texts to their saved names
         TextView name_label1 = (TextView) findViewById(R.id.label_1);
@@ -161,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
+        Intent inputIntent = new Intent(this, InputActivity.class);
+        startActivity(inputIntent);
     }
 
     // This method is for mock orientation testing
@@ -186,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
 
         orientationService.getOrientation().observe(this, orientation -> {
             float actualAngle = -orientation / (float) Math.PI * 180;
-            System.out.println(actualAngle);
             setAllLabelRotations(actualAngle);
         });
 

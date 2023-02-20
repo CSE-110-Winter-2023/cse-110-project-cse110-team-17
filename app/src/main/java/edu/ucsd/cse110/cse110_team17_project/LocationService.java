@@ -14,6 +14,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.Objects;
+
+import kotlin.jvm.internal.LocalVariableReference;
+
 public class LocationService implements LocationListener {
     private static LocationService instance;
     private Activity activity;
@@ -22,12 +26,13 @@ public class LocationService implements LocationListener {
 
     private final LocationManager locationManager;
 
-    public static LocationService singleton(Activity activity) {
-        if(instance ==null){
+    public static LocationService singleton(Activity activity){
+        if(instance == null){
             instance = new LocationService(activity);
         }
         return instance;
     }
+
     protected LocationService(Activity activity){
         this.locationValue = new MutableLiveData<>();
         this.activity = activity;
@@ -36,29 +41,24 @@ public class LocationService implements LocationListener {
     }
 
     private void registerLocationListener(){
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             throw new IllegalStateException("App needs location permission to get latest location");
         }
         this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
-
-    public void onLocationChanged(@NonNull Location location){
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
         this.locationValue.postValue(new Pair<Double, Double>(location.getLatitude(), location.getLongitude()));
     }
 
-    private void unregisterLocationListener(){
-        locationManager.removeUpdates(this);
-    }
-    public LiveData<Pair<Double, Double>> getLocation(){return this.locationValue;}
+    private void unregisterLocationListener() {locationManager.removeUpdates(this);}
 
-    public void setMockLocationSource(MutableLiveData<Pair<Double, Double>> mockDataSource) {
-        System.out.println(this.locationValue.getValue());
+    public LiveData<Pair<Double, Double>> getLocation() {return this.locationValue;}
+
+    public void setMockOrientationSource(MutableLiveData<Pair<Double, Double>> mockDataSource){
         unregisterLocationListener();
         this.locationValue = mockDataSource;
-        System.out.println(this.locationValue.getValue());
     }
 }
-
-

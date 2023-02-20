@@ -67,7 +67,7 @@ public class US3_1UnitTest {
             mockDataSource.setValue(curCoordinate);
 
             LocationService locationService = LocationService.singleton(activity);
-            locationService.setMockLocationSource(mockDataSource);
+            locationService.setMockOrientationSource(mockDataSource);
 
             TextView name_label1 = (TextView) activity.findViewById(R.id.label_1);
             TextView name_label2 = (TextView) activity.findViewById(R.id.label_2);
@@ -88,15 +88,11 @@ public class US3_1UnitTest {
             float shownAngle2 = name_label2.getRotation();
             float shownAngle3 = name_label3.getRotation();
 
-            System.out.println(name_label1.getText().toString());
-
-            SharedPreferences sharedPreferences = RuntimeEnvironment.getApplication().getSharedPreferences("Main", MODE_PRIVATE);
-            System.out.println(sharedPreferences.getString("coordinate1", ""));
-
             assertEquals(coordinate1Angle, shownAngle1, 0.01);
             assertEquals(coordinate2Angle, shownAngle2, 0.01);
             assertEquals(coordinate3Angle, shownAngle3, 0.01);
         });
     }
+
 
 }

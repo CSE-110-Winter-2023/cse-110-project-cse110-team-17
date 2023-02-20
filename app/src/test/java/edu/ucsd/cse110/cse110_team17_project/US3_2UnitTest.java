@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import android.Manifest;
 import android.app.UiAutomation;
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.content.Context;
@@ -25,6 +26,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.ibm.icu.impl.Assert;
 
@@ -66,6 +68,7 @@ public class US3_2UnitTest{
     // It is same as professor provided in github, but comment this Rule wouldn't affect result
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
     // It tests if Main get SharePreference Data
     // It runs fine in my local, but failed in the remote action
