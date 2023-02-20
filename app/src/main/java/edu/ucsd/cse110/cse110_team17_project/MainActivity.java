@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         locationService = LocationService.singleton(this);
 
         locationService.getLocation().observe(this, loc->{
-            System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
             currentLocation = loc;
         });
 
@@ -75,14 +74,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(inputIntent);
         }
 
-
-        cord1Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
-                 currentLocation.second.floatValue(), coordinate1.first.floatValue(), coordinate1.second.floatValue());
-        cord2Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
-                currentLocation.second.floatValue(), coordinate2.first.floatValue(), coordinate2.second.floatValue());
-        cord3Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
-                currentLocation.second.floatValue(), coordinate3.first.floatValue(), coordinate3.second.floatValue());
-
         //Initialize angles
         setAllLabelRotations((float) 0.0);
 
@@ -91,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("resumed");
 
         // Get all the label names and coordinates from the SharedPreference object
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
@@ -101,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
         coordinate1 = Utilities.validCoordinate(preferences.getString("coordinate1", ""));
         coordinate2 = Utilities.validCoordinate(preferences.getString("coordinate2", ""));
         coordinate3 = Utilities.validCoordinate(preferences.getString("coordinate3", ""));
-
-
-        // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
-        if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
-            Intent inputIntent = new Intent(this, InputActivity.class);
-            startActivity(inputIntent);
-        }
-
 
         orientationService = OrientationService.singleton(this);
         startOrientationSensor(orientationService);
@@ -149,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
     public void onAngleConfirmClicked(View view) {
         // Stop the sensors first
         orientationService.unregisterSensorListeners();
-//        isSensorActivated = false;
 
         TextView AngleInput = (TextView) findViewById(R.id.input_angle);
         Integer angle = Integer.parseInt(AngleInput.getText().toString());
@@ -161,23 +142,17 @@ public class MainActivity extends AppCompatActivity {
 
     // This method starts the orientation sensor
     private void startOrientationSensor(OrientationService orientationService) {
-        // If sensor is already activated, no need to start again
-//        if (!isSensorActivated) {
         orientationService.registerSensorListeners();
-//            isSensorActivated = true;
 
         orientationService.getOrientation().observe(this, orientation -> {
             float actualAngle = -orientation / (float) Math.PI * 180;
             setAllLabelRotations(actualAngle);
         });
-
-
-//        }
     }
 
     // If we want to resume sensors, we clicked on the "Resume sensors" Button and start the orientation again
     public void onResumeSensorsClicked(View view) {
-        orientationService = new OrientationService(this);
+        orientationService = OrientationService.singleton(this);
         startOrientationSensor(orientationService);
     }
 

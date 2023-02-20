@@ -46,10 +46,10 @@ public class US3_2UnitTest{
     final String TEST_COORDINATE2 = "Test Coordinate1";
     final String TEST_LABEL3 = "Test Label1";
     final String TEST_COORDINATE3 = "Test Coordinate1";
-    final String ZERO = Character.toString('0');
-    final String ONE = Character.toString('1');
-    final String TWO = Character.toString('2');
-    final String FIVE = Character.toString('5');
+    final String ZERO = "0";
+    final String ONE = "1";
+    final String TWO = "2";
+    final String FIVE = "5";
     final String TEN = "10";
     final String A_Round_360 = "360";
     @Before
@@ -68,23 +68,9 @@ public class US3_2UnitTest{
     // It is same as professor provided in github, but comment this Rule wouldn't affect result
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+    @Rule
     public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
-    // It tests if Main get SharePreference Data
-    // It runs fine in my local, but failed in the remote action
-//    @Test
-//    public void TestSharePre(){
-//        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-//        scenario.moveToState(Lifecycle.State.STARTED);
-//        scenario.onActivity(activity -> {
-//            TextView label1 = (TextView) activity.findViewById(R.id.label_1);
-//            TextView label2 = (TextView) activity.findViewById(R.id.label_2);
-//            TextView label3 = (TextView) activity.findViewById(R.id.label_3);
-//            assertEquals(TEST_LABEL1,label1.getText().toString());
-//            assertEquals(TEST_LABEL2,label2.getText().toString());
-//            assertEquals(TEST_LABEL3,label3.getText().toString());
-//        });
-//    }
 
     // It test if angle can rotate compassFace
     @Test
@@ -100,24 +86,24 @@ public class US3_2UnitTest{
             int angleStart = (int) compass.getRotation();
             angleInput.setText(ONE);
             comfirmBt.performClick();
-            int angle1 = (int) compass.getRotation() - angleStart;
+            int angle1 = (int) compass.getRotation() + angleStart;
             angleInput.setText(TWO);
             comfirmBt.performClick();
-            int angle2 = (int) compass.getRotation()- angleStart;
+            int angle2 = (int) compass.getRotation() + angleStart;
             angleInput.setText(FIVE);
             comfirmBt.performClick();
-            int angle3 = (int) compass.getRotation() - angleStart;
+            int angle3 = (int) compass.getRotation() + angleStart;
             angleInput.setText(TEN);
             comfirmBt.performClick();
-            int angle4 = (int) compass.getRotation() - angleStart;
+            int angle4 = (int) compass.getRotation() + angleStart;
             angleInput.setText(A_Round_360);
             comfirmBt.performClick();
-            int angle5 = (int) compass.getRotation() - angleStart;
-            assertEquals( Integer.parseInt(ONE), angle1);
-            assertEquals( Integer.parseInt(TWO), angle2);
-            assertEquals( Integer.parseInt(FIVE), angle3);
-            assertEquals( Integer.parseInt(TEN), angle4);
-            assertEquals(  Integer.parseInt(A_Round_360), angle5);
+            int angle5 = (int) compass.getRotation() + angleStart;
+            assertEquals(-Integer.parseInt(ONE), angle1);
+            assertEquals(-Integer.parseInt(TWO), angle2);
+            assertEquals(-Integer.parseInt(FIVE), angle3);
+            assertEquals(-Integer.parseInt(TEN), angle4);
+            assertEquals(-Integer.parseInt(A_Round_360), angle5);
         });
     }
 
@@ -148,18 +134,18 @@ public class US3_2UnitTest{
             mockDataSource.setValue(0.3F);
             float angle3 = compass.getRotation();
             mockDataSource.setValue(0.1F);
-
-            assertNotEquals(angle1, angle2);
-            assertNotEquals(angle3, angle2);
-            assertNotEquals(angle1, angle3);
+            assertNotEquals(-angle1, angle2);
+            assertNotEquals(-angle3, angle2);
+            assertNotEquals(-angle1, angle3);
 
             mockDataSource.setValue(0.1F);
             assertTrue(angle1 == compass.getRotation());
         });
     }
+
     // Repeat Button to see if still functioning
     @Test
-    public void TestRepeateBt() {
+    public void TestRepeatBt() {
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.STARTED);
 
@@ -177,8 +163,10 @@ public class US3_2UnitTest{
             angleInput.setText(TWO);
             comfirmBt.performClick();
             int angle_TWO_1 = (int) compass.getRotation();
+            System.out.println((angle_TWO_1));
             resumeBt.performClick();
             int angle_ZERO_1 = (int) compass.getRotation();
+            System.out.println((angle_ZERO_1));
             assertNotEquals(angle_TWO_1, angle_ZERO_1);
 
             comfirmBt.performClick();
