@@ -145,19 +145,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(inputIntent);
     }
 
-    // This method is for mock orientation testing
-    public void onAngleConfirmClicked(View view) {
-        // Stop the sensors first
-        orientationService.unregisterSensorListeners();
-//        isSensorActivated = false;
-
-        TextView AngleInput = (TextView) findViewById(R.id.input_angle);
-        Integer angle = Integer.parseInt(AngleInput.getText().toString());
-
-        // Changing it to negative to imitate phone rotation
-        float actualAngle = (float) -angle;
-        setAllLabelRotations(actualAngle);
-    }
 
     // This method starts the orientation sensor
     private void startOrientationSensor(OrientationService orientationService) {
@@ -186,28 +173,24 @@ public class MainActivity extends AppCompatActivity {
         TextView name_label1 = (TextView) findViewById(R.id.label_1);
         TextView name_label2 = (TextView) findViewById(R.id.label_2);
         TextView name_label3 = (TextView) findViewById(R.id.label_3);
-        ImageView compass = (ImageView) findViewById(R.id.compass_face);
         ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) name_label1.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) name_label2.getLayoutParams();
         ConstraintLayout.LayoutParams layoutParams3 = (ConstraintLayout.LayoutParams) name_label3.getLayoutParams();
 
-        compass.setRotation(angle + compassNorthAngle);
+
 
         if (coordinate1 != null) {
            float coordinate1Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(), coordinate1.first.floatValue(), coordinate1.second.floatValue());
-            name_label1.setRotation(angle + coordinate1Angle);
             layoutParams1.circleAngle = angle + coordinate1Angle;
             name_label1.setLayoutParams(layoutParams1);
         }
         if (coordinate2 != null) {
             float coordinate2Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(), coordinate2.first.floatValue(), coordinate2.second.floatValue());
-            name_label2.setRotation(angle + coordinate2Angle);
             layoutParams2.circleAngle = angle + coordinate2Angle;
             name_label2.setLayoutParams(layoutParams2);
         }
         if (coordinate3 != null) {
             float coordinate3Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(), coordinate3.first.floatValue(), coordinate3.second.floatValue());
-            name_label3.setRotation(angle + coordinate3Angle);
             layoutParams3.circleAngle = angle + coordinate3Angle;
             name_label3.setLayoutParams(layoutParams3);
         }
