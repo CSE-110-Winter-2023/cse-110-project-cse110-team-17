@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
         if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
-            Intent inputIntent = new Intent(this, InputActivity.class);
-            startActivity(inputIntent);
+            Intent enterNameIntent = new Intent(this, EnterNameActivity.class);
+            startActivity(enterNameIntent);
         }
 
         //Initialize angles
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     // This method is used when we want to get back to edit the coordinates and stuff
     public void onBackClicked(View view) {
-        Intent inputIntent = new Intent(this, InputActivity.class);
-        startActivity(inputIntent);
+        Intent enterNameIntent = new Intent(this, EnterNameActivity.class);
+        startActivity(enterNameIntent);
     }
 
     public void onClearClicked(View view) {
@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
-        Intent inputIntent = new Intent(this, InputActivity.class);
-        startActivity(inputIntent);
+        Intent enterNameIntent = new Intent(this, EnterNameActivity.class);
+        startActivity(enterNameIntent);
     }
 
     // This method is for mock orientation testing
