@@ -58,10 +58,10 @@ public class US2_CompassUITestWithOneLabel {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("100,100"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("10,10"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.coordinate1), withText("100,100"),
+                allOf(withId(R.id.coordinate1), withText("10,10"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -144,10 +144,10 @@ public class US2_CompassUITestWithOneLabel {
         editText.check(matches(withText("1")));
 
         ViewInteraction editText2 = onView(
-                allOf(withId(R.id.coordinate1), withText("100,100"),
+                allOf(withId(R.id.coordinate1), withText("10,10"),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        editText2.check(matches(withText("100,100")));
+        editText2.check(matches(withText("10,10")));
     }
 
     private static Matcher<View> childAtPosition(

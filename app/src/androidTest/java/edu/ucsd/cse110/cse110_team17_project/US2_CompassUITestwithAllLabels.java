@@ -68,10 +68,10 @@ public class US2_CompassUITestwithAllLabels {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("100,100"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("0,100"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.coordinate1), withText("100,100"),
+                allOf(withId(R.id.coordinate1), withText("0,100"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -108,10 +108,10 @@ public class US2_CompassUITestwithAllLabels {
                                         0),
                                 5),
                         isDisplayed()));
-        appCompatEditText7.perform(replaceText("200,200"), closeSoftKeyboard());
+        appCompatEditText7.perform(replaceText("20,20"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.coordinate2), withText("200,200"),
+                allOf(withId(R.id.coordinate2), withText("20,20"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -148,10 +148,10 @@ public class US2_CompassUITestwithAllLabels {
                                         0),
                                 8),
                         isDisplayed()));
-        appCompatEditText11.perform(replaceText("300,300"), closeSoftKeyboard());
+        appCompatEditText11.perform(replaceText("30,30"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText12 = onView(
-                allOf(withId(R.id.coordinate3), withText("300,300"),
+                allOf(withId(R.id.coordinate3), withText("30,30"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
