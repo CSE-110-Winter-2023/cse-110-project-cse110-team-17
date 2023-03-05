@@ -1,22 +1,18 @@
 package edu.ucsd.cse110.cse110_team17_project;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.*;
 
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.platform.device.DeviceController;
+
+import edu.ucsd.cse110.cse110_team17_project.activity.InputActivity;
 
 
 @RunWith(RobolectricTestRunner.class)

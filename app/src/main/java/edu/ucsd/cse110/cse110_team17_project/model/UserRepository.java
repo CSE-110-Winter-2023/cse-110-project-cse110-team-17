@@ -1,11 +1,13 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.model;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import edu.ucsd.cse110.cse110_team17_project.model.LocationAPI;
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 
 public class UserRepository {
 

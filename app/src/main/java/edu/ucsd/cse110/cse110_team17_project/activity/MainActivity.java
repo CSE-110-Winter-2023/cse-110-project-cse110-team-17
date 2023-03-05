@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -6,25 +6,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import edu.ucsd.cse110.cse110_team17_project.model.LocationService;
+import edu.ucsd.cse110.cse110_team17_project.model.OrientationService;
+import edu.ucsd.cse110.cse110_team17_project.R;
+import edu.ucsd.cse110.cse110_team17_project.model.Utilities;
 
 public class MainActivity extends AppCompatActivity {
 

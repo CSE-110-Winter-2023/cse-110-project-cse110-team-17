@@ -30,6 +30,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import edu.ucsd.cse110.cse110_team17_project.activity.MainActivity;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class US2_CompassUITestwithAllLabels {

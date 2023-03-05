@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.model;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,10 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import java.util.Objects;
-
-import kotlin.jvm.internal.LocalVariableReference;
 
 public class LocationService implements LocationListener {
     private static LocationService instance;
