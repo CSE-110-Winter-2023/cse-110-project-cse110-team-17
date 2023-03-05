@@ -3,6 +3,7 @@ package edu.ucsd.cse110.cse110_team17_project;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
 
 import android.Manifest;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -37,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationService locationService;
 
-    private Pair<Double, Double> coordinate1;
-    private Pair<Double, Double> coordinate2;
-    private Pair<Double, Double> coordinate3;
+    LiveData<Pair<Double, Double>> coordinate1;
 
     // defaults to San Diego (fix that later)
     private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
@@ -56,32 +56,29 @@ public class MainActivity extends AppCompatActivity {
         }
         locationService = LocationService.singleton(this);
 
+        // TODO: Wierd Delay, Ask for assistance maybe?
         locationService.getLocation().observe(this, loc->{
             System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
             currentLocation = loc;
         });
 
-        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        String label1 = preferences.getString("label1", "");
-        String label2 = preferences.getString("label2", "");
-        String label3 = preferences.getString("label3", "");
-        coordinate1 = Utilities.validCoordinate(preferences.getString("coordinate1", ""));
-        coordinate2 = Utilities.validCoordinate(preferences.getString("coordinate2", ""));
-        coordinate3 = Utilities.validCoordinate(preferences.getString("coordinate3", ""));
+
+//
+//        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+//        String label1 = preferences.getString("label1", "");
+//        String label2 = preferences.getString("label2", "");
+//        String label3 = preferences.getString("label3", "");
+//        coordinate1 = Utilities.validCoordinate(preferences.getString("coordinate1", ""));
+//        coordinate2 = Utilities.validCoordinate(preferences.getString("coordinate2", ""));
+//        coordinate3 = Utilities.validCoordinate(preferences.getString("coordinate3", ""));
+
+
 
         // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
-        if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
-            Intent inputIntent = new Intent(this, InputActivity.class);
-            startActivity(inputIntent);
-        }
-
-
-        cord1Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
-                 currentLocation.second.floatValue(), coordinate1.first.floatValue(), coordinate1.second.floatValue());
-        cord2Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
-                currentLocation.second.floatValue(), coordinate2.first.floatValue(), coordinate2.second.floatValue());
-        cord3Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(),
-                currentLocation.second.floatValue(), coordinate3.first.floatValue(), coordinate3.second.floatValue());
+//        if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
+//            Intent inputIntent = new Intent(this, InputActivity.class);
+//            startActivity(inputIntent);
+//        }
 
         //Initialize angles
         setAllLabelRotations((float) 0.0);
@@ -180,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (coordinate1 != null) {
-           float coordinate1Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(), coordinate1.first.floatValue(), coordinate1.second.floatValue());
+           float coordinate1Angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
+                   coordinate1.getValue().first.floatValue(), coordinate1.getValue().second.floatValue());
             layoutParams1.circleAngle = angle + coordinate1Angle;
             name_label1.setLayoutParams(layoutParams1);
         }
