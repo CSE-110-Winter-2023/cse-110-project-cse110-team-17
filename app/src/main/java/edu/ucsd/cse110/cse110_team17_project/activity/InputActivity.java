@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import edu.ucsd.cse110.cse110_team17_project.R;
+import edu.ucsd.cse110.cse110_team17_project.model.Utilities;
 
 public class InputActivity extends AppCompatActivity {
 

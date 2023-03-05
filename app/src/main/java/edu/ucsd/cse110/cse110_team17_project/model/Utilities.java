@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.model;
 
 import android.app.Activity;
 import android.app.AlertDialog;

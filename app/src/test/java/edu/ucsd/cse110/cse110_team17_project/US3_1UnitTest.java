@@ -6,12 +6,9 @@ import static org.junit.Assert.assertEquals;
 
 import android.Manifest;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.util.Pair;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.core.app.ActivityScenario;
@@ -23,6 +20,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import edu.ucsd.cse110.cse110_team17_project.activity.MainActivity;
+import edu.ucsd.cse110.cse110_team17_project.model.LocationService;
+import edu.ucsd.cse110.cse110_team17_project.model.Utilities;
 
 @RunWith(RobolectricTestRunner.class)
 public class US3_1UnitTest {

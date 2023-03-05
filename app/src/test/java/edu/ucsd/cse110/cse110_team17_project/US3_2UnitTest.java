@@ -1,10 +1,8 @@
 package edu.ucsd.cse110.cse110_team17_project;
 
 
-import static android.app.UiAutomation.ROTATION_FREEZE_0;
 import static android.content.Context.MODE_PRIVATE;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import org.junit.Rule;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -12,12 +10,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.Manifest;
-import android.app.UiAutomation;
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,18 +19,16 @@ import android.widget.TextView;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.GrantPermissionRule;
 
-import com.ibm.icu.impl.Assert;
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import edu.ucsd.cse110.cse110_team17_project.activity.MainActivity;
+import edu.ucsd.cse110.cse110_team17_project.model.OrientationService;
 
 @RunWith(RobolectricTestRunner.class)
 public class US3_2UnitTest{

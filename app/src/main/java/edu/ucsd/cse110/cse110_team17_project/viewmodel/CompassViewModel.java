@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.viewmodel;
 
 import android.app.Application;
 import android.util.Pair;
