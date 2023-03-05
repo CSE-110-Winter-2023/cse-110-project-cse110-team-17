@@ -20,7 +20,6 @@ public class UIDActivity extends AppCompatActivity {
         String uniqueID = UUID.randomUUID().toString().replace("-","").substring(0, 18);
         TextView uid = findViewById(R.id.yourID);
         uid.setText(uniqueID);
-        System.out.println(uniqueID);
 
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -36,5 +35,6 @@ public class UIDActivity extends AppCompatActivity {
 
     public void onNextClicked(View view) {
         //TODO: start "add friends activity"
+        onDestroy();
     }
 }
