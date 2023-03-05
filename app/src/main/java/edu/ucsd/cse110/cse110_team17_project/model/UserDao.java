@@ -10,6 +10,8 @@ import androidx.room.Upsert;
 
 import java.util.List;
 
+
+// There are operations more than we really need, some unused operations may be deleted
 @Dao
 public interface UserDao {
 
