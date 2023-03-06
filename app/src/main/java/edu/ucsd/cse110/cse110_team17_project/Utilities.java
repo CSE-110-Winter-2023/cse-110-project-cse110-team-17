@@ -115,6 +115,6 @@ public class Utilities {
 
         double c = 2 * Math.asin(Math.sqrt(a));
         double r = 6371;
-        return(c * r);
+        return(c * r) / 1.609;
     }
 }
