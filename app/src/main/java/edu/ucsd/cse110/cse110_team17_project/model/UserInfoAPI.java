@@ -10,21 +10,21 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LocationAPI {
+public class UserInfoAPI {
 
-    private volatile static LocationAPI instance = null;
+    private volatile static UserInfoAPI instance = null;
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
 
     private OkHttpClient client;
 
-    public LocationAPI() {
+    public UserInfoAPI() {
         this.client = new OkHttpClient();
     }
 
-    public static LocationAPI provide() {
+    public static UserInfoAPI provide() {
         if (instance == null) {
-            instance = new LocationAPI();
+            instance = new UserInfoAPI();
         }
         return instance;
     }
@@ -36,7 +36,7 @@ public class LocationAPI {
         var body ="";
 
         var request = new Request.Builder()
-                .url("https://socialcompass.goto.ucsd.edu/location" + id)
+                .url("https://socialcompass.goto.ucsd.edu/location/" + id)
                 .method("GET", null)
                 .build();
 
@@ -59,7 +59,7 @@ public class LocationAPI {
         String responseStr = "";
         RequestBody body = RequestBody.create(jsonUI, JSON);
         Request request = new Request.Builder()
-                .url("https://socialcompass.goto.ucsd.edu/location" + id)
+                .url("https://socialcompass.goto.ucsd.edu/location/" + id)
                 .put(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {

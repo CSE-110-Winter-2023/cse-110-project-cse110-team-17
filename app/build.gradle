@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'edu.ucsd.cse110.cse110_team17_project'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "edu.ucsd.cse110.cse110_team17_project"
-        minSdk 32
-        targetSdk 32
+        minSdk 33
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

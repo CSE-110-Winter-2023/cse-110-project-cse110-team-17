@@ -9,16 +9,25 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
+import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
+
 public class CompassViewModel extends AndroidViewModel {
 
-    LiveData<Pair<Double, Double>> coordinate;
+    private LiveData<Pair<Double, Double>> coordinate;
+
+    private UserRepository userRepository;
 
     public CompassViewModel(@NonNull Application application) {
         super(application);
-
+        userRepository = new UserRepository();
     }
 
-    public LiveData<Pair<Double, Double>> getCoordinate() {
-        return null;
+    public LiveData<Pair<Double, Double>> getCoordinate(String privateCode) {
+        if (coordinate == null) {
+            coordinate = userRepository.getRemoteUserInfo(privateCode);
+        }
+
+        return coordinate;
     }
 }

@@ -3,6 +3,7 @@ package edu.ucsd.cse110.cse110_team17_project.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
@@ -35,6 +36,7 @@ public class UserInfo {
         this.longitude = 0.0;
     }
 
+    @Ignore
     public UserInfo(String privateCode, String label, Double latitude, Double longitude) {
         this.privateCode = privateCode;
         this.label = label;
