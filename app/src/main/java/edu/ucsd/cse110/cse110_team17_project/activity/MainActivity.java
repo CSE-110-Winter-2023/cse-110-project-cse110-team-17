@@ -16,9 +16,13 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.ucsd.cse110.cse110_team17_project.model.LocationService;
 import edu.ucsd.cse110.cse110_team17_project.model.OrientationService;
 import edu.ucsd.cse110.cse110_team17_project.R;
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.model.Utilities;
 import edu.ucsd.cse110.cse110_team17_project.viewmodel.CompassViewModel;
 
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationService locationService;
 
-    LiveData<Pair<Double, Double>> coordinate1;
+    private LiveData<List<UserInfo>> userInfos; // Default 3 elements for now
 
     // defaults to San Diego (fix that later)
     private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
@@ -58,9 +62,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         var viewModel = setupViewModel();
-        coordinate1 = viewModel.getCoordinate("group17test1");
+        List<String> keys = new ArrayList<>();
+        keys.add("group17test1");
+        keys.add("group17test2");
+        keys.add("group17test3");
 
-        coordinate1.observe(this, this::onCoordinateChanged);
+        userInfos = viewModel.getUserInfos(keys);
+
+        userInfos.observe(this, this::onUserInfoChanged);
 //
 //        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
 //        String label1 = preferences.getString("label1", "");
@@ -83,13 +92,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void onCoordinateChanged(Pair<Double, Double> coordinate) {
-        float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
-                coordinate.first.floatValue(), coordinate.second.floatValue());
-
+    private void onUserInfoChanged(List<UserInfo> userInfos) {
+        var userInfo1 = userInfos.get(0);
         TextView name_label1 = (TextView) findViewById(R.id.label_1);
+        var userInfo2 = userInfos.get(1);
+        TextView name_label2 = (TextView) findViewById(R.id.label_2);
+        var userInfo3 = userInfos.get(2);
+        TextView name_label3 = (TextView) findViewById(R.id.label_3);
 
-        setCordAngle(name_label1, angle);
+        setViewLocation(name_label1, userInfo1);
+        setViewLocation(name_label2, userInfo2);
+        setViewLocation(name_label3, userInfo3);
     }
 
     @Override
@@ -200,11 +213,29 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void setCordAngle(TextView label, float angle) {
+    private void setViewLocation(TextView label, UserInfo userInfo) {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
 
-        layoutParams.circleAngle = angle + 0; // Assume cur rotation to 0 for now
+        float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
+                (float)userInfo.latitude, (float)userInfo.longitude);
+
+        double distance = Utilities.distance(currentLocation.first.doubleValue(), currentLocation.second.doubleValue(),
+                userInfo.latitude, userInfo.longitude);
+        int radius = (int) Utilities.distanceToViewRadius(distance);
+
+        layoutParams.circleRadius = radius;
+        layoutParams.circleAngle = angle;
+
         label.setLayoutParams(layoutParams);
+
+        if (radius < 200) {
+            label.setText(userInfo.label);
+            label.setTextSize(15.0F);
+        }
+        else {
+            label.setText(".");
+            label.setTextSize(100.0F);
+        }
     }
 
 }

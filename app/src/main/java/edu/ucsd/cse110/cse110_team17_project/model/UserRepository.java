@@ -5,6 +5,7 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -18,18 +19,21 @@ public class UserRepository {
 
     }
 
-    public LiveData<Pair<Double, Double>> getRemoteUserInfo(String privateCode) {
-        var coordinate = new MutableLiveData<Pair<Double, Double>>();
+    public LiveData<List<UserInfo>> getRemoteUserInfo(List<String> privateCodes) {
+        var resultList = new MutableLiveData<List<UserInfo>>();
         var executor = Executors.newSingleThreadScheduledExecutor();
         UserInfoAPI uApi = UserInfoAPI.provide();
 
         var Future = executor.scheduleAtFixedRate(() -> {
-            String json = uApi.getUser(privateCode);
-            var user = UserInfo.formJSON(json);
-            Pair<Double, Double> pair = new Pair<>(user.latitude, user.longitude);
-            coordinate.postValue(pair);
+            var tempList = resultList.getValue();
+            tempList.clear();
+            for (String privateCode: privateCodes) {
+                String json = uApi.getUser(privateCode);
+                tempList.add(UserInfo.formJSON(json));
+            }
+            resultList.postValue(tempList);
         }, 0, 5000, TimeUnit.MILLISECONDS);
-        return coordinate;
+        return resultList;
     }
 
 }

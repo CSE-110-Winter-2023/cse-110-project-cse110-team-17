@@ -14,7 +14,7 @@ import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
 
 public class CompassViewModel extends AndroidViewModel {
 
-    private LiveData<Pair<Double, Double>> coordinate;
+    private LiveData<List<UserInfo>> userInfos;
 
     private UserRepository userRepository;
 
@@ -23,11 +23,11 @@ public class CompassViewModel extends AndroidViewModel {
         userRepository = new UserRepository();
     }
 
-    public LiveData<Pair<Double, Double>> getCoordinate(String privateCode) {
-        if (coordinate == null) {
-            coordinate = userRepository.getRemoteUserInfo(privateCode);
+    public LiveData<List<UserInfo>> getUserInfos(List<String> codes) {
+        if (userInfos == null) {
+            userInfos = userRepository.getRemoteUserInfo(codes);
         }
 
-        return coordinate;
+        return userInfos;
     }
 }
