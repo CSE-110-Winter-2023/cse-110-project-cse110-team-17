@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.io.*;
+import java.util.*;
+import java.lang.*;
 
 import java.text.DecimalFormat;
 import java.util.Optional;
@@ -42,6 +44,7 @@ public class Utilities {
         alertDialog.show();
     }
 
+    // calculate orientation
     public static double updateAngle(double lat_1, double lon_1, double lat_2, double lon_2) {
         double y = Math.sin(Math.toRadians(lon_2 - lon_1)) * Math.cos(Math.toRadians(lat_2));
         double x = Math.cos(Math.toRadians(lat_1)) * Math.sin(Math.toRadians(lat_2)) -
@@ -50,6 +53,7 @@ public class Utilities {
         return res;
     }
 
+    // check valid coordinates
     public static Pair<Double, Double> validCoordinate(String coordinate) {
 
         if (!coordinate.contains(",")){
@@ -102,5 +106,25 @@ public class Utilities {
             return false;
         }
         return true;
+    }
+    
+    // calculate distance in miles
+    public static double distance(double latitude1, double longitude1,
+                                  double latitude2, double longitude2) {
+        latitude1 = Math.toRadians(latitude1);
+        longitude1 = Math.toRadians(longitude1);
+        latitude2 = Math.toRadians(latitude2);
+        longitude2 = Math.toRadians(longitude2);
+
+        double dlon = longitude2 - longitude1;
+        double dlat = latitude2 - latitude1;
+
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(latitude1) * Math.cos(latitude2)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double r = 6371;
+        return(c * r) / 1.609;
     }
 }

@@ -19,6 +19,9 @@
         <activity
             android:name=".UIDActivity"
             android:exported="true" />
+         <activity
+            android:name=".EnterNameActivity"
+            android:exported="false" />
         <activity
             android:name=".InputActivity"
             android:exported="false">
