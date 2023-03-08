@@ -24,11 +24,11 @@ public interface UserDao {
     @Upsert
     long upsert(UserInfo userInfo);
 
-    @Query("SELECT EXISTS(SELECT 1 FROM users WHERE `privateCode` = :privateCode)")
+    @Query("SELECT EXISTS(SELECT 1 FROM users WHERE `private_code` = :privateCode)")
     boolean exists(long privateCode);
 
 
-    @Query("SELECT * FROM `users` WHERE `privateCode` =:privateCode")
+    @Query("SELECT * FROM `users` WHERE `private_code` =:privateCode")
     UserInfo get(long privateCode);
 
     @Query("SELECT * FROM `users`")

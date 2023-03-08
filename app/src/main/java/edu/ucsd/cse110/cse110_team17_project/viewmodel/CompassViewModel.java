@@ -30,4 +30,8 @@ public class CompassViewModel extends AndroidViewModel {
 
         return userInfos;
     }
+
+    public void postUserInfo(UserInfo uI) {
+        userRepository.postLocalUserInfo(uI);
+    }
 }

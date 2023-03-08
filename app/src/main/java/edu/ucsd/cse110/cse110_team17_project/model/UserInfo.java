@@ -13,9 +13,13 @@ import com.google.gson.annotations.SerializedName;
 public class UserInfo {
 
     @PrimaryKey
-    @SerializedName("privateCode")
+    @SerializedName("private_code")
     @NonNull
-    public String privateCode;
+    public String private_code;
+
+    @SerializedName("public_code")
+    @NonNull
+    public String public_code;
 
     @SerializedName("label")
     @NonNull
@@ -29,16 +33,18 @@ public class UserInfo {
     @NonNull
     public double longitude;
 
-    public UserInfo(String privateCode, String label) {
-        this.privateCode = privateCode;
+    public UserInfo(String private_code, String label, String public_code) {
+        this.private_code = private_code;
+        this.public_code = public_code;
         this.label = label;
         this.latitude = 0.0;
         this.longitude = 0.0;
     }
 
     @Ignore
-    public UserInfo(String privateCode, String label, Double latitude, Double longitude) {
-        this.privateCode = privateCode;
+    public UserInfo(String private_code, String public_code,String label, Double latitude, Double longitude) {
+        this.private_code = private_code;
+        this.public_code = public_code;
         this.label = label;
         this.latitude = latitude;
         this.longitude = longitude;

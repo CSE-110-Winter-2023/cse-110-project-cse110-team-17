@@ -119,13 +119,13 @@ public class Utilities {
     //TODO: Change to 4 zones later!
     public static double distanceToViewRadius(double distance) {
         if (distance < 10) {
-            return distance / 10.0 * 100.0;
+            return distance / 10.0 * 200.0;
         }
         else if (distance < 100) {
-            return 100.0 + (distance - 10);
+            return 200.0 + ((distance - 10) / 90.0 * 250.0);
         }
         else {
-            return 200.0;
+            return 450.0;
         }
     }
 }

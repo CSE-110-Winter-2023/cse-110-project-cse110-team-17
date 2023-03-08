@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
@@ -31,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     public OrientationService orientationService;
 //    private boolean isSensorActivated = false;
 
-    private float cord1Angle;
-    private float cord2Angle;
-    private float cord3Angle;
     private float compassNorthAngle = 0;
 
     private LocationService locationService;
@@ -42,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     // defaults to San Diego (fix that later)
     private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
+    private UserInfo curUserInfo;
+
+    private String label = "usertest";
+
 
 
     @Override
@@ -55,11 +57,16 @@ public class MainActivity extends AppCompatActivity {
         }
         locationService = LocationService.singleton(this);
 
+        curUserInfo = new UserInfo(label, label, label);
+
         // TODO: Wierd Delay, Ask for assistance maybe?
         locationService.getLocation().observe(this, loc->{
             System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
+            curUserInfo.latitude = loc.first.doubleValue();
+            curUserInfo.longitude = loc.second.doubleValue();
             currentLocation = loc;
         });
+
 
         var viewModel = setupViewModel();
         List<String> keys = new ArrayList<>();
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         keys.add("group17test3");
 
         userInfos = viewModel.getUserInfos(keys);
+        viewModel.postUserInfo(curUserInfo);
 
         userInfos.observe(this, this::onUserInfoChanged);
 //
@@ -188,9 +196,15 @@ public class MainActivity extends AppCompatActivity {
     public void setAllLabelRotations(float angle) {
         View rotateConstraint = (View) findViewById(R.id.rotateConstra);
         rotateConstraint.setRotation(angle);
-//        TextView name_label1 = (TextView) findViewById(R.id.label_1);
-//        TextView name_label2 = (TextView) findViewById(R.id.label_2);
-//        TextView name_label3 = (TextView) findViewById(R.id.label_3);
+
+
+        TextView name_label1 = (TextView) findViewById(R.id.label_1);
+        TextView name_label2 = (TextView) findViewById(R.id.label_2);
+        TextView name_label3 = (TextView) findViewById(R.id.label_3);
+
+        name_label1.setRotation(-angle);
+        name_label2.setRotation(-angle);
+        name_label3.setRotation(-angle);
 //        ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) name_label1.getLayoutParams();
 //        ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) name_label2.getLayoutParams();
 //        ConstraintLayout.LayoutParams layoutParams3 = (ConstraintLayout.LayoutParams) name_label3.getLayoutParams();
@@ -230,13 +244,15 @@ public class MainActivity extends AppCompatActivity {
 
         label.setLayoutParams(layoutParams);
 
-        if (radius < 200) {
+        if (radius < 450) {
             label.setText(userInfo.label);
             label.setTextSize(15.0F);
+            Log.i("ALERT", "No dot is called");
         }
         else {
             label.setText(".");
             label.setTextSize(100.0F);
+            Log.i("ALERT", String.valueOf(radius));
         }
     }
 

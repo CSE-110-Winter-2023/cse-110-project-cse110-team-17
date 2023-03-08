@@ -53,9 +53,10 @@ public class UserInfoAPI {
 
     @WorkerThread
     public String postInfo(UserInfo ui) {
-        String id = ui.privateCode;
+        String id = ui.public_code;
         id = id.replace(" ", "%20");
         String jsonUI = ui.toJSON();
+        Log.i("UI", jsonUI);
         String responseStr = "";
         RequestBody body = RequestBody.create(jsonUI, JSON);
         Request request = new Request.Builder()
