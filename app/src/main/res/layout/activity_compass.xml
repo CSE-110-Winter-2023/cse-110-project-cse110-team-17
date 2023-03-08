@@ -7,92 +7,98 @@
     android:background="@color/beige"
     tools:context=".activity.MainActivity">
 
-    <ImageView
-        android:id="@+id/circle_rim"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/circle" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rotateConstra"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/inner_circle1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="270dp"
-        android:layout_marginBottom="270dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle" />
+        <ImageView
+            android:id="@+id/circle_rim"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/circle" />
 
-    <TextView
-        android:id="@+id/label_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rotation="0"
-        android:text="Label #1"
-        android:textColor="@color/burgundy"
-        android:textSize="15dp"
-        app:layout_constraintCircle="@+id/circle_rim"
-        app:layout_constraintCircleAngle="270"
-        app:layout_constraintCircleRadius="150dp" />
+        <ImageView
+            android:id="@+id/inner_circle1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="270dp"
+            android:layout_marginBottom="270dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/circle" />
 
-    <TextView
-        android:id="@+id/label_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rotation="0"
-        android:text="Label #2"
-        android:textColor="@color/burgundy"
-        android:textSize="15dp"
-        app:layout_constraintCircle="@+id/circle_rim"
-        app:layout_constraintCircleAngle="90"
-        app:layout_constraintCircleRadius="190dp" />
+        <TextView
+            android:id="@+id/label_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="Label #1"
+            android:textColor="@color/burgundy"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircleAngle="270"
+            app:layout_constraintCircleRadius="150dp" />
 
-    <TextView
-        android:id="@+id/label_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rotation="0"
-        android:text="Label #3"
-        android:textColor="@color/burgundy"
-        android:textSize="15dp"
-        app:layout_constraintCircle="@+id/circle_rim"
-        app:layout_constraintCircleAngle="0"
-        app:layout_constraintCircleRadius="70dp" />
+        <TextView
+            android:id="@+id/label_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="Label #2"
+            android:textColor="@color/burgundy"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircleAngle="90"
+            app:layout_constraintCircleRadius="190dp" />
 
-    <ImageView
-        android:id="@+id/status_dot"
-        android:layout_width="12dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintCircle="@+id/circle_rim"
-        app:layout_constraintCircleAngle="0"
-        app:layout_constraintCircleRadius="0dp"
-        app:srcCompat="@drawable/green_dot"
-        tools:layout_editor_absoluteX="199dp" />
+        <TextView
+            android:id="@+id/label_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="Label #3"
+            android:textColor="@color/burgundy"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="70dp" />
 
-    <TextView
-        android:id="@+id/disconnect_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rotation="0"
-        android:text="3m"
-        android:textColor="@color/burgundy"
-        android:textSize="15dp"
-        app:layout_constraintCircle="@+id/circle_rim"
-        app:layout_constraintCircleAngle="90"
-        app:layout_constraintCircleRadius="20dp" />
+        <ImageView
+            android:id="@+id/status_dot"
+            android:layout_width="12dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="0dp"
+            app:srcCompat="@drawable/green_dot"
+            tools:layout_editor_absoluteX="199dp" />
+
+        <TextView
+            android:id="@+id/disconnect_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="3m"
+            android:textColor="@color/burgundy"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircleAngle="90"
+            app:layout_constraintCircleRadius="20dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-//        orientationService = OrientationService.singleton(this);
-//        startOrientationSensor(orientationService);
+        orientationService = OrientationService.singleton(this);
+        startOrientationSensor(orientationService);
 
         // Set label texts to their saved names
 //        TextView name_label1 = (TextView) findViewById(R.id.label_1);
@@ -163,20 +163,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     // This method starts the orientation sensor
-//    private void startOrientationSensor(OrientationService orientationService) {
-//        // If sensor is already activated, no need to start again
-////        if (!isSensorActivated) {
-//        orientationService.registerSensorListeners();
-////            isSensorActivated = true;
-//
-//        orientationService.getOrientation().observe(this, orientation -> {
-//            float actualAngle = -orientation / (float) Math.PI * 180;
-//            setAllLabelRotations(actualAngle);
-//        });
-//
-//
-////        }
-//    }
+    private void startOrientationSensor(OrientationService orientationService) {
+        // If sensor is already activated, no need to start again
+//        if (!isSensorActivated) {
+        orientationService.registerSensorListeners();
+//            isSensorActivated = true;
+
+        orientationService.getOrientation().observe(this, orientation -> {
+            float actualAngle = -orientation / (float) Math.PI * 180;
+            setAllLabelRotations(actualAngle);
+        });
+
+
+//        }
+    }
 
     // If we want to resume sensors, we clicked on the "Resume sensors" Button and start the orientation again
 //    public void onResumeSensorsClicked(View view) {
@@ -185,7 +185,9 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     // This method sets the rotation angle to the angle provided
-//    public void setAllLabelRotations(float angle) {
+    public void setAllLabelRotations(float angle) {
+        View rotateConstraint = (View) findViewById(R.id.rotateConstra);
+        rotateConstraint.setRotation(angle);
 //        TextView name_label1 = (TextView) findViewById(R.id.label_1);
 //        TextView name_label2 = (TextView) findViewById(R.id.label_2);
 //        TextView name_label3 = (TextView) findViewById(R.id.label_3);
@@ -211,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 //            layoutParams3.circleAngle = angle + coordinate3Angle;
 //            name_label3.setLayoutParams(layoutParams3);
 //        }
-//    }
+    }
 
     private void setViewLocation(TextView label, UserInfo userInfo) {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();

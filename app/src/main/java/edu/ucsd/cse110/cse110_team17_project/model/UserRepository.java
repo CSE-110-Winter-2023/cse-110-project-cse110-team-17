@@ -5,6 +5,7 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -25,8 +26,7 @@ public class UserRepository {
         UserInfoAPI uApi = UserInfoAPI.provide();
 
         var Future = executor.scheduleAtFixedRate(() -> {
-            var tempList = resultList.getValue();
-            tempList.clear();
+            var tempList = new ArrayList<UserInfo>();
             for (String privateCode: privateCodes) {
                 String json = uApi.getUser(privateCode);
                 tempList.add(UserInfo.formJSON(json));
