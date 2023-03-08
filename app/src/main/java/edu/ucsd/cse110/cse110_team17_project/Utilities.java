@@ -44,6 +44,7 @@ public class Utilities {
         alertDialog.show();
     }
 
+    // calculate orientation
     public static double updateAngle(double lat_1, double lon_1, double lat_2, double lon_2) {
         double y = Math.sin(Math.toRadians(lon_2 - lon_1)) * Math.cos(Math.toRadians(lat_2));
         double x = Math.cos(Math.toRadians(lat_1)) * Math.sin(Math.toRadians(lat_2)) -
@@ -52,6 +53,7 @@ public class Utilities {
         return res;
     }
 
+    // check valid coordinates
     public static Pair<Double, Double> validCoordinate(String coordinate) {
 
         if (!coordinate.contains(",")){
@@ -99,6 +101,7 @@ public class Utilities {
         return new Pair<>(latitude, longitude);
     }
 
+    // calculate distance in miles
     public static double distance(double latitude1, double longitude1,
                                   double latitude2, double longitude2) {
         latitude1 = Math.toRadians(latitude1);
