@@ -17,6 +17,9 @@
         android:theme="@style/Theme.CSE110Team17Project"
         tools:targetApi="32">
         <activity
+            android:name=".EnterNameActivity"
+            android:exported="false" />
+        <activity
             android:name=".InputActivity"
             android:exported="false">
             <meta-data
