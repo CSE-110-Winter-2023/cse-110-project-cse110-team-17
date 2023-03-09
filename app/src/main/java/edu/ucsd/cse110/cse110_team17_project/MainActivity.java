@@ -61,15 +61,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        String label1 = preferences.getString("label1", "");
-        String label2 = preferences.getString("label2", "");
-        String label3 = preferences.getString("label3", "");
-        coordinate1 = Utilities.validCoordinate(preferences.getString("coordinate1", ""));
-        coordinate2 = Utilities.validCoordinate(preferences.getString("coordinate2", ""));
-        coordinate3 = Utilities.validCoordinate(preferences.getString("coordinate3", ""));
+        String username = preferences.getString("username", "");
 
         // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
-        if (label1.isEmpty() && label2.isEmpty() && label3.isEmpty()) {
+        if (username.isEmpty()) {
             Intent enterNameIntent = new Intent(this, EnterNameActivity.class);
             startActivity(enterNameIntent);
         }
