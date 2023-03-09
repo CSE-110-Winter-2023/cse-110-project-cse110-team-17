@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backGround"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
@@ -21,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -47,21 +50,23 @@
             android:layout_marginBottom="270dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/circle" />
 
-        <TextView
+        <ImageView
             android:id="@+id/label_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="0"
-            android:text="Label #1"
-            android:textColor="@color/burgundy"
-            android:textSize="15dp"
-            app:layout_constraintCircle="@+id/status_dot"
-            app:layout_constraintCircleAngle="270"
-            app:layout_constraintCircleRadius="150dp" />
+            android:layout_width="12dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintCircle="@+id/rotateConstra"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="0dp"
+            app:srcCompat="@drawable/red_dot"
+            tools:layout_editor_absoluteX="199dp" />
 
         <TextView
             android:id="@+id/label_2"

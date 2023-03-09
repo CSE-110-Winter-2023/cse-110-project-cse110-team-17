@@ -2,11 +2,13 @@ package edu.ucsd.cse110.cse110_team17_project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-
         startUIDActicity();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void onUserInfoChanged(List<UserInfo> userInfos) {
         var userInfo1 = userInfos.get(0);
-        TextView name_label1 = (TextView) findViewById(R.id.label_1);
+        ImageView name_label1 = (ImageView) findViewById(R.id.label_1);
         var userInfo2 = userInfos.get(1);
         TextView name_label2 = (TextView) findViewById(R.id.label_2);
         var userInfo3 = userInfos.get(2);
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         rotateConstraint.setRotation(angle);
 
 
-        TextView name_label1 = (TextView) findViewById(R.id.label_1);
+        ImageView name_label1 = (ImageView) findViewById(R.id.label_1);
         TextView name_label2 = (TextView) findViewById(R.id.label_2);
         TextView name_label3 = (TextView) findViewById(R.id.label_3);
 
@@ -159,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
         name_label3.setRotation(-angle);
     }
 
-    private void setViewLocation(TextView label, UserInfo userInfo) {
+    private void setViewLocation(View label, UserInfo userInfo) {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
+        Context context = this;
         if (userInfo == null) return;
 
         float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
@@ -170,21 +173,24 @@ public class MainActivity extends AppCompatActivity {
                 userInfo.latitude, userInfo.longitude);
         int radius = (int) Utilities.distanceToViewRadius(distance);
 
+
+
+        layoutParams.circleConstraint = R.id.status_dot;
         layoutParams.circleRadius = radius;
         layoutParams.circleAngle = angle;
 
         label.setLayoutParams(layoutParams);
 
-        if (radius < 450) {
-            label.setText(userInfo.label);
-            label.setTextSize(15.0F);
-            Log.i("ALERT", "No dot is called");
-        }
-        else {
-            label.setText(".");
-            label.setTextSize(100.0F);
-            Log.i("ALERT", String.valueOf(radius));
-        }
+//        if (radius < 450) {
+//            label.setText(userInfo.label);
+//            label.setTextSize(15.0F);
+//            Log.i("ALERT", "No dot is called");
+//        }
+//        else {
+//            label.setText(".");
+//            label.setTextSize(100.0F);
+//            Log.i("ALERT", String.valueOf(radius));
+//        }
     }
 
 }
