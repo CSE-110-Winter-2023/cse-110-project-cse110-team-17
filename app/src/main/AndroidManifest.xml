@@ -19,12 +19,11 @@
         android:theme="@style/Theme.CSE110Team17Project"
         tools:targetApi="32">
         <activity
-            android:name=".activity.InputActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:name=".activity.UIDActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.EnterNameActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -39,5 +38,7 @@
                 android:value="" />
         </activity>
     </application>
+
+
 
 </manifest>

@@ -14,6 +14,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import edu.ucsd.cse110.cse110_team17_project.model.UserDao;
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
+
 @Database(entities = {UserInfo.class}, version = 1)
 public abstract class UserDataBase extends RoomDatabase {
     private static UserDataBase singleton = null;

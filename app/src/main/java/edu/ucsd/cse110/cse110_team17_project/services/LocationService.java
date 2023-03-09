@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project.model;
+package edu.ucsd.cse110.cse110_team17_project.services;
 
 import android.Manifest;
 import android.app.Activity;

@@ -7,10 +7,21 @@
     android:background="@color/beige"
     tools:context=".activity.MainActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="91dp"
+        android:layout_height="35dp"
+        android:text="Back"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="16dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rotateConstra"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/circle_rim"
@@ -48,7 +59,7 @@
             android:text="Label #1"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/rotateConstra"
+            app:layout_constraintCircle="@+id/status_dot"
             app:layout_constraintCircleAngle="270"
             app:layout_constraintCircleRadius="150dp" />
 
@@ -60,7 +71,7 @@
             android:text="Label #2"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/rotateConstra"
+            app:layout_constraintCircle="@+id/status_dot"
             app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="190dp" />
 
@@ -72,7 +83,7 @@
             android:text="Label #3"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/rotateConstra"
+            app:layout_constraintCircle="@+id/status_dot"
             app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="70dp" />
 
@@ -82,7 +93,7 @@
             android:layout_height="22dp"
             android:layout_marginTop="160dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircle="@+id/rotateConstra"
             app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="0dp"
             app:srcCompat="@drawable/green_dot"
@@ -99,6 +110,7 @@
             app:layout_constraintCircle="@+id/circle_rim"
             app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="20dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

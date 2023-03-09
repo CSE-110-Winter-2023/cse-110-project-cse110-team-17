@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.WorkerThread;
 
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
