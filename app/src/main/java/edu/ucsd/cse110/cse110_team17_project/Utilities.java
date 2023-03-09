@@ -101,6 +101,13 @@ public class Utilities {
         return new Pair<>(latitude, longitude);
     }
 
+    public static boolean isValidUID(String uid) {
+        if (uid.length() != 18 || !uid.matches("^[a-zA-Z0-9]*$")) {
+            return false;
+        }
+        return true;
+    }
+    
     // calculate distance in miles
     public static double distance(double latitude1, double longitude1,
                                   double latitude2, double longitude2) {

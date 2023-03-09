@@ -17,6 +17,9 @@
         android:theme="@style/Theme.CSE110Team17Project"
         tools:targetApi="32">
         <activity
+            android:name=".UIDActivity"
+            android:exported="true" />
+         <activity
             android:name=".EnterNameActivity"
             android:exported="false" />
         <activity
