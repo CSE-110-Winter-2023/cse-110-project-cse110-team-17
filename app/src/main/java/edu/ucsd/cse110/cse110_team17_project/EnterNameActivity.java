@@ -2,6 +2,7 @@ package edu.ucsd.cse110.cse110_team17_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class EnterNameActivity extends AppCompatActivity {
         }
         else{
             saveInputs();
+            Intent uidIntent = new Intent(this, UIDActivity.class);
+            startActivity(uidIntent);
             finish();
         }
     }

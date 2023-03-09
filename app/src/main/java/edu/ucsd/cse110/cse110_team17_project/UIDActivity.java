@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.UUID;
@@ -17,14 +18,23 @@ public class UIDActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uidactivity);
 
-        String uniqueID = UUID.randomUUID().toString().replace("-","").substring(0, 18);
-        TextView uid = findViewById(R.id.yourID);
-        uid.setText(uniqueID);
-
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("myUID", uniqueID);
-        editor.apply();
+        String myUID = preferences.getString("myUID", "");
+
+        if(myUID == ""){
+            String uniqueID = UUID.randomUUID().toString().replace("-","").substring(0, 18);
+            TextView uid = findViewById(R.id.yourID);
+            uid.setText(uniqueID);
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("myUID", uniqueID);
+            editor.apply();
+        }
+        else{
+            TextView uid = findViewById(R.id.yourID);
+
+            uid.setText(myUID);
+        }
     }
 
     @Override
@@ -35,6 +45,6 @@ public class UIDActivity extends AppCompatActivity {
 
     public void onNextClicked(View view) {
         //TODO: start "add friends activity"
-        onDestroy();
+        finish();
     }
 }
