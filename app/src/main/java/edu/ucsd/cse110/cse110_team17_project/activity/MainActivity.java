@@ -209,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
             label.setTextSize(100.0F);
             Log.i("ALERT", String.valueOf(radius));
         }
-
         layoutParams.circleConstraint = R.id.status_dot;
         layoutParams.circleRadius = radius;
         layoutParams.circleAngle = angle;
