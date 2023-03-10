@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private String label;
     private String uid;
 
-
+    MutableLiveData<Float> zoomSubject;
 
 
     @Override
@@ -57,6 +59,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         startUIDActicity();
+
+        // here is for Zoom part, will be refact later
+        zoomSubject = new MutableLiveData<>(1F);
+        ImageView innerCircle = findViewById(R.id.inner_circle1);
+        ImageView outerCircle = findViewById(R.id.circle_rim);
+        View Constra = findViewById(R.id.rotateConstra);
+        Button zoomInBtn = findViewById(R.id.zoom_in);
+        Button zoomOutBtn = findViewById(R.id.zoom_out);
+        zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
+        zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
+        zoomSubject.observe(this, (num)->{
+            innerCircle.setScaleX(num);
+            innerCircle.setScaleY(num);
+            outerCircle.setScaleX(num);
+            outerCircle.setScaleY(num);
+        });
+
+
+
+
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -101,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void onUserInfoChanged(List<UserInfo> userInfos) {
         var userInfo1 = userInfos.get(0);
-        ImageView name_label1 = (ImageView) findViewById(R.id.label_1);
+        TextView name_label1 = (TextView) findViewById(R.id.label_1);
         var userInfo2 = userInfos.get(1);
         TextView name_label2 = (TextView) findViewById(R.id.label_2);
         var userInfo3 = userInfos.get(2);
@@ -152,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         rotateConstraint.setRotation(angle);
 
 
-        ImageView name_label1 = (ImageView) findViewById(R.id.label_1);
+        TextView name_label1 = (TextView) findViewById(R.id.label_1);
         TextView name_label2 = (TextView) findViewById(R.id.label_2);
         TextView name_label3 = (TextView) findViewById(R.id.label_3);
 
@@ -161,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         name_label3.setRotation(-angle);
     }
 
-    private void setViewLocation(View label, UserInfo userInfo) {
+    private void setViewLocation(TextView label, UserInfo userInfo) {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
         Context context = this;
         if (userInfo == null) return;
@@ -171,26 +193,36 @@ public class MainActivity extends AppCompatActivity {
 
         double distance = Utilities.distance(currentLocation.first.doubleValue(), currentLocation.second.doubleValue(),
                 userInfo.latitude, userInfo.longitude);
-        int radius = (int) Utilities.distanceToViewRadius(distance);
+        int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
 
 
+
+
+        if (radius > 450) {
+            label.setText(userInfo.label);
+            label.setTextSize(15.0F);
+            Log.i("ALERT", "No dot is called");
+            radius = 450;
+        }
+        else {
+            label.setText("·");
+            label.setTextSize(100.0F);
+            Log.i("ALERT", String.valueOf(radius));
+        }
 
         layoutParams.circleConstraint = R.id.status_dot;
         layoutParams.circleRadius = radius;
         layoutParams.circleAngle = angle;
 
         label.setLayoutParams(layoutParams);
+    }
 
-//        if (radius < 450) {
-//            label.setText(userInfo.label);
-//            label.setTextSize(15.0F);
-//            Log.i("ALERT", "No dot is called");
-//        }
-//        else {
-//            label.setText(".");
-//            label.setTextSize(100.0F);
-//            Log.i("ALERT", String.valueOf(radius));
-//        }
+    private void clickedOnZoomOut(View view) {
+        zoomSubject.postValue(zoomSubject.getValue() * 1.1F);
+    }
+
+    private void clickedOnZoomIn(View view) {
+        zoomSubject.postValue(zoomSubject.getValue() / 1.1F);
     }
 
 }

@@ -17,6 +17,24 @@
         tools:layout_editor_absoluteX="14dp"
         tools:layout_editor_absoluteY="16dp" />
 
+    <Button
+        android:id="@+id/zoom_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/zoom_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="-"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rotateConstra"
         android:layout_width="match_parent"
@@ -56,17 +74,17 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/circle" />
 
-        <ImageView
+        <TextView
             android:id="@+id/label_1"
-            android:layout_width="12dp"
-            android:layout_height="22dp"
-            android:layout_marginTop="160dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintCircle="@+id/rotateConstra"
-            app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="0dp"
-            app:srcCompat="@drawable/red_dot"
-            tools:layout_editor_absoluteX="199dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="Label #2"
+            android:textColor="@color/burgundy"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/status_dot"
+            app:layout_constraintCircleAngle="90"
+            app:layout_constraintCircleRadius="190dp" />
 
         <TextView
             android:id="@+id/label_2"
