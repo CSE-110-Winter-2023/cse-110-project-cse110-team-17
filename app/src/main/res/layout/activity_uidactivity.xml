@@ -7,6 +7,7 @@
     android:background="@color/beige"
     tools:context=".activity.UIDActivity">
 
+
     <TextView
         android:id="@+id/shareUID"
         android:layout_width="300dp"

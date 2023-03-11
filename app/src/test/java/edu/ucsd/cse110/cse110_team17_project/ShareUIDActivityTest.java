@@ -5,6 +5,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+<<<<<<< HEAD
+=======
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.view.View;
+>>>>>>> 5b2bd4a5a7d53716ed3105ddc61761f21ce71574
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
@@ -13,8 +19,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+<<<<<<< HEAD
 import edu.ucsd.cse110.cse110_team17_project.activity.UIDActivity;
 
+=======
+>>>>>>> 5b2bd4a5a7d53716ed3105ddc61761f21ce71574
 @RunWith(RobolectricTestRunner.class)
 public class ShareUIDActivityTest {
 

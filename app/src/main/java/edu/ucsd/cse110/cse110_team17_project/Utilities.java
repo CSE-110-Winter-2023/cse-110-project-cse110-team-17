@@ -3,7 +3,11 @@ package edu.ucsd.cse110.cse110_team17_project;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.util.Pair;
-
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import java.io.*;
+import java.util.*;
 import java.lang.*;
 
 import java.text.DecimalFormat;
@@ -122,6 +126,7 @@ public class Utilities {
         double r = 6371;
         return(c * r) / 1.609;
     }
+
 
     //TODO: Change to 4 zones later!
     public static double distanceToViewRadius(double distance) {
