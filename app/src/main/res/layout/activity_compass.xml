@@ -77,8 +77,36 @@
             android:id="@+id/inner_circle1"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="220dp"
+            android:layout_marginBottom="220dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/circle" />
+
+        <ImageView
+            android:id="@+id/inner_circle2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="270dp"
             android:layout_marginBottom="270dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/circle" />
+
+        <ImageView
+            android:id="@+id/inner_circle3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="320dp"
+            android:layout_marginBottom="320dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -146,6 +174,7 @@
             app:layout_constraintCircle="@+id/circle_rim"
             app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="20dp" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

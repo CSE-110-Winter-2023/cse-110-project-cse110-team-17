@@ -36,9 +36,8 @@ import edu.ucsd.cse110.cse110_team17_project.viewmodel.CompassViewModel;
 public class MainActivity extends AppCompatActivity {
 
     public OrientationService orientationService;
-//    private boolean isSensorActivated = false;
 
-    private float compassNorthAngle = 0;
+//    private float compassNorthAngle = 0;
 
     private LocationService locationService;
 
@@ -65,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         // here is for Zoom part, will be refact later
         zoomSubject = new MutableLiveData<>(1F);
-        ImageView innerCircle = findViewById(R.id.inner_circle1);
+        ImageView innerCircle1 = findViewById(R.id.inner_circle1);
+        ImageView innerCircle2 = findViewById(R.id.inner_circle2);
+        ImageView innerCircle3 = findViewById(R.id.inner_circle3);
         ImageView outerCircle = findViewById(R.id.circle_rim);
         View Constra = findViewById(R.id.rotateConstraint);
         Button zoomInBtn = findViewById(R.id.zoom_in);
@@ -113,8 +114,12 @@ public class MainActivity extends AppCompatActivity {
         userInfos.observe(this, this::onUserInfoChanged);
 
         zoomSubject.observe(this, (num)->{
-            innerCircle.setScaleX(num);
-            innerCircle.setScaleY(num);
+            innerCircle1.setScaleX(num);
+            innerCircle1.setScaleY(num);
+            innerCircle2.setScaleX(num);
+            innerCircle2.setScaleY(num);
+            innerCircle3.setScaleX(num);
+            innerCircle3.setScaleY(num);
             outerCircle.setScaleX(num);
             outerCircle.setScaleY(num);
             try {
@@ -227,11 +232,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickedOnZoomOut(View view) {
-        zoomSubject.postValue(zoomSubject.getValue() * 1.1F);
+        zoomSubject.postValue(zoomSubject.getValue() * 1.4F);
     }
 
     private void clickedOnZoomIn(View view) {
-        zoomSubject.postValue(zoomSubject.getValue() / 1.1F);
+        zoomSubject.postValue(zoomSubject.getValue() / 1.4F);
     }
 
 }
