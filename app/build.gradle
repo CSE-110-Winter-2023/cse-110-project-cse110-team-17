@@ -4,16 +4,21 @@ plugins {
 
 android {
     namespace 'edu.ucsd.cse110.cse110_team17_project'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "edu.ucsd.cse110.cse110_team17_project"
-        minSdk 32
-        targetSdk 32
+        minSdk 33
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -32,9 +37,26 @@ android {
             includeAndroidResources = true
         }
     }
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java', 'src/main/java/Activity'
+            }
+        }
+    }
 }
 
 dependencies {
+
+    def gson_version = "2.10.1"
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    def room_version = "2.5.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    def okhttp_version = "4.10.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.8.0'

@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.services;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +27,7 @@ public class OrientationService implements SensorEventListener {
 
     }
 
-    protected void registerSensorListeners() {
+    public void registerSensorListeners() {
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);

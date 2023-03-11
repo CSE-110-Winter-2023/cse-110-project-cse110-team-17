@@ -4,10 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +16,8 @@ import androidx.test.core.app.ActivityScenario;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import edu.ucsd.cse110.cse110_team17_project.activity.EnterNameActivity;
+
 
 @RunWith(RobolectricTestRunner.class)
 public class MS2_US1_UnitTest {

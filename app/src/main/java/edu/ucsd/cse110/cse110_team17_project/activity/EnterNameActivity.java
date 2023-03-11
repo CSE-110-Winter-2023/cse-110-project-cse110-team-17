@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.cse110_team17_project;
+package edu.ucsd.cse110.cse110_team17_project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import edu.ucsd.cse110.cse110_team17_project.R;
+import edu.ucsd.cse110.cse110_team17_project.Utilities;
+
 public class EnterNameActivity extends AppCompatActivity {
 
     // load inputs into the page on creation, set the page to portrait only
@@ -16,6 +19,7 @@ public class EnterNameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_name);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         loadInputs();
     }
@@ -33,8 +37,6 @@ public class EnterNameActivity extends AppCompatActivity {
         }
         else{
             saveInputs();
-            Intent uidIntent = new Intent(this, UIDActivity.class);
-            startActivity(uidIntent);
             finish();
         }
     }

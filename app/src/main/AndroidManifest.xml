@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,20 +19,13 @@
         android:theme="@style/Theme.CSE110Team17Project"
         tools:targetApi="32">
         <activity
-            android:name=".UIDActivity"
+            android:name=".activity.UIDActivity"
             android:exported="true" />
-         <activity
-            android:name=".EnterNameActivity"
+        <activity
+            android:name=".activity.EnterNameActivity"
             android:exported="false" />
         <activity
-            android:name=".InputActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,5 +38,7 @@
                 android:value="" />
         </activity>
     </application>
+
+
 
 </manifest>

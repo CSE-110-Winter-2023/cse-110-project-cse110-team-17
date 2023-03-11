@@ -1,15 +1,9 @@
 package edu.ucsd.cse110.cse110_team17_project;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import android.content.Intent;
 import android.util.Pair;
-import android.widget.Button;
-
-import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,62 +2,114 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backGround"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="91dp"
+        android:layout_height="35dp"
+        android:text="Back"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/zoom_out"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="10dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:text="-"
+        android:textSize="30dp"
+        app:cornerRadius="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/zoom_in" />
+
+    <Button
+        android:id="@+id/zoom_in"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="10dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:text="+"
+        app:cornerRadius="45dp"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/compass"
+        android:id="@+id/rotateConstraint"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="-200dp"
+        android:layout_marginEnd="-200dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/compass_face"
+            android:id="@+id/circle_rim"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="30dp"
+            android:layout_height="400dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintCircle="@id/rotateConstraint"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/compass" />
+            app:srcCompat="@drawable/circle" />
+
+        <ImageView
+            android:id="@+id/inner_circle1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="270dp"
+            android:layout_marginBottom="270dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/circle" />
 
         <TextView
             android:id="@+id/label_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="270"
+            android:rotation="0"
             android:text="Label #1"
             android:textColor="@color/burgundy"
-            android:textSize="20dp"
-            app:layout_constraintCircle="@+id/compass"
-            app:layout_constraintCircleAngle="270"
-            app:layout_constraintCircleRadius="170dp" />
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/status_dot"
+            app:layout_constraintCircleAngle="90"
+            app:layout_constraintCircleRadius="190dp" />
 
         <TextView
             android:id="@+id/label_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="180"
+            android:rotation="0"
             android:text="Label #2"
             android:textColor="@color/burgundy"
-            android:textSize="20dp"
-            app:layout_constraintCircle="@+id/compass"
-            app:layout_constraintCircleAngle="180"
-            app:layout_constraintCircleRadius="170dp" />
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/status_dot"
+            app:layout_constraintCircleAngle="90"
+            app:layout_constraintCircleRadius="190dp" />
 
         <TextView
             android:id="@+id/label_3"
@@ -66,107 +118,36 @@
             android:rotation="0"
             android:text="Label #3"
             android:textColor="@color/burgundy"
-            android:textSize="20dp"
-            app:layout_constraintCircle="@+id/compass"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/status_dot"
             app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="170dp" />
+            app:layout_constraintCircleRadius="70dp" />
+
+        <ImageView
+            android:id="@+id/status_dot"
+            android:layout_width="12dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintCircle="@+id/rotateConstraint"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="0dp"
+            app:srcCompat="@drawable/green_dot"
+            tools:layout_editor_absoluteX="199dp" />
+
+        <TextView
+            android:id="@+id/disconnect_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="3m"
+            android:textColor="@color/burgundy"
+            android:textSize="15dp"
+            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircleAngle="90"
+            app:layout_constraintCircleRadius="20dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/back_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="29dp"
-        android:backgroundTint="@color/burgundy"
-        android:onClick="onBackClicked"
-        android:text="Back"
-        android:textColor="@color/beige"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/compass"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <!--    <Button-->
-    <!--        android:id="@+id/clear_btn"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="130dp"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginEnd="130dp"-->
-    <!--        android:layout_marginBottom="29dp"-->
-    <!--        android:backgroundTint="@color/burgundy"-->
-    <!--        android:onClick="onClearClicked"-->
-    <!--        android:text="Clear"-->
-    <!--        android:textColor="@color/beige"-->
-    <!--        android:textSize="20sp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="1.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/compass" />-->
-
-    <Button
-        android:id="@+id/confirmBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="20dp"
-        android:onClick="onAngleConfirmClicked"
-        android:text="Confirm"
-        app:layout_constraintBottom_toTopOf="@+id/back_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/input_angle"
-        app:layout_constraintTop_toBottomOf="@+id/compass" />
-
-    <EditText
-        android:id="@+id/input_angle"
-        android:layout_width="184dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="6dp"
-        android:ems="10"
-        android:hint="Angle"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/confirmBtn"
-        app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/compass" />
-
-    <Button
-        android:id="@+id/resume_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:onClick="onResumeSensorsClicked"
-        android:text="Resume Sensors"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/clear_btn"
-        android:layout_width="152dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/burgundy"
-        android:onClick="onClearClicked"
-        android:text="Clear"
-        android:textColor="@color/beige"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/compass"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resume_btn"
-        app:layout_constraintVertical_bias="0.25" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+

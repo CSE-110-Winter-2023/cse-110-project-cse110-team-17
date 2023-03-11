@@ -11,7 +11,6 @@ import java.util.*;
 import java.lang.*;
 
 import java.text.DecimalFormat;
-import java.util.Optional;
 
 public class Utilities {
     public static void showSuccess(Activity activity, String message) {
@@ -127,4 +126,19 @@ public class Utilities {
         double r = 6371;
         return(c * r) / 1.609;
     }
+
+
+    //TODO: Change to 4 zones later!
+    public static double distanceToViewRadius(double distance) {
+        if (distance < 10) {
+            return distance / 10.0 * 200.0;
+        }
+        else if (distance < 100) {
+            return 200.0 + ((distance - 10) / 90.0 * 250.0);
+        }
+        else {
+            return 450.0;
+        }
+    }
+
 }
