@@ -2,7 +2,6 @@ package edu.ucsd.cse110.cse110_team17_project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         startUIDActicity();
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         zoomSubject = new MutableLiveData<>(1F);
         ImageView innerCircle = findViewById(R.id.inner_circle1);
         ImageView outerCircle = findViewById(R.id.circle_rim);
-        View Constra = findViewById(R.id.rotateConstra);
+        View Constra = findViewById(R.id.rotateConstraint);
         Button zoomInBtn = findViewById(R.id.zoom_in);
         Button zoomOutBtn = findViewById(R.id.zoom_out);
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     // This method sets the rotation angle to the angle provided
     public void setAllLabelRotations(float angle) {
-        View rotateConstraint = (View) findViewById(R.id.rotateConstra);
+        View rotateConstraint = (View) findViewById(R.id.rotateConstraint);
         rotateConstraint.setRotation(angle);
 
 
@@ -198,13 +198,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if (radius > 450) {
+        if (radius < 450) {
             label.setText(userInfo.label);
             label.setTextSize(15.0F);
             Log.i("ALERT", "No dot is called");
-            radius = 450;
         }
         else {
+            radius = 450;
             label.setText("·");
             label.setTextSize(100.0F);
             Log.i("ALERT", String.valueOf(radius));
