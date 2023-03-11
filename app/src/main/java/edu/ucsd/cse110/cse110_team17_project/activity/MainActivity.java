@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private String uid;
 
     MutableLiveData<Float> zoomSubject;
+    int screenWidth;
 
 
     @Override
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         startUIDActicity();
+        screenWidth= this.getResources().getDisplayMetrics().widthPixels;
 
         // here is for Zoom part, will be refact later
         zoomSubject = new MutableLiveData<>(1F);
@@ -69,12 +72,6 @@ public class MainActivity extends AppCompatActivity {
         Button zoomOutBtn = findViewById(R.id.zoom_out);
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
         zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
-        zoomSubject.observe(this, (num)->{
-            innerCircle.setScaleX(num);
-            innerCircle.setScaleY(num);
-            outerCircle.setScaleX(num);
-            outerCircle.setScaleY(num);
-        });
 
 
 
@@ -114,6 +111,19 @@ public class MainActivity extends AppCompatActivity {
         viewModel.postUserInfo(curUserInfo);
 
         userInfos.observe(this, this::onUserInfoChanged);
+
+        zoomSubject.observe(this, (num)->{
+            innerCircle.setScaleX(num);
+            innerCircle.setScaleY(num);
+            outerCircle.setScaleX(num);
+            outerCircle.setScaleY(num);
+            try {
+                onUserInfoChanged(userInfos.getValue());
+            }catch (Exception e)
+            {
+                var a = 1;
+            }
+        });
     }
 
     private void startUIDActicity() {
@@ -196,15 +206,15 @@ public class MainActivity extends AppCompatActivity {
         int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
 
 
+        int maxRadius = screenWidth/2;
 
-
-        if (radius < 450) {
+        if (radius < maxRadius) {
             label.setText(userInfo.label);
             label.setTextSize(15.0F);
             Log.i("ALERT", "No dot is called");
         }
         else {
-            radius = 450;
+            radius = maxRadius;
             label.setText("·");
             label.setTextSize(100.0F);
             Log.i("ALERT", String.valueOf(radius));
