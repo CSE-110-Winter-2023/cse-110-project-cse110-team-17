@@ -8,14 +8,6 @@
     android:background="@color/beige"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="91dp"
-        android:layout_height="35dp"
-        android:text="Back"
-        android:textSize="20dp"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="16dp" />
 
     <Button
         android:id="@+id/zoom_out"
@@ -95,10 +87,10 @@
             android:layout_marginBottom="270dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/circle" />
 
         <ImageView
@@ -125,7 +117,9 @@
             android:textSize="15dp"
             app:layout_constraintCircle="@+id/status_dot"
             app:layout_constraintCircleAngle="90"
-            app:layout_constraintCircleRadius="190dp" />
+            app:layout_constraintCircleRadius="100dp"
+            android:ellipsize="end"
+            android:singleLine="true"/>
 
         <TextView
             android:id="@+id/label_2"

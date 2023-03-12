@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     MutableLiveData<Float> zoomSubject;
     int screenWidth;
+    private int zoomPosition = 2;
 
 
     @Override
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         screenWidth= this.getResources().getDisplayMetrics().widthPixels;
 
         // here is for Zoom part, will be refact later
-        zoomSubject = new MutableLiveData<>(1F);
+        zoomSubject = new MutableLiveData<>(Utilities.correctZoomRatio(zoomPosition));
         ImageView innerCircle1 = findViewById(R.id.inner_circle1);
         ImageView innerCircle2 = findViewById(R.id.inner_circle2);
         ImageView innerCircle3 = findViewById(R.id.inner_circle3);
@@ -232,11 +233,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickedOnZoomOut(View view) {
-        zoomSubject.postValue(zoomSubject.getValue() * 1.4F);
+        if (zoomPosition > 0) zoomPosition--;
+
+        zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
     }
 
     private void clickedOnZoomIn(View view) {
-        zoomSubject.postValue(zoomSubject.getValue() / 1.4F);
+        if (zoomPosition < 3) zoomPosition++;
+        zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
     }
 
 }

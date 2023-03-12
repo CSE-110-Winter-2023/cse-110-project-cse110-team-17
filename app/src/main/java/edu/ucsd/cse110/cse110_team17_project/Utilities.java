@@ -125,14 +125,40 @@ public class Utilities {
 
     //TODO: Change to 4 zones later!
     public static double distanceToViewRadius(double distance) {
-        if (distance < 10) {
-            return distance / 10.0 * 200.0;
+
+        //Zone 1: 0-1 miles
+        if (distance < 1) {
+            return distance * 119.0;
         }
+        //Zone 2: 1-10 miles
+        else if (distance < 10) {
+            distance -= 1.0;
+            return 119.0 + (distance / (10.0-1.0)  * (258.0-119.0));
+        }
+        //Zone 3: 10-100 miles
         else if (distance < 100) {
-            return 200.0 + ((distance - 10) / 90.0 * 250.0);
+            distance -= 10.0;
+            return 258.0 + (distance / (100.0-10.0)  * (400.0-258.0));
         }
-        else {
-            return 450.0;
+        //Zone 4: 100-1000 miles
+        else if (distance < 1000) {
+            distance -= 100.0;
+            return 400.0 + (distance / (1000.0-100.0)  * (540.0-400.0));
+        }
+        //Zone 5: 1000+ miles
+        else return 540.0;
+    }
+
+    public static float correctZoomRatio(int zoomPosition) {
+        switch (zoomPosition) {
+            case 1:
+                return 1.35F;
+            case 2:
+                return 2.1F;
+            case 3:
+                return 4.55F;
+            default:
+                return 1.0F;
         }
     }
 
