@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -36,62 +37,37 @@ import edu.ucsd.cse110.cse110_team17_project.viewmodel.CompassViewModel;
 public class MainActivity extends AppCompatActivity {
 
     public OrientationService orientationService;
-
-//    private float compassNorthAngle = 0;
-
     private LocationService locationService;
 
     private LiveData<List<UserInfo>> userInfos; // Default 3 elements for now
-
     // defaults to San Diego (fix that later)
     private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
     private UserInfo curUserInfo;
-
-    private String label;
-    private String uid;
-
     MutableLiveData<Float> zoomSubject;
-    int screenWidth;
+    private int screenWidth;
     private int zoomPosition = 2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         startUIDActicity();
-        screenWidth= this.getResources().getDisplayMetrics().widthPixels;
-
-        // here is for Zoom part, will be refact later
-        zoomSubject = new MutableLiveData<>(Utilities.correctZoomRatio(zoomPosition));
-        ImageView innerCircle1 = findViewById(R.id.inner_circle1);
-        ImageView innerCircle2 = findViewById(R.id.inner_circle2);
-        ImageView innerCircle3 = findViewById(R.id.inner_circle3);
-        ImageView outerCircle = findViewById(R.id.circle_rim);
-        View Constra = findViewById(R.id.rotateConstraint);
-        Button zoomInBtn = findViewById(R.id.zoom_in);
-        Button zoomOutBtn = findViewById(R.id.zoom_out);
-        zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
-        zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
+    }
 
 
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setLocationService();
+        startOrientationSensor();
+        setZoomObservations();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-        }
-        locationService = LocationService.singleton(this);
 
+        var viewModel = setupViewModel();
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        label = preferences.getString("username", "DefaultUser");
-        uid = preferences.getString("myUID", "aaaaa");
-
-
-
+        String label = preferences.getString("username", "DefaultUser");
+        String uid = preferences.getString("myUID", "DefaultUID");
+        // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
 
         // TODO: Wierd Delay, Ask for assistance maybe?
@@ -101,35 +77,23 @@ public class MainActivity extends AppCompatActivity {
             curUserInfo.longitude = loc.second.doubleValue();
             currentLocation = loc;
         });
+        viewModel.postUserInfo(curUserInfo);
 
-
-        var viewModel = setupViewModel();
         List<String> keys = new ArrayList<>();
         keys.add("group17test1");
         keys.add("group17test2");
         keys.add("group17test3");
 
         userInfos = viewModel.getUserInfos(keys);
-        viewModel.postUserInfo(curUserInfo);
 
         userInfos.observe(this, this::onUserInfoChanged);
+    }
 
-        zoomSubject.observe(this, (num)->{
-            innerCircle1.setScaleX(num);
-            innerCircle1.setScaleY(num);
-            innerCircle2.setScaleX(num);
-            innerCircle2.setScaleY(num);
-            innerCircle3.setScaleX(num);
-            innerCircle3.setScaleY(num);
-            outerCircle.setScaleX(num);
-            outerCircle.setScaleY(num);
-            try {
-                onUserInfoChanged(userInfos.getValue());
-            }catch (Exception e)
-            {
-                var a = 1;
-            }
-        });
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Stop the motion sensor to not drain battery on the background
+        orientationService.unregisterSensorListeners();
     }
 
     private void startUIDActicity() {
@@ -150,29 +114,55 @@ public class MainActivity extends AppCompatActivity {
         setViewLocation(name_label3, userInfo3);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        orientationService = OrientationService.singleton(this);
-        startOrientationSensor(orientationService);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Stop the motion sensor to not drain battery on the background
-        orientationService.unregisterSensorListeners();
-    }
-
     private CompassViewModel setupViewModel() {
         return new ViewModelProvider(this).get(CompassViewModel.class);
     }
 
+    private void setLocationService() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        }
+        locationService = LocationService.singleton(this);
+    }
+
+    private void setZoomObservations() {
+        // here is for Zoom part, will be refact later
+        zoomSubject = new MutableLiveData<>(Utilities.correctZoomRatio(zoomPosition));
+        ImageView innerCircle1 = findViewById(R.id.inner_circle1);
+        ImageView innerCircle2 = findViewById(R.id.inner_circle2);
+        ImageView innerCircle3 = findViewById(R.id.inner_circle3);
+        ImageView outerCircle = findViewById(R.id.circle_rim);
+        View Constra = findViewById(R.id.rotateConstraint);
+        Button zoomInBtn = findViewById(R.id.zoom_in);
+        Button zoomOutBtn = findViewById(R.id.zoom_out);
+        zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
+        zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
+
+
+        zoomSubject.observe(this, (num)->{
+            innerCircle1.setScaleX(num);
+            innerCircle1.setScaleY(num);
+            innerCircle2.setScaleX(num);
+            innerCircle2.setScaleY(num);
+            innerCircle3.setScaleX(num);
+            innerCircle3.setScaleY(num);
+            outerCircle.setScaleX(num);
+            outerCircle.setScaleY(num);
+            try {
+                onUserInfoChanged(userInfos.getValue());
+            }catch (Exception e)
+            {
+                var a = 1;
+            }
+        });
+    }
 
 
 
     // This method starts the orientation sensor
-    private void startOrientationSensor(OrientationService orientationService) {
+    private void startOrientationSensor() {
+        orientationService = OrientationService.singleton(this);
         orientationService.registerSensorListeners();
 
         orientationService.getOrientation().observe(this, orientation -> {
@@ -200,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setViewLocation(TextView label, UserInfo userInfo) {
+        screenWidth = this.getResources().getDisplayMetrics().widthPixels;
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
         Context context = this;
         if (userInfo == null) return;
@@ -212,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
 
 
-        int maxRadius = screenWidth/2;
+        int maxRadius = screenWidth / 2;
 
         if (radius < maxRadius) {
             label.setText(userInfo.label);
