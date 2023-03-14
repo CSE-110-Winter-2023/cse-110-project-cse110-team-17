@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.cse110_team17_project.activity;
 
+import static java.lang.String.valueOf;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -44,8 +46,22 @@ public class MainActivity extends AppCompatActivity {
     private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
     private UserInfo curUserInfo;
     MutableLiveData<Float> zoomSubject;
+
+    List<PositionObject> relativePositions;
     private int screenWidth;
     private int zoomPosition = 2;
+
+    private class PositionObject {
+        int label_id;
+        int radius;
+        float angle;
+
+        PositionObject(int label_id, int radius, float angle) {
+            this.label_id = label_id;
+            this.radius = radius;
+            this.angle = angle;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         userInfos = viewModel.getUserInfos(keys);
 
         userInfos.observe(this, this::onUserInfoChanged);
+
+
     }
 
     @Override
@@ -109,9 +127,22 @@ public class MainActivity extends AppCompatActivity {
         var userInfo3 = userInfos.get(2);
         TextView name_label3 = (TextView) findViewById(R.id.label_3);
 
-        setViewLocation(name_label1, userInfo1);
-        setViewLocation(name_label2, userInfo2);
-        setViewLocation(name_label3, userInfo3);
+        relativePositions = new ArrayList<>();
+
+        //TODO: Refactor!!
+        setViewLocation(name_label1, userInfo1, R.id.label_1);
+        setViewLocation(name_label2, userInfo2, R.id.label_2);
+        setViewLocation(name_label3, userInfo3, R.id.label_3);
+
+        ConstraintLayout.LayoutParams layoutParams1 =
+                (ConstraintLayout.LayoutParams) name_label1.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams2 =
+                (ConstraintLayout.LayoutParams) name_label2.getLayoutParams();
+
+        Log.i("A", valueOf(layoutParams1.circleRadius));
+        Log.i("A", valueOf(layoutParams2.circleRadius));
+        Log.i("A", valueOf(layoutParams1.circleAngle));
+        Log.i("A", valueOf(layoutParams2.circleAngle));
     }
 
     private CompassViewModel setupViewModel() {
@@ -133,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView innerCircle2 = findViewById(R.id.inner_circle2);
         ImageView innerCircle3 = findViewById(R.id.inner_circle3);
         ImageView outerCircle = findViewById(R.id.circle_rim);
-        View Constra = findViewById(R.id.rotateConstraint);
         Button zoomInBtn = findViewById(R.id.zoom_in);
         Button zoomOutBtn = findViewById(R.id.zoom_out);
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
@@ -189,11 +219,14 @@ public class MainActivity extends AppCompatActivity {
         name_label3.setRotation(-angle);
     }
 
-    private void setViewLocation(TextView label, UserInfo userInfo) {
+    private void setViewLocation(TextView label, UserInfo userInfo, int curLabelID) {
         screenWidth = this.getResources().getDisplayMetrics().widthPixels;
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
         Context context = this;
         if (userInfo == null) return;
+
+        layoutParams.constrainedWidth = false;
+        layoutParams.matchConstraintMaxWidth = 1000;
 
         float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
                 (float)userInfo.latitude, (float)userInfo.longitude);
@@ -202,19 +235,43 @@ public class MainActivity extends AppCompatActivity {
                 userInfo.latitude, userInfo.longitude);
         int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
 
+        for (PositionObject position: relativePositions) {
+            TextView collisionLabel = findViewById(position.label_id);
+            ConstraintLayout.LayoutParams layoutParamsCollsion = (ConstraintLayout.LayoutParams)
+                    collisionLabel.getLayoutParams();
+            if (Math.abs(position.angle - angle) < 10) {
+                if (position.radius - radius >= 0 && position.radius - radius < 100) {
+                    layoutParamsCollsion.constrainedWidth = true;
+                    layoutParamsCollsion.matchConstraintMaxWidth = 100;
+                    collisionLabel.setLayoutParams(layoutParamsCollsion);
+                    radius += 100;
+                    Log.i("A", "This is called");
+                }
+                else if (radius - position.radius >= 0 && radius - position.radius < 100) {
+                    layoutParamsCollsion.circleRadius += 100;
+                    collisionLabel.setLayoutParams(layoutParamsCollsion);
+                    layoutParams.constrainedWidth = true;
+                    layoutParams.matchConstraintMaxWidth = 100;
+                    Log.i("A", "This is called");
+                }
+                else {
+                    Log.i("A", "This is NOT called");
+                }
+            }
+        }
+
+        relativePositions.add(new PositionObject(curLabelID, radius, angle));
 
         int maxRadius = screenWidth / 2;
 
         if (radius < maxRadius) {
             label.setText(userInfo.label);
             label.setTextSize(15.0F);
-            Log.i("ALERT", "No dot is called");
         }
         else {
             radius = maxRadius;
             label.setText("·");
             label.setTextSize(100.0F);
-            Log.i("ALERT", String.valueOf(radius));
         }
         layoutParams.circleConstraint = R.id.status_dot;
         layoutParams.circleRadius = radius;
