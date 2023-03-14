@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-        startUIDActicity();
+        startUIDActivity();
         screenWidth= this.getResources().getDisplayMetrics().widthPixels;
 
         // here is for Zoom part, will be refact later
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void startUIDActicity() {
+    private void startUIDActivity() {
         Intent intent = new Intent(this, UIDActivity.class);
         startActivity(intent);
     }
