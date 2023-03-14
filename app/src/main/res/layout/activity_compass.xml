@@ -54,82 +54,57 @@
         android:id="@+id/rotateConstraint"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="-200dp"
-        android:layout_marginEnd="-200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/circle_rim"
-            android:layout_width="0dp"
-            android:layout_height="400dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintCircle="@id/rotateConstraint"
-            app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/circle" />
-
-        <ImageView
             android:id="@+id/inner_circle1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="220dp"
-            android:layout_marginBottom="220dp"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/circle" />
 
         <ImageView
             android:id="@+id/inner_circle2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="270dp"
-            android:layout_marginBottom="270dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/circle" />
 
         <ImageView
             android:id="@+id/inner_circle3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="320dp"
-            android:layout_marginBottom="320dp"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/circle" />
 
         <TextView
             android:id="@+id/label_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="0"
             android:ellipsize="end"
             android:maxLines="1"
+            android:rotation="0"
+            android:singleLine="true"
             android:text="Label #1"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircle="@+id/inner_circle1"
             app:layout_constraintCircleAngle="90"
-            app:layout_constraintCircleRadius="100dp"
-            android:singleLine="true"/>
+            app:layout_constraintCircleRadius="100dp" />
 
         <TextView
             android:id="@+id/label_2"
@@ -139,7 +114,7 @@
             android:text="Label #2"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircle="@+id/inner_circle1"
             app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="130dp" />
 
@@ -151,7 +126,7 @@
             android:text="Label #3"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircle="@+id/inner_circle1"
             app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="70dp" />
 
@@ -175,7 +150,7 @@
             android:text="3m"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
-            app:layout_constraintCircle="@+id/circle_rim"
+            app:layout_constraintCircle="@+id/inner_circle1"
             app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="20dp" />
 

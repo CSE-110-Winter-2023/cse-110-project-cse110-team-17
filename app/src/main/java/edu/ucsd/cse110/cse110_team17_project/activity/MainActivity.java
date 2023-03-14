@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView innerCircle1 = findViewById(R.id.inner_circle1);
         ImageView innerCircle2 = findViewById(R.id.inner_circle2);
         ImageView innerCircle3 = findViewById(R.id.inner_circle3);
-        ImageView outerCircle = findViewById(R.id.circle_rim);
         Button zoomInBtn = findViewById(R.id.zoom_in);
         Button zoomOutBtn = findViewById(R.id.zoom_out);
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
@@ -182,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
             innerCircle2.setScaleY(num);
             innerCircle3.setScaleX(num);
             innerCircle3.setScaleY(num);
-            outerCircle.setScaleX(num);
-            outerCircle.setScaleY(num);
 
 //            ImageView circle1 = findViewById(R.id.circle_rim);
 //            if (zoomPosition < 3){
@@ -297,23 +294,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void clickedOnZoomOut(View view) {
         if (zoomPosition > 0) zoomPosition--;
-        ImageView circle1 = findViewById(R.id.inner_circle1);
-        if (zoomPosition > 0){
-            circle1.setVisibility(View.INVISIBLE);
-        }else{
-            circle1.setVisibility(View.VISIBLE);
-        }
         zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
     }
 
     private void clickedOnZoomIn(View view) {
         if (zoomPosition < 2) zoomPosition++;
-        ImageView circle1 = findViewById(R.id.inner_circle1);
-        if (zoomPosition > 0){
-            circle1.setVisibility(View.INVISIBLE);
-        }else{
-            circle1.setVisibility(View.VISIBLE);
-        }
         zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
     }
 

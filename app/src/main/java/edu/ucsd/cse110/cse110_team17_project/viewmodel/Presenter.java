@@ -2,19 +2,17 @@ package edu.ucsd.cse110.cse110_team17_project.viewmodel;
 
 import java.util.List;
 
-import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
-
-public class Presenter implements ModelObserver, ViewObserver{
-    int ZoomPositoin;
-    List<UserInfo> UserInfors;
+public class Presenter implements ModelObserver, ZoomObserver {
+    int zoomPosition;
+    List<ZoomView> zoomViewList;
 
     void presenter(int ZoomPosition){
-        this.ZoomPositoin = ZoomPositoin;
+        this.zoomPosition = zoomPosition;
     }
 
     @Override
-    public void vUpdate() {
-
+    public void zoomUpdate(int zoomPosition) {
+        this.zoomPosition = zoomPosition;
     }
     @Override
     public void mUpdate() {

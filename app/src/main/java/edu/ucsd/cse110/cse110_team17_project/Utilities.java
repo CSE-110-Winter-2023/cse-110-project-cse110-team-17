@@ -147,11 +147,11 @@ public class Utilities {
     public static float correctZoomRatio(int zoomPosition) {
         switch (zoomPosition) {
             case 1:
-                return 2.1F;
+                return 1.5F;
             case 2:
-                return 4.55F;
+                return 3F;
             default:
-                return 1.35F;
+                return 1F;
         }
     }
 
