@@ -2,6 +2,7 @@ package edu.ucsd.cse110.cse110_team17_project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
@@ -11,13 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.ucsd.cse110.cse110_team17_project.R;
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
+import edu.ucsd.cse110.cse110_team17_project.view.FriendListAdapter;
 import edu.ucsd.cse110.cse110_team17_project.viewmodel.AddFriendsViewModel;
 
 public class AddFriendsActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private AddFriendsViewModel addFriendsViewModel;
     private EditText newFriendText;
+
+    public List<UserInfo> userInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,16 @@ public class AddFriendsActivity extends AppCompatActivity {
 
         newFriendText = findViewById(R.id.new_friend_text);
         addFriendsViewModel = new ViewModelProvider(this).get(AddFriendsViewModel.class);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        userInfoList = new ArrayList<UserInfo>();
+        userInfoList.add(new UserInfo("","New Friend",""));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // TODO: pass in list
+        FriendListAdapter adapter = new FriendListAdapter();
+        adapter.setUserInfoList(userInfoList);
+        recyclerView.setAdapter(adapter);
     }
 
 
@@ -40,6 +59,8 @@ public class AddFriendsActivity extends AppCompatActivity {
         String friendUid = newFriendText.getText().toString();
         newFriendText.setText("");
         addFriendsViewModel.createFriend(friendUid);
+
+        userInfoList.add(new UserInfo("","New Friend",""));
         System.out.println("ADDED FRIEND!");
     }
 }
