@@ -49,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
     List<PositionObject> relativePositions;
     private int screenWidth;
-    private int zoomPosition = 2;
+    private int zoomPosition = 1;
+
+    public void onBackClicked(View view) {
+        startUIDActicity();
+    }
 
     private class PositionObject {
         int label_id;
@@ -104,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
         userInfos.observe(this, this::onUserInfoChanged);
 
-
+//        Button back_btn = findViewById(R.id.back);
+//        back_btn.setOnClickListener(this::startUIDActicity});
     }
 
     @Override
@@ -179,6 +184,16 @@ public class MainActivity extends AppCompatActivity {
             innerCircle3.setScaleY(num);
             outerCircle.setScaleX(num);
             outerCircle.setScaleY(num);
+
+//            ImageView circle1 = findViewById(R.id.circle_rim);
+//            if (zoomPosition < 3){
+//                circle1.setVisibility(View.INVISIBLE);
+//            }else{
+//                circle1.setVisibility(View.VISIBLE);
+//            }
+
+
+
             try {
                 onUserInfoChanged(userInfos.getValue());
             }catch (Exception e)
@@ -282,12 +297,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void clickedOnZoomOut(View view) {
         if (zoomPosition > 0) zoomPosition--;
-
+        ImageView circle1 = findViewById(R.id.inner_circle1);
+        if (zoomPosition > 0){
+            circle1.setVisibility(View.INVISIBLE);
+        }else{
+            circle1.setVisibility(View.VISIBLE);
+        }
         zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
     }
 
     private void clickedOnZoomIn(View view) {
-        if (zoomPosition < 3) zoomPosition++;
+        if (zoomPosition < 2) zoomPosition++;
+        ImageView circle1 = findViewById(R.id.inner_circle1);
+        if (zoomPosition > 0){
+            circle1.setVisibility(View.INVISIBLE);
+        }else{
+            circle1.setVisibility(View.VISIBLE);
+        }
         zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
     }
 

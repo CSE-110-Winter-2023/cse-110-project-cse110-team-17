@@ -41,6 +41,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/back"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:onClick="onBackClicked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rotateConstraint"
         android:layout_width="0dp"

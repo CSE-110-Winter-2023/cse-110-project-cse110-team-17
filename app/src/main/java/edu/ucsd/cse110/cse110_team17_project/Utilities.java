@@ -136,29 +136,22 @@ public class Utilities {
             return 119.0 + (distance / (10.0-1.0)  * (258.0-119.0));
         }
         //Zone 3: 10-100 miles
-        else if (distance < 100) {
+        else if (distance < 500) {
             distance -= 10.0;
-            return 258.0 + (distance / (100.0-10.0)  * (400.0-258.0));
-        }
-        //Zone 4: 100-1000 miles
-        else if (distance < 1000) {
-            distance -= 100.0;
-            return 400.0 + (distance / (1000.0-100.0)  * (540.0-400.0));
+            return 258.0 + (distance / (500.0-10.0)  * (400.0-258.0));
         }
         //Zone 5: 1000+ miles
-        else return 540.0;
+        else return 400.0;
     }
 
     public static float correctZoomRatio(int zoomPosition) {
         switch (zoomPosition) {
             case 1:
-                return 1.35F;
-            case 2:
                 return 2.1F;
-            case 3:
+            case 2:
                 return 4.55F;
             default:
-                return 1.0F;
+                return 1.35F;
         }
     }
 
