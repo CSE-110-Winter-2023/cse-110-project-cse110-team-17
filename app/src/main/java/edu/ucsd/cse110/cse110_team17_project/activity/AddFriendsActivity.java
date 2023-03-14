@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,10 +44,7 @@ public class AddFriendsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         userInfoList = new ArrayList<UserInfo>();
-        userInfoList.add(new UserInfo("","New Friend",""));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // TODO: pass in list
         FriendListAdapter adapter = new FriendListAdapter();
         adapter.setUserInfoList(userInfoList);
         recyclerView.setAdapter(adapter);
@@ -60,7 +59,9 @@ public class AddFriendsActivity extends AppCompatActivity {
         newFriendText.setText("");
         addFriendsViewModel.createFriend(friendUid);
 
-        userInfoList.add(new UserInfo("","New Friend",""));
+        userInfoList.add(new UserInfo("",friendUid,""));
         System.out.println("ADDED FRIEND!");
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

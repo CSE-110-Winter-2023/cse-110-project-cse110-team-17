@@ -38,7 +38,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText("New Friend");
+        holder.textView.setText(userInfoList.get(position).label);
     }
 
     @Override

@@ -20,7 +20,7 @@
         tools:targetApi="32">
         <activity
             android:name=".activity.AddFriendsActivity"
-            android:exported="true" />
+            android:exported="true"/>
         <activity
             android:name=".activity.UIDActivity"
             android:exported="true" />
