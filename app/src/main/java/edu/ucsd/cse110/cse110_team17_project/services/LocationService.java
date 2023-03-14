@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -31,6 +32,8 @@ public class LocationService implements LocationListener {
     private MutableLiveData<Pair<Double, Double>> locationValue;
 
     private final LocationManager locationManager;
+
+    private int count;
 
     public static LocationService singleton(Activity activity){
         if(instance == null){
@@ -66,16 +69,35 @@ public class LocationService implements LocationListener {
         ImageView green = activity.findViewById(R.id.green_dot);
         ImageView red = activity.findViewById(R.id.red_dot);
         this.future = backGroundThreadExecutor.submit(() ->{
-            int count = 0;
             do{
                 count++;
                 Thread.sleep(1000);
 
-            }while(count < 10);
+            }while(count < 5);
             activity.runOnUiThread(() ->{
                 green.setVisibility(View.INVISIBLE);
                 red.setVisibility(View.VISIBLE);
             });
+            return null;
+        });
+        this.future = backGroundThreadExecutor.submit(() ->{
+            count = 60;
+            do{
+                count++;
+                Thread.sleep(1000);
+                if (count < 3600){
+                    activity.runOnUiThread(() ->{
+                        TextView timeout = activity.findViewById(R.id.timeout);
+                        timeout.setText(count/60 + "m");
+                    });
+                } else if (count == 3600) {
+                    activity.runOnUiThread(() ->{
+                        TextView timeout = activity.findViewById(R.id.timeout);
+                        timeout.setText("1h+");
+                    });
+                }
+
+            }while(count > 0);
             return null;
         });
 
@@ -85,8 +107,11 @@ public class LocationService implements LocationListener {
     public void onProviderEnabled(@NonNull String provider) {
         ImageView green = activity.findViewById(R.id.green_dot);
         ImageView red = activity.findViewById(R.id.red_dot);
+        TextView timeout = activity.findViewById(R.id.timeout);
+        timeout.setText(" ");
         green.setVisibility(View.VISIBLE);
         red.setVisibility(View.INVISIBLE);
+        count = 0;
     }
 
     private void unregisterLocationListener() {locationManager.removeUpdates(this);}
