@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.cse110_team17_project.services;
 
+import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -8,11 +10,19 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Pair;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import edu.ucsd.cse110.cse110_team17_project.R;
 
 public class LocationService implements LocationListener {
     private static LocationService instance;
@@ -49,6 +59,36 @@ public class LocationService implements LocationListener {
         this.locationValue.postValue(new Pair<Double, Double>(location.getLatitude(), location.getLongitude()));
     }
 
+    private Future<Void> future;
+    private ExecutorService backGroundThreadExecutor = Executors.newSingleThreadExecutor();
+    @Override
+    public void onProviderDisabled(@NonNull String provider){
+        ImageView green = activity.findViewById(R.id.green_dot);
+        ImageView red = activity.findViewById(R.id.red_dot);
+        this.future = backGroundThreadExecutor.submit(() ->{
+            int count = 0;
+            do{
+                count++;
+                Thread.sleep(1000);
+
+            }while(count < 10);
+            activity.runOnUiThread(() ->{
+                green.setVisibility(View.INVISIBLE);
+                red.setVisibility(View.VISIBLE);
+            });
+            return null;
+        });
+
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        ImageView green = activity.findViewById(R.id.green_dot);
+        ImageView red = activity.findViewById(R.id.red_dot);
+        green.setVisibility(View.VISIBLE);
+        red.setVisibility(View.INVISIBLE);
+    }
+
     private void unregisterLocationListener() {locationManager.removeUpdates(this);}
 
     public LiveData<Pair<Double, Double>> getLocation() {return this.locationValue;}
@@ -57,4 +97,5 @@ public class LocationService implements LocationListener {
         unregisterLocationListener();
         this.locationValue = mockDataSource;
     }
+
 }
