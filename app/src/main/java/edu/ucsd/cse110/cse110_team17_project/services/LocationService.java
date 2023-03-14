@@ -66,33 +66,22 @@ public class LocationService implements LocationListener {
     private ExecutorService backGroundThreadExecutor = Executors.newSingleThreadExecutor();
     @Override
     public void onProviderDisabled(@NonNull String provider){
+        //future.cancel(true);
         ImageView green = activity.findViewById(R.id.green_dot);
         ImageView red = activity.findViewById(R.id.red_dot);
+        TextView timeout = activity.findViewById(R.id.timeout);
         this.future = backGroundThreadExecutor.submit(() ->{
             do{
                 count++;
                 Thread.sleep(1000);
-
-            }while(count < 5);
-            activity.runOnUiThread(() ->{
-                green.setVisibility(View.INVISIBLE);
-                red.setVisibility(View.VISIBLE);
-            });
-            return null;
-        });
-        this.future = backGroundThreadExecutor.submit(() ->{
-            count = 60;
-            do{
-                count++;
-                Thread.sleep(1000);
-                if (count < 3600){
+                if (count < 3600 && count >= 60){
                     activity.runOnUiThread(() ->{
-                        TextView timeout = activity.findViewById(R.id.timeout);
-                        timeout.setText(count/60 + "m");
+                        timeout.setText(count / 60 + "m");
+                        green.setVisibility(View.INVISIBLE);
+                        red.setVisibility(View.VISIBLE);
                     });
-                } else if (count == 3600) {
+                } else if (count >= 3600) {
                     activity.runOnUiThread(() ->{
-                        TextView timeout = activity.findViewById(R.id.timeout);
                         timeout.setText("1h+");
                     });
                 }
@@ -105,13 +94,23 @@ public class LocationService implements LocationListener {
 
     @Override
     public void onProviderEnabled(@NonNull String provider) {
+        future.cancel(true);
         ImageView green = activity.findViewById(R.id.green_dot);
         ImageView red = activity.findViewById(R.id.red_dot);
         TextView timeout = activity.findViewById(R.id.timeout);
-        timeout.setText(" ");
-        green.setVisibility(View.VISIBLE);
-        red.setVisibility(View.INVISIBLE);
         count = 0;
+        this.future = backGroundThreadExecutor.submit(() ->{
+            do{
+                count++;
+                Thread.sleep(1000);
+            }while(count < 60);
+            activity.runOnUiThread(() ->{
+                timeout.setText("");
+                green.setVisibility(View.VISIBLE);
+                red.setVisibility(View.INVISIBLE);
+            });
+            return null;
+        });
     }
 
     private void unregisterLocationListener() {locationManager.removeUpdates(this);}
