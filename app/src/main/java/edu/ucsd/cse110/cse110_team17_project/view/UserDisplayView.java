@@ -11,18 +11,19 @@ import org.w3c.dom.Text;
 
 import edu.ucsd.cse110.cse110_team17_project.R;
 import edu.ucsd.cse110.cse110_team17_project.Utilities;
+import edu.ucsd.cse110.cse110_team17_project.activity.MainActivity;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.viewmodel.Presenter;
 
 public class UserDisplayView {
     Presenter presenter;
-    TextView textView;
+    public TextView textView;
     float zoomSize;
 
-    float angle;
+    public float angle;
 
     double distance;
-
+    public int radius;
     String label;
 
     private Pair<Double, Double> currentLocation;
@@ -54,8 +55,9 @@ public class UserDisplayView {
 
     private void setViewLocation(){
 
-        int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSize);
-        //radius = caculateCollisions(curLabelID, layoutParams, angle, radius);
+        radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSize);
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+        caculateCollisions(layoutParams);
         if (radius < 510) {
             textView.setText(label);
             textView.setTextSize(15.0F);
@@ -65,8 +67,10 @@ public class UserDisplayView {
             textView.setText("·");
             textView.setTextSize(100.0F);
         }
+        setByLayout(layoutParams);
+    }
 
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+    private void setByLayout(ConstraintLayout.LayoutParams layoutParams) {
         layoutParams.constrainedWidth = false;
         layoutParams.matchConstraintMaxWidth = 1000;
         layoutParams.circleConstraint = R.id.status_dot;
@@ -74,6 +78,28 @@ public class UserDisplayView {
         layoutParams.circleAngle = angle;
         textView.setLayoutParams(layoutParams);
     }
+
+    private void caculateCollisions(ConstraintLayout.LayoutParams layoutParams) {
+        for (UserDisplayView position : presenter.UserDisplayList) {
+            if (position == this){
+                break;
+            }
+            TextView collisionLabel = position.textView;
+            ConstraintLayout.LayoutParams layoutParamsCollsion = (ConstraintLayout.LayoutParams)
+                    collisionLabel.getLayoutParams();
+            if (Math.abs(position.angle - angle) < 10) {
+                if (Math.abs(position.radius - radius) < 50) {
+                    layoutParamsCollsion.constrainedWidth = true;
+                    layoutParamsCollsion.matchConstraintMaxWidth = 80;
+                    collisionLabel.setLayoutParams(layoutParamsCollsion);
+                    radius += 80;
+                    layoutParams.constrainedWidth = true;
+                    layoutParams.matchConstraintMaxWidth = 80;
+                }
+            }
+        }
+    }
+//        relativePositions.add(new MainActivity.PositionObject(curLabelID, radius, angle));
 
 
     public void setInvisible() {

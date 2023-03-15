@@ -24,7 +24,7 @@ public class Presenter implements ZoomObserver,locationObserver {
     int zoomPosition;
     float zoomSize;
     List<ImageView> circles;
-    List<UserDisplayView> UserDisplayList = new ArrayList<>();
+    public List<UserDisplayView> UserDisplayList = new ArrayList<>();
 
     Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
 
