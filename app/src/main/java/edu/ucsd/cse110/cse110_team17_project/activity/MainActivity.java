@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         String label = preferences.getString("username", "DefaultUser");
         String uid = preferences.getString("myUID", "DefaultUID");
+        zoomSubject.postValue(preferences.getInt("zoomPosition", 1));
         // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
         setUpPresenter();
