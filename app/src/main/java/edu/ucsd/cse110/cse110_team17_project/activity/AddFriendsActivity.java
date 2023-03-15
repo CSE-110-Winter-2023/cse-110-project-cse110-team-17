@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.cse110_team17_project.R;
+import edu.ucsd.cse110.cse110_team17_project.Utilities;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.view.FriendListAdapter;
 import edu.ucsd.cse110.cse110_team17_project.viewmodel.AddFriendsViewModel;
@@ -44,6 +45,8 @@ public class AddFriendsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         userInfoList = new ArrayList<UserInfo>();
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         FriendListAdapter adapter = new FriendListAdapter();
         adapter.setUserInfoList(userInfoList);
@@ -55,13 +58,29 @@ public class AddFriendsActivity extends AppCompatActivity {
     }
 
     public void onAddClicked(View view) {
-        String friendUid = newFriendText.getText().toString();
-        newFriendText.setText("");
-        addFriendsViewModel.createFriend(friendUid);
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String friendListString = preferences.getString("friendListString", "");
 
-        userInfoList.add(new UserInfo("",friendUid,""));
-        System.out.println("ADDED FRIEND!");
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        String friendUid = newFriendText.getText().toString();
+
+        if (!Utilities.isValidUID(friendUid)) {
+            Utilities.showError(this, "Please enter a valid UID.");
+        }
+        else if (friendListString.contains(friendUid)) {
+            Utilities.showError(this, "You have already added this friend.");
+        }
+        else {
+            String delimiter = friendListString.isEmpty() ? "" : "-";
+            editor.putString("friendListString", friendListString + delimiter + friendUid);
+            newFriendText.setText("");
+//        addFriendsViewModel.createFriend(friendUid);
+
+            userInfoList.add(new UserInfo("",friendUid,""));
+            System.out.println("ADDED FRIEND!");
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            editor.apply();
+        }
     }
 }
