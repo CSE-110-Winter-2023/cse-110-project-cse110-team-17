@@ -116,7 +116,10 @@
             android:textSize="15dp"
             app:layout_constraintCircle="@+id/inner_circle1"
             app:layout_constraintCircleAngle="90"
-            app:layout_constraintCircleRadius="130dp" />
+            app:layout_constraintCircleRadius="130dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            />
 
         <TextView
             android:id="@+id/label_3"
@@ -128,7 +131,10 @@
             android:textSize="15dp"
             app:layout_constraintCircle="@+id/inner_circle1"
             app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="70dp" />
+            app:layout_constraintCircleRadius="70dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            />
 
         <ImageView
             android:id="@+id/status_dot"

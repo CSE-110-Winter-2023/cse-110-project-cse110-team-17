@@ -25,6 +25,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     List<PositionObject> relativePositions;
     private int screenWidth;
-    private int zoomPosition = 1;
+    private int zoomPosition;
+    private final float[] zoomScaleValues = {1F, 1.5F, 3F};
 
     public void onBackClicked(View view) {
         startUIDActicity();
@@ -80,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         setLocationService();
         startOrientationSensor();
-        setZoomObservations();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         var viewModel = setupViewModel();
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         String label = preferences.getString("username", "DefaultUser");
         String uid = preferences.getString("myUID", "DefaultUID");
+        zoomPosition = preferences.getInt("zoomPosition", 1);
         // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
+        setZoomObservations();
 
         // TODO: Wierd Delay, Ask for assistance maybe?
         locationService.getLocation().observe(this, loc->{
@@ -108,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
         userInfos.observe(this, this::onUserInfoChanged);
 
-//        Button back_btn = findViewById(R.id.back);
-//        back_btn.setOnClickListener(this::startUIDActicity});
     }
 
     @Override
@@ -126,28 +128,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void onUserInfoChanged(List<UserInfo> userInfos) {
         var userInfo1 = userInfos.get(0);
-        TextView name_label1 = (TextView) findViewById(R.id.label_1);
         var userInfo2 = userInfos.get(1);
-        TextView name_label2 = (TextView) findViewById(R.id.label_2);
         var userInfo3 = userInfos.get(2);
-        TextView name_label3 = (TextView) findViewById(R.id.label_3);
+
 
         relativePositions = new ArrayList<>();
 
         //TODO: Refactor!!
-        setViewLocation(name_label1, userInfo1, R.id.label_1);
-        setViewLocation(name_label2, userInfo2, R.id.label_2);
-        setViewLocation(name_label3, userInfo3, R.id.label_3);
+        setViewLocation(userInfo1, R.id.label_1);
+        setViewLocation(userInfo2, R.id.label_2);
+        setViewLocation(userInfo3, R.id.label_3);
 
-        ConstraintLayout.LayoutParams layoutParams1 =
-                (ConstraintLayout.LayoutParams) name_label1.getLayoutParams();
-        ConstraintLayout.LayoutParams layoutParams2 =
-                (ConstraintLayout.LayoutParams) name_label2.getLayoutParams();
-
-        Log.i("A", valueOf(layoutParams1.circleRadius));
-        Log.i("A", valueOf(layoutParams2.circleRadius));
-        Log.i("A", valueOf(layoutParams1.circleAngle));
-        Log.i("A", valueOf(layoutParams2.circleAngle));
     }
 
     private CompassViewModel setupViewModel() {
@@ -164,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setZoomObservations() {
         // here is for Zoom part, will be refact later
-        zoomSubject = new MutableLiveData<>(Utilities.correctZoomRatio(zoomPosition));
+        zoomSubject = new MutableLiveData<>(zoomScaleValues[zoomPosition]);
         ImageView innerCircle1 = findViewById(R.id.inner_circle1);
         ImageView innerCircle2 = findViewById(R.id.inner_circle2);
         ImageView innerCircle3 = findViewById(R.id.inner_circle3);
@@ -181,15 +172,6 @@ public class MainActivity extends AppCompatActivity {
             innerCircle2.setScaleY(num);
             innerCircle3.setScaleX(num);
             innerCircle3.setScaleY(num);
-
-//            ImageView circle1 = findViewById(R.id.circle_rim);
-//            if (zoomPosition < 3){
-//                circle1.setVisibility(View.INVISIBLE);
-//            }else{
-//                circle1.setVisibility(View.VISIBLE);
-//            }
-
-
 
             try {
                 onUserInfoChanged(userInfos.getValue());
@@ -231,12 +213,11 @@ public class MainActivity extends AppCompatActivity {
         name_label3.setRotation(-angle);
     }
 
-    private void setViewLocation(TextView label, UserInfo userInfo, int curLabelID) {
+    private void setViewLocation(UserInfo userInfo, int curLabelID) {
+        TextView label = this.findViewById(curLabelID);
         screenWidth = this.getResources().getDisplayMetrics().widthPixels;
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-        Context context = this;
         if (userInfo == null) return;
-
         layoutParams.constrainedWidth = false;
         layoutParams.matchConstraintMaxWidth = 1000;
 
@@ -247,34 +228,9 @@ public class MainActivity extends AppCompatActivity {
                 userInfo.latitude, userInfo.longitude);
         int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
 
-        for (PositionObject position: relativePositions) {
-            TextView collisionLabel = findViewById(position.label_id);
-            ConstraintLayout.LayoutParams layoutParamsCollsion = (ConstraintLayout.LayoutParams)
-                    collisionLabel.getLayoutParams();
-            if (Math.abs(position.angle - angle) < 10) {
-                if (position.radius - radius >= 0 && position.radius - radius < 100) {
-                    layoutParamsCollsion.constrainedWidth = true;
-                    layoutParamsCollsion.matchConstraintMaxWidth = 100;
-                    collisionLabel.setLayoutParams(layoutParamsCollsion);
-                    radius += 100;
-                    Log.i("A", "This is called");
-                }
-                else if (radius - position.radius >= 0 && radius - position.radius < 100) {
-                    layoutParamsCollsion.circleRadius += 100;
-                    collisionLabel.setLayoutParams(layoutParamsCollsion);
-                    layoutParams.constrainedWidth = true;
-                    layoutParams.matchConstraintMaxWidth = 100;
-                    Log.i("A", "This is called");
-                }
-                else {
-                    Log.i("A", "This is NOT called");
-                }
-            }
-        }
+        radius = caculateCollisions(curLabelID, layoutParams, angle, radius);
 
-        relativePositions.add(new PositionObject(curLabelID, radius, angle));
-
-        int maxRadius = screenWidth / 2;
+        int maxRadius = screenWidth / 2 - 25;
 
         if (radius < maxRadius) {
             label.setText(userInfo.label);
@@ -292,14 +248,46 @@ public class MainActivity extends AppCompatActivity {
         label.setLayoutParams(layoutParams);
     }
 
+    private int caculateCollisions(int curLabelID, ConstraintLayout.LayoutParams layoutParams, float angle, int radius) {
+        for (PositionObject position: relativePositions) {
+            TextView collisionLabel = findViewById(position.label_id);
+            ConstraintLayout.LayoutParams layoutParamsCollsion = (ConstraintLayout.LayoutParams)
+                    collisionLabel.getLayoutParams();
+            if (Math.abs(position.angle - angle) < 10) {
+                if (Math.abs(position.radius - radius)  < 50) {
+                    layoutParamsCollsion.constrainedWidth = true;
+                    layoutParamsCollsion.matchConstraintMaxWidth = 80;
+                    collisionLabel.setLayoutParams(layoutParamsCollsion);
+                    radius += 80;
+                    layoutParams.constrainedWidth = true;
+                    layoutParams.matchConstraintMaxWidth = 80;
+                }
+
+            }
+        }
+
+        relativePositions.add(new PositionObject(curLabelID, radius, angle));
+        return radius;
+    }
+
     private void clickedOnZoomOut(View view) {
         if (zoomPosition > 0) zoomPosition--;
-        zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
+        zoomSubject.postValue(zoomScaleValues[zoomPosition]);
+
+        putDefaultZoomPosition();
     }
 
     private void clickedOnZoomIn(View view) {
         if (zoomPosition < 2) zoomPosition++;
-        zoomSubject.postValue(Utilities.correctZoomRatio(zoomPosition));
+        zoomSubject.postValue(zoomScaleValues[zoomPosition]);
+
+        putDefaultZoomPosition();
     }
 
+    private void putDefaultZoomPosition() {
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("zoomPosition", zoomPosition);
+        editor.apply();
+    }
 }
