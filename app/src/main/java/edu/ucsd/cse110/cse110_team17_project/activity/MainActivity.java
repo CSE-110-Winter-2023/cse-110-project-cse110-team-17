@@ -87,28 +87,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        zoomSubject = new MutableLiveData<>(INITIAL_ZOOM);
         setLocationService();
         startOrientationSensor();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Log.d("Xiaoxia", "Happened here");
         var viewModel = setupViewModel();
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         String label = preferences.getString("username", "DefaultUser");
         String uid = preferences.getString("myUID", "DefaultUID");
-//        zoomPosition = preferences.getInt("zoomPosition", 1);
+        zoomSubject.postValue(preferences.getInt("zoomPosition", 1));
         // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
-        zoomSubject = new MutableLiveData<>(INITIAL_ZOOM);
-        Log.d("Xiaoxia", "Happened here2");
-        setUpPresenter();
 
+
+        setUpPresenter();
         setZoomObservations();
         // TODO: Wierd Delay, Ask for assistance maybe?
         locationService.getLocation().observe(this, loc->{
             System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
             curUserInfo.latitude = loc.first.doubleValue();
             curUserInfo.longitude = loc.second.doubleValue();
-            pr.updateLocation(currentLocation);
+            pr.updateLocation(loc);
         });
         viewModel.postUserInfo(curUserInfo);
 
@@ -116,10 +115,8 @@ public class MainActivity extends AppCompatActivity {
         keys.add("group17test1");
         keys.add("group17test2");
         keys.add("group17test3");
-
         userInfos = viewModel.getUserInfos(keys);
-
-        userInfos.observe(this, UserInfos -> {pr.ImageViewUpdate(UserInfos);});
+        userInfos.observe(this, infos -> {pr.ImageViewUpdate(infos);});
 
     }
 
@@ -169,12 +166,12 @@ public class MainActivity extends AppCompatActivity {
         circles.add(findViewById(R.id.inner_circle1));
         circles.add(findViewById(R.id.inner_circle2));
         circles.add(findViewById(R.id.inner_circle3));
-        pr = new Presenter(zoomSubject.getValue(), circles);
-        pr.register(new UserDisplayView(pr, findViewById(R.id.label_1)));
-        pr.register(new UserDisplayView(pr, findViewById(R.id.label_2)));
-        pr.register(new UserDisplayView(pr, findViewById(R.id.label_3)));
-        pr.register(new UserDisplayView(pr, findViewById(R.id.label_4)));
-        pr.register(new UserDisplayView(pr, findViewById(R.id.label_5)));
+        pr = new Presenter(getApplicationContext(), zoomSubject.getValue(), circles);
+        new UserDisplayView(pr, findViewById(R.id.label_1));
+        new UserDisplayView(pr, findViewById(R.id.label_2));
+        new UserDisplayView(pr, findViewById(R.id.label_3));
+        new UserDisplayView(pr, findViewById(R.id.label_4));
+        new UserDisplayView(pr, findViewById(R.id.label_5));
     }
     
     private void setZoomObservations() {
@@ -208,8 +205,6 @@ public class MainActivity extends AppCompatActivity {
     public void setAllLabelRotations(float angle) {
         View rotateConstraint = (View) findViewById(R.id.rotateConstraint);
         rotateConstraint.setRotation(angle);
-
-
         TextView name_label1 = (TextView) findViewById(R.id.label_1);
         TextView name_label2 = (TextView) findViewById(R.id.label_2);
         TextView name_label3 = (TextView) findViewById(R.id.label_3);
@@ -253,11 +248,11 @@ public class MainActivity extends AppCompatActivity {
 //
 //        label.setLayoutParams(layoutParams);
 //    }
-
-    private void setViewInvisible(int labelID) {
-        View view = findViewById(labelID);
-        view.setVisibility(View.INVISIBLE);
-    }
+//
+//    private void setViewInvisible(int labelID) {
+//        View view = findViewById(labelID);
+//        view.setVisibility(View.INVISIBLE);
+//    }
 
     private int caculateCollisions(int curLabelID, ConstraintLayout.LayoutParams layoutParams, float angle, int radius) {
         for (PositionObject position: relativePositions) {
@@ -299,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
     private void putDefaultZoomPosition() {
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("zoomPosition", zoomPosition);
+        editor.putInt("zoomPosition", zoomSubject.getValue());
         editor.apply();
     }
 }

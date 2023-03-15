@@ -1,9 +1,13 @@
 package edu.ucsd.cse110.cse110_team17_project.view;
 
+import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import org.w3c.dom.Text;
 
 import edu.ucsd.cse110.cse110_team17_project.R;
 import edu.ucsd.cse110.cse110_team17_project.Utilities;
@@ -30,9 +34,12 @@ public class UserDisplayView {
 
     public void updateZoom(float zoomNum){
         zoomSize = zoomNum;
+        setViewLocation();
     }
 
     public void updateDisplay(UserInfo userInfo, Pair<Double, Double> currentLocation){
+        calculatePosition(userInfo, currentLocation);
+        setViewLocation();
     }
 
     private void calculatePosition(UserInfo userInfo, Pair<Double, Double> currentLocation) {
@@ -46,16 +53,15 @@ public class UserDisplayView {
     }
 
     private void setViewLocation(){
+
         int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSize);
-
         //radius = caculateCollisions(curLabelID, layoutParams, angle, radius);
-
-        if (radius < 390) {
+        if (radius < 510) {
             textView.setText(label);
             textView.setTextSize(15.0F);
         }
         else {
-            radius = 390;
+            radius = 510;
             textView.setText("·");
             textView.setTextSize(100.0F);
         }
@@ -70,6 +76,7 @@ public class UserDisplayView {
     }
 
 
-
-
+    public void setInvisible() {
+        textView.setVisibility(View.INVISIBLE);
+    }
 }

@@ -1,9 +1,16 @@
 package edu.ucsd.cse110.cse110_team17_project.viewmodel;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
+import android.util.Size;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +19,21 @@ import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.view.UserDisplayView;
 
 public class Presenter implements ZoomObserver,locationObserver {
+    Context context;
     final float[] zoomSizes = new float[]{1F, 1.5F, 3F};
     int zoomPosition;
     float zoomSize;
     List<ImageView> circles;
     List<UserDisplayView> UserDisplayList = new ArrayList<>();
 
-    Pair<Double, Double> currentLocation = new Pair<>(0.0, 0.0);
+    Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
 
 
-    public Presenter(int zoomPosition, List<ImageView> circles){
+    public Presenter(Context context, int zoomPosition, List<ImageView> circles){
+        this.context = context;
         this.zoomPosition = zoomPosition;
         this.circles = circles;
-        Log.d("Xiaoxia", "Happened here3");
         zoomUpdate(zoomPosition);
-        Log.d("Xiaoxia", "Happened here4");
-
     }
 
     @Override
@@ -39,7 +45,6 @@ public class Presenter implements ZoomObserver,locationObserver {
             scaleCircle(circle);
             visibleSet(circle, i);
         }
-        Log.d("Xiaoxia", "Happened here4");
         for(var each:UserDisplayList){
             each.updateZoom(zoomSize);
         }
@@ -51,9 +56,18 @@ public class Presenter implements ZoomObserver,locationObserver {
     }
 
 
-    public void ImageViewUpdate(List<UserInfo> userInfos){
+    public void ImageViewUpdate(@NonNull List<UserInfo> userInfos){
+        checkIfEnoughDisplay(userInfos.size());
+
         for(int i = 0; i < userInfos.size(); i++){
             UserDisplayList.get(i).updateDisplay(userInfos.get(i), currentLocation);
+        }
+    }
+
+    private void checkIfEnoughDisplay(int targetSize) {
+        int listSize = UserDisplayList.size();
+        for(int i = targetSize; i < listSize; i++){
+            UserDisplayList.get(i).setInvisible();
         }
     }
 
