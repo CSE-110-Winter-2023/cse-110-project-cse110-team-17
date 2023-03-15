@@ -194,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
 
         orientationService.getOrientation().observe(this, orientation -> {
             float actualAngle = -orientation / (float) Math.PI * 180;
-            setAllLabelRotations(actualAngle);
+            pr.updateRotation(actualAngle);
+
         });
 
 

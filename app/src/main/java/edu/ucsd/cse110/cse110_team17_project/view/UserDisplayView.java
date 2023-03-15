@@ -21,16 +21,20 @@ public class UserDisplayView {
     float zoomSize;
 
     public float angle;
-
+    ConstraintLayout.LayoutParams layoutParams;
     double distance;
     public int radius;
     String label;
 
     private Pair<Double, Double> currentLocation;
+    private float rotation = 0F;
+
     public UserDisplayView(Presenter pr, TextView tv){
         this.presenter = pr;
         textView = tv;
         zoomSize = pr.register(this);
+        layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+
     }
 
     public void updateZoom(float zoomNum){
@@ -56,8 +60,7 @@ public class UserDisplayView {
     private void setViewLocation(){
 
         radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSize);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
-        caculateCollisions(layoutParams);
+        caculateCollisions();
         if (radius < 510) {
             textView.setText(label);
             textView.setTextSize(15.0F);
@@ -67,19 +70,19 @@ public class UserDisplayView {
             textView.setText("·");
             textView.setTextSize(100.0F);
         }
-        setByLayout(layoutParams);
+        setByLayout();
     }
 
-    private void setByLayout(ConstraintLayout.LayoutParams layoutParams) {
+    private void setByLayout() {
         layoutParams.constrainedWidth = false;
         layoutParams.matchConstraintMaxWidth = 1000;
         layoutParams.circleConstraint = R.id.status_dot;
         layoutParams.circleRadius = radius;
-        layoutParams.circleAngle = angle;
+        layoutParams.circleAngle = angle + rotation;
         textView.setLayoutParams(layoutParams);
     }
 
-    private void caculateCollisions(ConstraintLayout.LayoutParams layoutParams) {
+    private void caculateCollisions() {
         for (UserDisplayView position : presenter.UserDisplayList) {
             if (position == this){
                 break;
@@ -99,10 +102,14 @@ public class UserDisplayView {
             }
         }
     }
-//        relativePositions.add(new MainActivity.PositionObject(curLabelID, radius, angle));
 
 
     public void setInvisible() {
         textView.setVisibility(View.INVISIBLE);
+    }
+
+    public void updateRotation(float rotation) {
+        this.rotation = rotation;
+        setByLayout();
     }
 }

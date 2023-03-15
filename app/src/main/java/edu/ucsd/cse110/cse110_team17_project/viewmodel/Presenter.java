@@ -90,4 +90,9 @@ public class Presenter implements ZoomObserver,locationObserver {
         return zoomSize;
     }
 
+    public void updateRotation(float rotation) {
+        for(var each: UserDisplayList){
+            each.updateRotation(rotation);
+        }
+    }
 }
