@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private int screenWidth;
     private int zoomPosition;
     private final float[] zoomScaleValues = {1F, 1.5F, 3F};
+    private int[] labelIDs;
 
     public void onBackClicked(View view) {
         startUIDActicity();
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+        labelIDs = new int[]{R.id.label_1, R.id.label_2, R.id.label_3, R.id.label_4, R.id.label_5};
         startUIDActicity();
     }
 
@@ -127,19 +129,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onUserInfoChanged(List<UserInfo> userInfos) {
-        var userInfo1 = userInfos.get(0);
-        var userInfo2 = userInfos.get(1);
-        var userInfo3 = userInfos.get(2);
-
-
         relativePositions = new ArrayList<>();
 
-        //TODO: Refactor!!
-        setViewLocation(userInfo1, R.id.label_1);
-        setViewLocation(userInfo2, R.id.label_2);
-        setViewLocation(userInfo3, R.id.label_3);
+        for (int index = 0; index < labelIDs.length; index++) {
+            if (index < userInfos.size()) {
+                var userInfo = userInfos.get(index);
+                setViewLocation(userInfo, labelIDs[index]);
+            }
+            else {
+                setViewInvisible(labelIDs[index]);
+            }
+
+        }
 
     }
+
 
     private CompassViewModel setupViewModel() {
         return new ViewModelProvider(this).get(CompassViewModel.class);
@@ -246,6 +250,11 @@ public class MainActivity extends AppCompatActivity {
         layoutParams.circleAngle = angle;
 
         label.setLayoutParams(layoutParams);
+    }
+
+    private void setViewInvisible(int labelID) {
+        View view = findViewById(labelID);
+        view.setVisibility(View.INVISIBLE);
     }
 
     private int caculateCollisions(int curLabelID, ConstraintLayout.LayoutParams layoutParams, float angle, int radius) {
