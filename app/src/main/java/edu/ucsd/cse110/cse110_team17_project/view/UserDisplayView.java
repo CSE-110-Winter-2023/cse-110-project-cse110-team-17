@@ -19,7 +19,6 @@ public class UserDisplayView {
     Presenter presenter;
     public TextView textView;
     float zoomSize;
-
     public float angle;
     ConstraintLayout.LayoutParams layoutParams;
     double distance;
