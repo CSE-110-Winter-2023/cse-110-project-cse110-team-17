@@ -1,20 +1,33 @@
 package edu.ucsd.cse110.cse110_team17_project.viewmodel;
 
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Presenter implements ZoomObserver {
+import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
+import edu.ucsd.cse110.cse110_team17_project.view.UserDisplayView;
+
+public class Presenter implements ZoomObserver,locationObserver {
     final float[] zoomSizes = new float[]{1F, 1.5F, 3F};
     int zoomPosition;
     float zoomSize;
     List<ImageView> circles;
-    List<ZoomView> zoomViewList;
+    List<UserDisplayView> UserDisplayList = new ArrayList<>();
 
-    void presenter(int ZoomPosition, List<ImageView> circles){
+    Pair<Double, Double> currentLocation = new Pair<>(0.0, 0.0);
+
+
+    public Presenter(int zoomPosition, List<ImageView> circles){
         this.zoomPosition = zoomPosition;
         this.circles = circles;
+        Log.d("Xiaoxia", "Happened here3");
+        zoomUpdate(zoomPosition);
+        Log.d("Xiaoxia", "Happened here4");
+
     }
 
     @Override
@@ -26,8 +39,23 @@ public class Presenter implements ZoomObserver {
             scaleCircle(circle);
             visibleSet(circle, i);
         }
+        Log.d("Xiaoxia", "Happened here4");
+        for(var each:UserDisplayList){
+            each.updateZoom(zoomSize);
+        }
     }
 
+    @Override
+    public void updateLocation(Pair<Double, Double> currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+
+    public void ImageViewUpdate(List<UserInfo> userInfos){
+        for(int i = 0; i < userInfos.size(); i++){
+            UserDisplayList.get(i).updateDisplay(userInfos.get(i), currentLocation);
+        }
+    }
 
 
     private void scaleCircle(ImageView circle){
@@ -42,4 +70,10 @@ public class Presenter implements ZoomObserver {
             circle.setVisibility(View.VISIBLE);
         }
     }
+
+    public float register(UserDisplayView userDisplayView) {
+        UserDisplayList.add(userDisplayView);
+        return zoomSize;
+    }
+
 }

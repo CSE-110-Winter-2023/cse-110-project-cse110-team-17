@@ -36,10 +36,13 @@ import edu.ucsd.cse110.cse110_team17_project.Utilities;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.services.LocationService;
 import edu.ucsd.cse110.cse110_team17_project.services.OrientationService;
+import edu.ucsd.cse110.cse110_team17_project.view.UserDisplayView;
 import edu.ucsd.cse110.cse110_team17_project.viewmodel.CompassViewModel;
+import edu.ucsd.cse110.cse110_team17_project.viewmodel.Presenter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final Integer INITIAL_ZOOM = 1;
     public OrientationService orientationService;
     private LocationService locationService;
 
@@ -47,10 +50,11 @@ public class MainActivity extends AppCompatActivity {
     // defaults to San Diego (fix that later)
     private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
     private UserInfo curUserInfo;
-    MutableLiveData<Float> zoomSubject;
+    MutableLiveData<Integer> zoomSubject;
 
     List<PositionObject> relativePositions;
     private int screenWidth;
+    Presenter pr;
     private int zoomPosition;
     private final float[] zoomScaleValues = {1F, 1.5F, 3F};
     private int[] labelIDs;
@@ -86,22 +90,25 @@ public class MainActivity extends AppCompatActivity {
         setLocationService();
         startOrientationSensor();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        Log.d("Xiaoxia", "Happened here");
         var viewModel = setupViewModel();
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         String label = preferences.getString("username", "DefaultUser");
         String uid = preferences.getString("myUID", "DefaultUID");
-        zoomPosition = preferences.getInt("zoomPosition", 1);
+//        zoomPosition = preferences.getInt("zoomPosition", 1);
         // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
-        setZoomObservations();
+        zoomSubject = new MutableLiveData<>(INITIAL_ZOOM);
+        Log.d("Xiaoxia", "Happened here2");
+        setUpPresenter();
 
+        setZoomObservations();
         // TODO: Wierd Delay, Ask for assistance maybe?
         locationService.getLocation().observe(this, loc->{
             System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
             curUserInfo.latitude = loc.first.doubleValue();
             curUserInfo.longitude = loc.second.doubleValue();
-            currentLocation = loc;
+            pr.updateLocation(currentLocation);
         });
         viewModel.postUserInfo(curUserInfo);
 
@@ -112,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         userInfos = viewModel.getUserInfos(keys);
 
-        userInfos.observe(this, this::onUserInfoChanged);
+        userInfos.observe(this, UserInfos -> {pr.ImageViewUpdate(UserInfos);});
 
     }
 
@@ -128,21 +135,21 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void onUserInfoChanged(List<UserInfo> userInfos) {
-        relativePositions = new ArrayList<>();
-
-        for (int index = 0; index < labelIDs.length; index++) {
-            if (index < userInfos.size()) {
-                var userInfo = userInfos.get(index);
-                setViewLocation(userInfo, labelIDs[index]);
-            }
-            else {
-                setViewInvisible(labelIDs[index]);
-            }
-
-        }
-
-    }
+//    private void onUserInfoChanged(List<UserInfo> userInfos) {
+//        relativePositions = new ArrayList<>();
+//
+//        for (int index = 0; index < labelIDs.length; index++) {
+//            if (index < userInfos.size()) {
+//                var userInfo = userInfos.get(index);
+//                setViewLocation(userInfo, labelIDs[index]);
+//            }
+//            else {
+//                setViewInvisible(labelIDs[index]);
+//            }
+//
+//        }
+//
+//    }
 
 
     private CompassViewModel setupViewModel() {
@@ -157,32 +164,27 @@ public class MainActivity extends AppCompatActivity {
         locationService = LocationService.singleton(this);
     }
 
+    private void setUpPresenter(){
+        List<ImageView> circles = new ArrayList<>();
+        circles.add(findViewById(R.id.inner_circle1));
+        circles.add(findViewById(R.id.inner_circle2));
+        circles.add(findViewById(R.id.inner_circle3));
+        pr = new Presenter(zoomSubject.getValue(), circles);
+        pr.register(new UserDisplayView(pr, findViewById(R.id.label_1)));
+        pr.register(new UserDisplayView(pr, findViewById(R.id.label_2)));
+        pr.register(new UserDisplayView(pr, findViewById(R.id.label_3)));
+        pr.register(new UserDisplayView(pr, findViewById(R.id.label_4)));
+        pr.register(new UserDisplayView(pr, findViewById(R.id.label_5)));
+    }
+    
     private void setZoomObservations() {
         // here is for Zoom part, will be refact later
-        zoomSubject = new MutableLiveData<>(zoomScaleValues[zoomPosition]);
-        ImageView innerCircle1 = findViewById(R.id.inner_circle1);
-        ImageView innerCircle2 = findViewById(R.id.inner_circle2);
-        ImageView innerCircle3 = findViewById(R.id.inner_circle3);
         Button zoomInBtn = findViewById(R.id.zoom_in);
         Button zoomOutBtn = findViewById(R.id.zoom_out);
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
         zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
-
-
         zoomSubject.observe(this, (num)->{
-            innerCircle1.setScaleX(num);
-            innerCircle1.setScaleY(num);
-            innerCircle2.setScaleX(num);
-            innerCircle2.setScaleY(num);
-            innerCircle3.setScaleX(num);
-            innerCircle3.setScaleY(num);
-
-            try {
-                onUserInfoChanged(userInfos.getValue());
-            }catch (Exception e)
-            {
-                var a = 1;
-            }
+            pr.zoomUpdate(num);
         });
     }
 
@@ -217,40 +219,40 @@ public class MainActivity extends AppCompatActivity {
         name_label3.setRotation(-angle);
     }
 
-    private void setViewLocation(UserInfo userInfo, int curLabelID) {
-        TextView label = this.findViewById(curLabelID);
-        screenWidth = this.getResources().getDisplayMetrics().widthPixels;
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-        if (userInfo == null) return;
-        layoutParams.constrainedWidth = false;
-        layoutParams.matchConstraintMaxWidth = 1000;
-
-        float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
-                (float)userInfo.latitude, (float)userInfo.longitude);
-
-        double distance = Utilities.distance(currentLocation.first.doubleValue(), currentLocation.second.doubleValue(),
-                userInfo.latitude, userInfo.longitude);
-        int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
-
-        radius = caculateCollisions(curLabelID, layoutParams, angle, radius);
-
-        int maxRadius = screenWidth / 2 - 25;
-
-        if (radius < maxRadius) {
-            label.setText(userInfo.label);
-            label.setTextSize(15.0F);
-        }
-        else {
-            radius = maxRadius;
-            label.setText("·");
-            label.setTextSize(100.0F);
-        }
-        layoutParams.circleConstraint = R.id.status_dot;
-        layoutParams.circleRadius = radius;
-        layoutParams.circleAngle = angle;
-
-        label.setLayoutParams(layoutParams);
-    }
+//    private void setViewLocation(UserInfo userInfo, int curLabelID) {
+//        TextView label = this.findViewById(curLabelID);
+//        screenWidth = this.getResources().getDisplayMetrics().widthPixels;
+//        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
+//        if (userInfo == null) return;
+//        layoutParams.constrainedWidth = false;
+//        layoutParams.matchConstraintMaxWidth = 1000;
+//
+//        float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
+//                (float)userInfo.latitude, (float)userInfo.longitude);
+//
+//        double distance = Utilities.distance(currentLocation.first.doubleValue(), currentLocation.second.doubleValue(),
+//                userInfo.latitude, userInfo.longitude);
+//        int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
+//
+//        radius = caculateCollisions(curLabelID, layoutParams, angle, radius);
+//
+//        int maxRadius = screenWidth / 2 - 25;
+//
+//        if (radius < maxRadius) {
+//            label.setText(userInfo.label);
+//            label.setTextSize(15.0F);
+//        }
+//        else {
+//            radius = maxRadius;
+//            label.setText("·");
+//            label.setTextSize(100.0F);
+//        }
+//        layoutParams.circleConstraint = R.id.status_dot;
+//        layoutParams.circleRadius = radius;
+//        layoutParams.circleAngle = angle;
+//
+//        label.setLayoutParams(layoutParams);
+//    }
 
     private void setViewInvisible(int labelID) {
         View view = findViewById(labelID);
@@ -280,15 +282,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickedOnZoomOut(View view) {
-        if (zoomPosition > 0) zoomPosition--;
-        zoomSubject.postValue(zoomScaleValues[zoomPosition]);
-
+        if (zoomSubject.getValue() > 0){
+            zoomSubject.postValue(zoomSubject.getValue() - 1);
+        }
         putDefaultZoomPosition();
     }
 
     private void clickedOnZoomIn(View view) {
-        if (zoomPosition < 2) zoomPosition++;
-        zoomSubject.postValue(zoomScaleValues[zoomPosition]);
+        if (zoomSubject.getValue() < 2){
+            zoomSubject.postValue(zoomSubject.getValue() + 1);
+        }
 
         putDefaultZoomPosition();
     }
