@@ -106,6 +106,13 @@ public class Utilities {
         }
         return true;
     }
+
+    public static List<String> parseFriendListString(String friendListString) {
+        if (friendListString.isEmpty()) {
+            return Arrays.asList();
+        }
+        return Arrays.asList(friendListString.split("-"));
+    }
     
     // calculate distance in miles
     public static double distance(double latitude1, double longitude1,
