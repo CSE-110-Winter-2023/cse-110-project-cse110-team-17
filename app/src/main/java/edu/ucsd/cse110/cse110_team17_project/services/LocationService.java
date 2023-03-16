@@ -70,6 +70,7 @@ public class LocationService implements LocationListener {
         ImageView green = activity.findViewById(R.id.green_dot);
         ImageView red = activity.findViewById(R.id.red_dot);
         TextView timeout = activity.findViewById(R.id.timeout);
+        count = 0;
         this.future = backGroundThreadExecutor.submit(() ->{
             do{
                 count++;
