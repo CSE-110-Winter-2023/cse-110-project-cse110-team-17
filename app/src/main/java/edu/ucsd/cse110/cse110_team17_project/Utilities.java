@@ -109,9 +109,9 @@ public class Utilities {
 
     public static List<String> parseFriendListString(String friendListString) {
         if (friendListString.isEmpty()) {
-            return Arrays.asList();
+            return new ArrayList<>();
         }
-        return Arrays.asList(friendListString.split("-"));
+        return new ArrayList<>(Arrays.asList(friendListString.split("-")));
     }
     
     // calculate distance in miles

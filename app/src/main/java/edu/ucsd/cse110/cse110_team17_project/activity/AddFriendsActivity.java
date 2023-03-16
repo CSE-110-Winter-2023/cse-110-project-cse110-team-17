@@ -32,8 +32,9 @@ public class AddFriendsActivity extends AppCompatActivity {
     private AddFriendsViewModel addFriendsViewModel;
     private EditText newFriendText;
     public UserRepository userRepository;
+    FriendListAdapter adapter;
 
-    public List<UserInfo> userInfoList;
+    public LiveData<List<UserInfo>> userInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +45,11 @@ public class AddFriendsActivity extends AppCompatActivity {
         String myUID = preferences.getString("myUID", "UID NOT SET!");
         TextView myUIDView = findViewById(R.id.myUID);
         myUIDView.setText(myUID);
-        String friendListString = preferences.getString("friendListString", "");
-        FriendListAdapter adapter = new FriendListAdapter();
-        userRepository = new UserRepository();
 
+        String friendListString = preferences.getString("friendListString", "");
+
+        userRepository = new UserRepository();
+        adapter = new FriendListAdapter();
         newFriendText = findViewById(R.id.new_friend_text);
         addFriendsViewModel = new ViewModelProvider(this).get(AddFriendsViewModel.class);
 
@@ -55,13 +57,18 @@ public class AddFriendsActivity extends AppCompatActivity {
 
         // TODO: is there a way to get one remote UserInfo?
         //  What happens if one of your friends leaves the app and is no longer on the remote server?
-        userInfoList = userRepository.getRemoteUserInfo(Utilities.parseFriendListString(friendListString)).getValue();
-        if (userInfoList != null) {
-            adapter.setUserInfoList(userInfoList);
-        }
-        else {
-            adapter.setUserInfoList(new ArrayList<UserInfo>());
-        }
+        List<String> friendList = Utilities.parseFriendListString(friendListString);
+        List<String> testFriendList = new ArrayList<>();
+        testFriendList.add("group17test1");
+        userInfoList = userRepository.getRemoteUserInfo(testFriendList);
+        userInfoList.observe(this, this::onUserInfoChanged);
+//        userInfoList = userRepository.getRemoteUserInfo(Utilities.parseFriendListString(friendListString)).getValue();
+
+
+    }
+
+    private void onUserInfoChanged(List<UserInfo> userInfoList) {
+        adapter.setUserInfoList(userInfoList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -92,7 +99,7 @@ public class AddFriendsActivity extends AppCompatActivity {
                 Utilities.showError(this, "This friend does not exist.");
             }
             else {
-                userInfoList.add(newFriend); // mock userinfo
+//                userInfoList.add(newFriend); // mock userinfo
                 System.out.println("ADDED FRIEND!");
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
