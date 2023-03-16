@@ -29,10 +29,12 @@ import edu.ucsd.cse110.cse110_team17_project.viewmodel.AddFriendsViewModel;
 
 public class AddFriendsActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
-    private AddFriendsViewModel addFriendsViewModel;
     private EditText newFriendText;
     public UserRepository userRepository;
-    FriendListAdapter adapter;
+    public FriendListAdapter adapter;
+
+    public String friendListString;
+    public List<String> friendList;
 
     public LiveData<List<UserInfo>> userInfoList;
 
@@ -46,67 +48,68 @@ public class AddFriendsActivity extends AppCompatActivity {
         TextView myUIDView = findViewById(R.id.myUID);
         myUIDView.setText(myUID);
 
-        String friendListString = preferences.getString("friendListString", "");
+        friendListString = preferences.getString("friendListString", "");
+        friendList = Utilities.parseFriendListString(friendListString);
 
         userRepository = new UserRepository();
         adapter = new FriendListAdapter();
         newFriendText = findViewById(R.id.new_friend_text);
-        addFriendsViewModel = new ViewModelProvider(this).get(AddFriendsViewModel.class);
 
         recyclerView = findViewById(R.id.recyclerView);
 
         // TODO: is there a way to get one remote UserInfo?
         //  What happens if one of your friends leaves the app and is no longer on the remote server?
-        List<String> friendList = Utilities.parseFriendListString(friendListString);
-        List<String> testFriendList = new ArrayList<>();
-        testFriendList.add("group17test1");
-        userInfoList = userRepository.getRemoteUserInfo(testFriendList);
+        setUpRecyclerView(new ArrayList<>());
+        userInfoList = userRepository.getRemoteUserInfo(friendList);
         userInfoList.observe(this, this::onUserInfoChanged);
-//        userInfoList = userRepository.getRemoteUserInfo(Utilities.parseFriendListString(friendListString)).getValue();
-
-
     }
 
-    private void onUserInfoChanged(List<UserInfo> userInfoList) {
+    private void setUpRecyclerView(List<UserInfo> userInfoList){
         adapter.setUserInfoList(userInfoList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
-
-    public void onNextClicked(View view) {
+    private void onUserInfoChanged(List<UserInfo> userInfoList) {
+        // TODO: what if they enter ANOTHER new friend before we check?
+        // TODO: userNotFound is kinda a hacky solution? Do we need to fix other method?
+        String userNotFound = "{\"latitude\":0.0,\"longitude\":0.0}";
+        for(UserInfo userInfo : userInfoList){
+            System.out.println(userInfo.toJSON());
+            if(userInfo.toJSON().equals(userNotFound)){
+                System.out.println("REMOVE NOW!");
+                friendList.remove(friendList.size() - 1);
+                Utilities.showError(this, "This friend does not exist.");
+                return;
+            }
+        }
+        setUpRecyclerView(userInfoList);
     }
 
     public void onAddClicked(View view) {
-        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        String friendListString = preferences.getString("friendListString", "");
+        String newFriendUid = newFriendText.getText().toString();
 
-        String friendUid = newFriendText.getText().toString();
-
-        if (!Utilities.isValidUID(friendUid)) {
+        if (!Utilities.isValidUID(newFriendUid)) {
             Utilities.showError(this, "Please enter a valid UID.");
         }
-        else if (friendListString.contains(friendUid)) {
+        else if (friendList.contains(newFriendUid)) {
             Utilities.showError(this, "You have already added this friend.");
         }
         else {
-            String delimiter = friendListString.isEmpty() ? "" : "-";
-            List<String> newFriendUID = List.of(friendUid);
-            List<UserInfo> newFriendList = userRepository.getRemoteUserInfo(newFriendUID).getValue();
-            UserInfo newFriend = newFriendList != null ? newFriendList.get(0) : null;
-            if (newFriend == null) {
-                Utilities.showError(this, "This friend does not exist.");
-            }
-            else {
-//                userInfoList.add(newFriend); // mock userinfo
-                System.out.println("ADDED FRIEND!");
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                editor.putString("friendListString", friendListString + delimiter + friendUid);
-                newFriendText.setText("");
-                editor.apply();
-            }
+            friendList.add(newFriendUid);
+
+            System.out.println("ADDED FRIEND!");
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            newFriendText.setText("");
+
         }
+    }
+
+    public void onNextClicked(View view) {
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("friendListString", Utilities.buildFriendListString(friendList));
+        editor.apply();
     }
 }

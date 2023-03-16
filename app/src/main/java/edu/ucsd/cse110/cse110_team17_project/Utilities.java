@@ -113,6 +113,18 @@ public class Utilities {
         }
         return new ArrayList<>(Arrays.asList(friendListString.split("-")));
     }
+
+    public static String buildFriendListString(List<String> friendList){
+//        if (friendList.isEmpty()){
+//            return "";
+//        } else if(friendList.size() < 2){
+//            return friendList.get(0);
+//        }
+//        for(String friend : friendList){
+//
+//        }
+        return String.join("-", friendList);
+    }
     
     // calculate distance in miles
     public static double distance(double latitude1, double longitude1,
