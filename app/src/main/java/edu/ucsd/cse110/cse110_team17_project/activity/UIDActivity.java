@@ -44,8 +44,8 @@ public class UIDActivity extends AppCompatActivity {
 
 
     public void onNextClicked(View view) {
-        //TODO: start "add friends activity"
-
+        Intent addFriendsIntent = new Intent(this, AddFriendsActivity.class);
+        startActivity(addFriendsIntent);
         finish();
     }
 }
