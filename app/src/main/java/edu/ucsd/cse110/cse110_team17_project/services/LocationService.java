@@ -89,7 +89,6 @@ public class LocationService implements LocationListener {
             }while(count > 0);
             return null;
         });
-
     }
 
     @Override
