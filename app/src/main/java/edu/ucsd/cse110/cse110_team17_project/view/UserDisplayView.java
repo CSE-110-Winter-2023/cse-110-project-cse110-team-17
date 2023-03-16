@@ -25,7 +25,6 @@ public class UserDisplayView {
     public int radius;
     String label;
 
-    private Pair<Double, Double> currentLocation;
     private float rotation = 0F;
 
     public UserDisplayView(Presenter pr, TextView tv){
@@ -33,7 +32,12 @@ public class UserDisplayView {
         textView = tv;
         zoomSize = pr.register(this);
         layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+    }
 
+    public UserDisplayView(Presenter pr){
+        this.presenter = pr;
+        zoomSize = pr.register(this);
+        layoutParams = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
     }
 
     public void updateZoom(float zoomNum){
@@ -59,7 +63,7 @@ public class UserDisplayView {
     private void setViewLocation(){
 
         radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSize);
-        caculateCollisions();
+        calculateCollisions();
         if (radius < 510) {
             textView.setText(label);
             textView.setTextSize(15.0F);
@@ -81,7 +85,7 @@ public class UserDisplayView {
         textView.setLayoutParams(layoutParams);
     }
 
-    private void caculateCollisions() {
+    private void calculateCollisions() {
         for (UserDisplayView position : presenter.UserDisplayList) {
             if (position == this){
                 break;

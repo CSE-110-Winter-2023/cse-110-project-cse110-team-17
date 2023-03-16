@@ -27,6 +27,7 @@ public class Presenter implements ZoomObserver,locationObserver {
     public List<UserDisplayView> UserDisplayList;
 
     Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
+    private List<UserInfo> userInfos;
 
 
     public Presenter(Context context, int zoomPosition, List<ImageView> circles){
@@ -56,10 +57,13 @@ public class Presenter implements ZoomObserver,locationObserver {
         this.currentLocation = currentLocation;
     }
 
-
-    public void ImageViewUpdate(@NonNull List<UserInfo> userInfos){
+    public void infosUpdate(@NonNull List<UserInfo> userInfos){
+        this.userInfos = userInfos;
         checkIfEnoughDisplay(userInfos.size());
+        viewUpdate();
+    }
 
+    public void viewUpdate(){
         for(int i = 0; i < userInfos.size(); i++){
             UserDisplayList.get(i).updateDisplay(userInfos.get(i), currentLocation);
         }

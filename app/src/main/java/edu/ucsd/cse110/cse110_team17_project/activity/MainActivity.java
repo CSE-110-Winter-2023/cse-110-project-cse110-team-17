@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         keys.add("group17test2");
         keys.add("group17test3");
         userInfos = viewModel.getUserInfos(keys);
-        userInfos.observe(this, infos -> {pr.ImageViewUpdate(infos);});
+        userInfos.observe(this, infos -> {pr.infosUpdate(infos);});
     }
 
     @Override
@@ -152,24 +152,26 @@ public class MainActivity extends AppCompatActivity {
         startUIDActicity();
     }
     private void clickedOnZoomOut(View view) {
-        if (zoomSubject.getValue() > 0){
-            zoomSubject.postValue(zoomSubject.getValue() - 1);
+        int zoomNum = zoomSubject.getValue();
+        if (zoomNum > 0){
+            zoomSubject.postValue(--zoomNum);
         }
-        putDefaultZoomPosition();
+        putDefaultZoomPosition(zoomNum);
     }
 
     private void clickedOnZoomIn(View view) {
-        if (zoomSubject.getValue() < 2){
-            zoomSubject.postValue(zoomSubject.getValue() + 1);
+        int zoomNum = zoomSubject.getValue();
+        if (zoomNum < 2){
+            zoomSubject.postValue(++zoomNum);
         }
 
-        putDefaultZoomPosition();
+        putDefaultZoomPosition(zoomNum);
     }
 
-    private void putDefaultZoomPosition() {
+    private void putDefaultZoomPosition(int num) {
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("zoomPosition", zoomSubject.getValue());
+        editor.putInt("zoomPosition", num);
         editor.apply();
     }
 }
