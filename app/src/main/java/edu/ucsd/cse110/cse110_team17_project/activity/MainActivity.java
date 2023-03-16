@@ -13,7 +13,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +27,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.cse110_team17_project.R;
 
+import edu.ucsd.cse110.cse110_team17_project.Utilities;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
 import edu.ucsd.cse110.cse110_team17_project.services.LocationService;
@@ -46,10 +51,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // delete later
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         userrepo = new UserRepository();
-        startUIDActicity();
+        userInfos = new MutableLiveData<>();
+    }
+
+    private void startEnterNameActivity() {
+        Intent intent = new Intent(this, EnterNameActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -58,11 +74,16 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        String label = preferences.getString("username", "DefaultUser");
-        String uid = preferences.getString("myUID", "DefaultUID");
+        String label = preferences.getString("username", "");
+        String uid = preferences.getString("myUID", "");
+        // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
+        if (label.isEmpty()) {
+            startEnterNameActivity();
+        }
+
         zoomSubject = new MutableLiveData<>(preferences.getInt("zoomPosition", 1));
         // TODO: Change this after UID works
-        curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
+        curUserInfo = new UserInfo(uid, label, uid);
         userrepo.postLocalUserInfo(curUserInfo);
 
         setUpUser(userrepo);
@@ -73,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpUser(UserRepository us) {
-        List<String> keys = new ArrayList<>();
-        keys.add("group17test1");
-        keys.add("group17test2");
-        keys.add("group17test3");
-        userInfos = us.getRemoteUserInfo(keys, isMockLocationTesting);
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        String friendListString = preferences.getString("friendListString", "");
+        List<String> friendList = Utilities.parseFriendListString(friendListString);
+        System.out.println("Friend List: " + friendList);
+        userInfos = us.getRemoteUserInfo(friendList, isMockLocationTesting);
         userInfos.observe(this, infos -> {pr.infosUpdate(infos);});
     }
 
@@ -88,11 +109,10 @@ public class MainActivity extends AppCompatActivity {
         orientationService.unregisterSensorListeners();
     }
 
-    private void startUIDActicity() {
+    private void startUIDActivity() {
         Intent intent = new Intent(this, UIDActivity.class);
         startActivity(intent);
     }
-
 
     private void setLocationService() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -125,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         Button zoomOutBtn = findViewById(R.id.zoom_out);
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
         zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
-        zoomSubject.observe(this, (num)->{
+        zoomSubject.observe(this, (num) -> {
             pr.zoomUpdate(num);
         });
     }
@@ -140,8 +160,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
-        startUIDActicity();
+        Intent addFriendsIntent = new Intent(this, AddFriendsActivity.class);
+        startActivity(addFriendsIntent);
     }
+
     private void clickedOnZoomOut(View view) {
         int zoomNum = zoomSubject.getValue();
         if (zoomNum > 0){

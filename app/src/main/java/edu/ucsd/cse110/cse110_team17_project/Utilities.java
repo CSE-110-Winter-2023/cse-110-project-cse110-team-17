@@ -3,7 +3,11 @@ package edu.ucsd.cse110.cse110_team17_project;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.util.Pair;
-
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import java.io.*;
+import java.util.*;
 import java.lang.*;
 
 import java.text.DecimalFormat;
@@ -102,6 +106,25 @@ public class Utilities {
         }
         return true;
     }
+
+    public static List<String> parseFriendListString(String friendListString) {
+        if (friendListString.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(Arrays.asList(friendListString.split("-")));
+    }
+
+    public static String buildFriendListString(List<String> friendList){
+//        if (friendList.isEmpty()){
+//            return "";
+//        } else if(friendList.size() < 2){
+//            return friendList.get(0);
+//        }
+//        for(String friend : friendList){
+//
+//        }
+        return String.join("-", friendList);
+    }
     
     // calculate distance in miles
     public static double distance(double latitude1, double longitude1,
@@ -122,6 +145,7 @@ public class Utilities {
         double r = 6371;
         return(c * r) / 1.609;
     }
+
 
     //TODO: Change to 4 zones later!
     public static double distanceToViewRadius(double distance) {

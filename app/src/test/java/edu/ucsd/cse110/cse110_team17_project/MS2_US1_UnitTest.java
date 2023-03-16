@@ -16,8 +16,8 @@ import androidx.test.core.app.ActivityScenario;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
 import edu.ucsd.cse110.cse110_team17_project.activity.EnterNameActivity;
+
 
 @RunWith(RobolectricTestRunner.class)
 public class MS2_US1_UnitTest {
