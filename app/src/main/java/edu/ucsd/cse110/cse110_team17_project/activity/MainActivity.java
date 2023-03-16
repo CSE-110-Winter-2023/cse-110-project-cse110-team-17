@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
 
-        startUIDActivity();
         screenWidth= this.getResources().getDisplayMetrics().widthPixels;
 
         // here is for Zoom part, will be refact later
@@ -87,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         uid = preferences.getString("myUID", "");
 
         // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
-        //if (label.isEmpty()) {
+        if (label.isEmpty()) {
             startEnterNameActivity();
-        //}
+        }
 
 
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
