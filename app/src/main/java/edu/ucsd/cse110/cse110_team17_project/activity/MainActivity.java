@@ -51,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private UserInfo curUserInfo;
     MutableLiveData<Integer> zoomSubject;
     Presenter pr;
-    public void onBackClicked(View view) {
-        startUIDActicity();
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,31 +62,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        zoomSubject = new MutableLiveData<>(INITIAL_ZOOM);
-        setLocationService();
-        startOrientationSensor();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        var viewModel = new ViewModelProvider(this).get(CompassViewModel.class);
+
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
         String label = preferences.getString("username", "DefaultUser");
         String uid = preferences.getString("myUID", "DefaultUID");
-        zoomSubject.postValue(preferences.getInt("zoomPosition", 1));
+        zoomSubject = new MutableLiveData<>(preferences.getInt("zoomPosition", 1));
         // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
-        setUpPresenter();
-        setZoomObservations();
-        // TODO: Wierd Delay, Ask for assistance maybe?
-
+        var viewModel = new ViewModelProvider(this).get(CompassViewModel.class);
         viewModel.postUserInfo(curUserInfo);
 
+
+        setUpPresenter();
+        setOrientationSensor();
+        setLocationService();
+        setZoomObservations();
+        setUpUser(viewModel);
+        // TODO: Wierd Delay, Ask for assistance maybe?
+    }
+
+    private void setUpUser(CompassViewModel viewModel) {
         List<String> keys = new ArrayList<>();
         keys.add("group17test1");
         keys.add("group17test2");
         keys.add("group17test3");
         userInfos = viewModel.getUserInfos(keys);
         userInfos.observe(this, infos -> {pr.ImageViewUpdate(infos);});
-
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -134,12 +136,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // This method starts the orientation sensor
-    private void startOrientationSensor() {
+    private void setOrientationSensor() {
         orientationService = OrientationService.singleton(this);
         orientationService.registerSensorListeners();
         orientationService.getOrientation().observe(this, orientation -> {
             pr.updateRotation(-orientation / (float) Math.PI * 180);
         });
+    }
+
+    public void onBackClicked(View view) {
+        startUIDActicity();
     }
     private void clickedOnZoomOut(View view) {
         if (zoomSubject.getValue() > 0){
