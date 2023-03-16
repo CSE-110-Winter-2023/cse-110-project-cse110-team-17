@@ -73,12 +73,11 @@ public class MainActivity extends AppCompatActivity {
         var viewModel = new ViewModelProvider(this).get(CompassViewModel.class);
         viewModel.postUserInfo(curUserInfo);
 
-
-        setUpPresenter();
-        setOrientationSensor();
-        setLocationService();
-        setZoomObservations();
         setUpUser(viewModel);
+        setUpPresenter();
+        setLocationService();
+        setOrientationSensor();
+        setZoomObservations();
         // TODO: Wierd Delay, Ask for assistance maybe?
     }
 
@@ -110,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
         }
         locationService = LocationService.singleton(this);
+        locationService.getLocation().observe(this, loc->{
+            System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
+            curUserInfo.latitude = loc.first.doubleValue();
+            curUserInfo.longitude = loc.second.doubleValue();
+            pr.updateLocation(loc);
+        });
 
     }
     private void setUpPresenter(){
@@ -151,12 +156,6 @@ public class MainActivity extends AppCompatActivity {
         if (zoomSubject.getValue() > 0){
             zoomSubject.postValue(zoomSubject.getValue() - 1);
         }
-        locationService.getLocation().observe(this, loc->{
-            System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
-            curUserInfo.latitude = loc.first.doubleValue();
-            curUserInfo.longitude = loc.second.doubleValue();
-            pr.updateLocation(loc);
-        });
         putDefaultZoomPosition();
     }
 
