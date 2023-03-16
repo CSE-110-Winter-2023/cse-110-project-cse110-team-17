@@ -37,6 +37,8 @@ public class EnterNameActivity extends AppCompatActivity {
         }
         else{
             saveInputs();
+            Intent uidIntent = new Intent(this, UIDActivity.class);
+            startActivity(uidIntent);
             finish();
         }
     }

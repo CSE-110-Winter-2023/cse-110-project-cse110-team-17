@@ -14,7 +14,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+
         startUIDActivity();
         screenWidth= this.getResources().getDisplayMetrics().widthPixels;
 
@@ -73,21 +76,20 @@ public class MainActivity extends AppCompatActivity {
         zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
         zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
 
-
-
-
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
         }
         locationService = LocationService.singleton(this);
-
         SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        label = preferences.getString("username", "DefaultUser");
-        uid = preferences.getString("myUID", "aaaaa");
+        label = preferences.getString("username", "");
+        uid = preferences.getString("myUID", "");
 
+        // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
+        //if (label.isEmpty()) {
+            startEnterNameActivity();
+        //}
 
 
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
@@ -126,8 +128,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void startUIDActivity() {
-        Intent intent = new Intent(this, UIDActivity.class);
+
+    private void startEnterNameActivity() {
+        Intent intent = new Intent(this, EnterNameActivity.class);
         startActivity(intent);
     }
 
@@ -162,9 +165,6 @@ public class MainActivity extends AppCompatActivity {
         return new ViewModelProvider(this).get(CompassViewModel.class);
     }
 
-
-
-
     // This method starts the orientation sensor
     private void startOrientationSensor(OrientationService orientationService) {
         orientationService.registerSensorListeners();
@@ -173,9 +173,6 @@ public class MainActivity extends AppCompatActivity {
             float actualAngle = -orientation / (float) Math.PI * 180;
             setAllLabelRotations(actualAngle);
         });
-
-
-
     }
 
     // This method sets the rotation angle to the angle provided
