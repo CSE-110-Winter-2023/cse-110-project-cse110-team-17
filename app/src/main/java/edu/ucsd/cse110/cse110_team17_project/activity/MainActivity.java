@@ -108,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
         }
-        locationService = LocationService.singleton(this);
-        locationService.getLocation().observe(this, loc->{
+        LocationService.singleton(this).getLocation().observe(this, loc->{
             System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
             curUserInfo.latitude = loc.first.doubleValue();
             curUserInfo.longitude = loc.second.doubleValue();
