@@ -90,14 +90,30 @@
             app:srcCompat="@drawable/circle" />
 
         <TextView
-            android:id="@+id/label_1"
+        android:id="@+id/label_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:rotation="0"
+        android:singleLine="true"
+        android:text="Label #1"
+        android:textColor="@color/burgundy"
+        android:textSize="15dp"
+        app:layout_constraintCircle="@+id/inner_circle1"
+        app:layout_constraintCircleAngle="90"
+        app:layout_constraintCircleRadius="100dp" />
+
+        <TextView
+            android:id="@+id/test_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:visibility="invisible"
             android:rotation="0"
             android:singleLine="true"
-            android:text="Label #1"
+            android:text="Test"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
             app:layout_constraintCircle="@+id/inner_circle1"

@@ -85,7 +85,7 @@ public class US3RemoteAPITest {
         publicCodes.add(TEST_PUBLIC_CODE2);
         publicCodes.add(TEST_PUBLIC_CODE3);
 
-        LiveData<List<UserInfo>> liveInfos = uS.getRemoteUserInfo(publicCodes);
+        LiveData<List<UserInfo>> liveInfos = uS.getRemoteUserInfo(publicCodes, false);
 
 
         liveInfos.observeForever(new Observer<List<UserInfo>>() {

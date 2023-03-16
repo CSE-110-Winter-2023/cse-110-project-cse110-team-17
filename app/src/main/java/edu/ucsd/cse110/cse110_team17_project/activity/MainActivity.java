@@ -3,41 +3,31 @@ package edu.ucsd.cse110.cse110_team17_project.activity;
 import static java.lang.String.valueOf;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.cse110_team17_project.R;
 
-import edu.ucsd.cse110.cse110_team17_project.Utilities;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
+import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
 import edu.ucsd.cse110.cse110_team17_project.services.LocationService;
 import edu.ucsd.cse110.cse110_team17_project.services.OrientationService;
 import edu.ucsd.cse110.cse110_team17_project.view.UserDisplayView;
-import edu.ucsd.cse110.cse110_team17_project.viewmodel.CompassViewModel;
 import edu.ucsd.cse110.cse110_team17_project.viewmodel.Presenter;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,14 +38,17 @@ public class MainActivity extends AppCompatActivity {
 
     private LiveData<List<UserInfo>> userInfos; // Default 3 elements for now
     // defaults to San Diego (fix that later)
-    private UserInfo curUserInfo;
+    public UserInfo curUserInfo;
     MutableLiveData<Integer> zoomSubject;
     Presenter pr;
+    public boolean isMockLocationTesting = false;
+    public UserRepository userrepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+        userrepo = new UserRepository();
         startUIDActicity();
     }
 
@@ -70,23 +63,21 @@ public class MainActivity extends AppCompatActivity {
         zoomSubject = new MutableLiveData<>(preferences.getInt("zoomPosition", 1));
         // TODO: Change this after UID works
         curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
-        var viewModel = new ViewModelProvider(this).get(CompassViewModel.class);
-        viewModel.postUserInfo(curUserInfo);
+        userrepo.postLocalUserInfo(curUserInfo);
 
-        setUpUser(viewModel);
+        setUpUser(userrepo);
         setUpPresenter();
         setLocationService();
         setOrientationSensor();
         setZoomObservations();
-        // TODO: Wierd Delay, Ask for assistance maybe?
     }
 
-    private void setUpUser(CompassViewModel viewModel) {
+    private void setUpUser(UserRepository us) {
         List<String> keys = new ArrayList<>();
         keys.add("group17test1");
         keys.add("group17test2");
         keys.add("group17test3");
-        userInfos = viewModel.getUserInfos(keys);
+        userInfos = us.getRemoteUserInfo(keys, isMockLocationTesting);
         userInfos.observe(this, infos -> {pr.infosUpdate(infos);});
     }
 
