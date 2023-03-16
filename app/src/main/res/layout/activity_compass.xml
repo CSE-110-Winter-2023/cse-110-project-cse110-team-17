@@ -8,14 +8,31 @@
     android:background="@color/beige"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="91dp"
-        android:layout_height="35dp"
-        android:text="Back"
-        android:textSize="20dp"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="16dp" />
+    <ImageView
+        android:id="@+id/red_dot"
+        android:layout_width="12dp"
+        android:layout_height="22dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.817"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045"
+        app:srcCompat="@drawable/red_dot" />
+
+    <ImageView
+        android:id="@+id/green_dot"
+        android:layout_width="12dp"
+        android:layout_height="22dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.817"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045"
+        app:srcCompat="@drawable/green_dot" />
 
     <Button
         android:id="@+id/zoom_out"
@@ -49,6 +66,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/timeout"
+        android:layout_width="51dp"
+        android:layout_height="21dp"
+        android:text=""
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rotateConstraint"
         android:layout_width="0dp"
@@ -57,8 +87,10 @@
         android:layout_marginEnd="-200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/circle_rim"
@@ -129,6 +161,7 @@
             android:layout_height="22dp"
             android:layout_marginTop="160dp"
             android:layout_marginBottom="10dp"
+            android:visibility="invisible"
             app:layout_constraintCircle="@+id/rotateConstraint"
             app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="0dp"
@@ -141,13 +174,16 @@
             android:layout_height="wrap_content"
             android:rotation="0"
             android:text="3m"
+            android:visibility="invisible"
             android:textColor="@color/burgundy"
             android:textSize="15dp"
             app:layout_constraintCircle="@+id/circle_rim"
             app:layout_constraintCircleAngle="90"
             app:layout_constraintCircleRadius="20dp" />
 
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 
+</androidx.constraintlayout.widget.ConstraintLayout>
