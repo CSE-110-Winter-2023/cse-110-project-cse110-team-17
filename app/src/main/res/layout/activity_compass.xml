@@ -231,34 +231,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             />
-        <TextView
-            android:id="@+id/label_8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="0"
-            android:text="Label #5"
-            android:textColor="@color/burgundy"
-            android:textSize="15dp"
-            app:layout_constraintCircle="@+id/inner_circle1"
-            app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="70dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            />
-        <TextView
-            android:id="@+id/label_9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="0"
-            android:text="Label #5"
-            android:textColor="@color/burgundy"
-            android:textSize="15dp"
-            app:layout_constraintCircle="@+id/inner_circle1"
-            app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="70dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            />
 
         <ImageView
             android:id="@+id/status_dot"

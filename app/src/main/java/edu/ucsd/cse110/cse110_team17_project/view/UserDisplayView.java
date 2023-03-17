@@ -61,7 +61,8 @@ public class UserDisplayView {
     }
 
     private void setViewLocation(){
-
+        layoutParams.constrainedWidth = false;
+        layoutParams.matchConstraintMaxWidth = 1000;
         radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSize);
         calculateCollisions();
         if (radius < 510) {
@@ -77,15 +78,13 @@ public class UserDisplayView {
     }
 
     private void setByLayout() {
-        layoutParams.constrainedWidth = false;
-        layoutParams.matchConstraintMaxWidth = 1000;
         layoutParams.circleConstraint = R.id.status_dot;
         layoutParams.circleRadius = radius;
         layoutParams.circleAngle = angle + rotation;
         textView.setLayoutParams(layoutParams);
     }
 
-    private void calculateCollisions() {
+    public void calculateCollisions() {
         for (UserDisplayView position : presenter.UserDisplayList) {
             if (position == this){
                 break;

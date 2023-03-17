@@ -13,15 +13,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +24,6 @@ import java.util.List;
 import edu.ucsd.cse110.cse110_team17_project.R;
 
 import edu.ucsd.cse110.cse110_team17_project.Utilities;
-import edu.ucsd.cse110.cse110_team17_project.model.TextViewFactory;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
 import edu.ucsd.cse110.cse110_team17_project.services.LocationService;
@@ -42,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private static final Integer INITIAL_ZOOM = 1;
     public OrientationService orientationService;
     private LocationService locationService;
-
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     private LiveData<List<UserInfo>> userInfos; // Default 3 elements for now
     // defaults to San Diego (fix that later)
     public UserInfo curUserInfo;
@@ -53,11 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // delete later
-        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
+        preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        editor = preferences.edit();
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
@@ -134,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
         circles.add(findViewById(R.id.inner_circle1));
         circles.add(findViewById(R.id.inner_circle2));
         circles.add(findViewById(R.id.inner_circle3));
-        TextViewFactory factory = new TextViewFactory(findViewById(R.id.label_1));
-        pr = new Presenter(factory, zoomSubject.getValue(), circles);
+        pr = new Presenter(zoomSubject.getValue(), circles);
         new UserDisplayView(pr, findViewById(R.id.label_1));
         new UserDisplayView(pr, findViewById(R.id.label_2));
         new UserDisplayView(pr, findViewById(R.id.label_3));
@@ -143,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
         new UserDisplayView(pr, findViewById(R.id.label_5));
         new UserDisplayView(pr, findViewById(R.id.label_6));
         new UserDisplayView(pr, findViewById(R.id.label_7));
-        new UserDisplayView(pr, findViewById(R.id.label_8));
-        new UserDisplayView(pr, findViewById(R.id.label_9));
     }
     
     private void setZoomObservations() {
@@ -194,4 +184,13 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("zoomPosition", num);
         editor.apply();
     }
+
+    public MutableLiveData<Integer> getZoomSubject(){
+        return zoomSubject;
+    }
+
+    public Integer getZoomSize(){
+        return zoomSubject.getValue();
+    }
+
 }
