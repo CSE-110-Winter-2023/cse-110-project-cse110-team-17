@@ -33,7 +33,6 @@ public class AddFriendsActivity extends AppCompatActivity {
     private EditText newFriendText;
     public UserRepository userRepository;
     public FriendListAdapter adapter;
-
     public String friendListString;
     public List<String> friendList;
 

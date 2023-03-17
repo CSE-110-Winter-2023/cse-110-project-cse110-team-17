@@ -59,7 +59,6 @@ public class Presenter implements ZoomObserver,locationObserver {
 
     public void infosUpdate(@NonNull List<UserInfo> userInfos){
         this.userInfos = userInfos;
-        checkIfEnoughDisplay(userInfos.size());
         viewUpdate();
     }
 
@@ -69,12 +68,6 @@ public class Presenter implements ZoomObserver,locationObserver {
         }
     }
 
-    private void checkIfEnoughDisplay(int targetSize) {
-        int listSize = UserDisplayList.size();
-        for(int i = targetSize; i < listSize; i++){
-            UserDisplayList.get(i).setInvisible();
-        }
-    }
 
 
     private void scaleCircle(ImageView circle){
