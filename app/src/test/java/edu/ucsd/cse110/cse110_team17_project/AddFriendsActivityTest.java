@@ -26,7 +26,7 @@ public class AddFriendsActivityTest {
 
     @Test
     public void testParseFriendsListString() {
-        String beforeParse1 = "fbvrrvm65y6rhbwld9-rln4x2d70zzysth0ib-fsoessa9tlgw16yg5v-ke8omty5lepfe2uhcx-m7mpvbqq3jfdtcuads";
+        String beforeParse1 = "fbvrrvm65y6rhbwld9~rln4x2d70zzysth0ib~fsoessa9tlgw16yg5v~ke8omty5lepfe2uhcx~m7mpvbqq3jfdtcuads";
         String[] array = {"fbvrrvm65y6rhbwld9", "rln4x2d70zzysth0ib", "fsoessa9tlgw16yg5v", "ke8omty5lepfe2uhcx", "m7mpvbqq3jfdtcuads"};
 
         List<String> afterParse1 = Arrays.asList(array);
@@ -47,7 +47,7 @@ public class AddFriendsActivityTest {
         List<String> beforeParse2 = new ArrayList<>(Arrays.asList(emptyArr));
         List<String> beforeParse3 = new ArrayList<>(Arrays.asList(singleElArr));
 
-        String expected1 = "fbvrrvm65y6rhbwld9-rln4x2d70zzysth0ib-fsoessa9tlgw16yg5v-ke8omty5lepfe2uhcx-m7mpvbqq3jfdtcuads";
+        String expected1 = "fbvrrvm65y6rhbwld9~rln4x2d70zzysth0ib~fsoessa9tlgw16yg5v~ke8omty5lepfe2uhcx~m7mpvbqq3jfdtcuads";
         String expected2 = "";
         String expected3 = "fbvrrvm65y6rhbwld9";
 
