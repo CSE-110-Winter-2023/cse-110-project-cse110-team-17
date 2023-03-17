@@ -21,6 +21,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.List;
 import edu.ucsd.cse110.cse110_team17_project.R;
 
 import edu.ucsd.cse110.cse110_team17_project.Utilities;
+import edu.ucsd.cse110.cse110_team17_project.model.TextViewFactory;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
 import edu.ucsd.cse110.cse110_team17_project.services.LocationService;
@@ -132,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
         circles.add(findViewById(R.id.inner_circle1));
         circles.add(findViewById(R.id.inner_circle2));
         circles.add(findViewById(R.id.inner_circle3));
-        pr = new Presenter(getApplicationContext(), zoomSubject.getValue(), circles);
+        TextViewFactory factory = new TextViewFactory(findViewById(R.id.label_1), R.layout.activity_compass);
+        pr = new Presenter(factory, zoomSubject.getValue(), circles);
         new UserDisplayView(pr, findViewById(R.id.label_1));
         new UserDisplayView(pr, findViewById(R.id.label_2));
         new UserDisplayView(pr, findViewById(R.id.label_3));

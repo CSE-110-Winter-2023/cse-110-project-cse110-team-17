@@ -7,6 +7,7 @@ import android.util.Size;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 
@@ -15,6 +16,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsd.cse110.cse110_team17_project.model.TextViewFactory;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 import edu.ucsd.cse110.cse110_team17_project.view.UserDisplayView;
 
@@ -25,13 +27,13 @@ public class Presenter implements ZoomObserver,locationObserver {
     float zoomSize;
     List<ImageView> circles;
     public List<UserDisplayView> UserDisplayList;
-
+    TextViewFactory factory;
     Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
     private List<UserInfo> userInfos;
 
 
-    public Presenter(Context context, int zoomPosition, List<ImageView> circles){
-        this.context = context;
+    public Presenter(TextViewFactory factory, int zoomPosition, List<ImageView> circles){
+        this.factory = factory;
         this.zoomPosition = zoomPosition;
         this.circles = circles;
         UserDisplayList = new ArrayList<>();
@@ -64,6 +66,9 @@ public class Presenter implements ZoomObserver,locationObserver {
 
     public void viewUpdate(){
         for(int i = 0; i < userInfos.size(); i++){
+            if(i == UserDisplayList.size()){
+                new UserDisplayView(this, factory.makeTextView());
+            }
             UserDisplayList.get(i).updateDisplay(userInfos.get(i), currentLocation);
         }
     }
