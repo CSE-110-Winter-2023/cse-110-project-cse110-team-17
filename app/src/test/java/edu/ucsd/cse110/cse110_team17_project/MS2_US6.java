@@ -47,19 +47,21 @@ public class MS2_US6 {
     public void testZoomIn(){
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                Button zoomIn_btn = (Button) activity.findViewById(R.id.zoom_in);
                 ImageView circle1 = (ImageView) activity.findViewById(R.id.inner_circle1);
                 ImageView circle2 = (ImageView) activity.findViewById(R.id.inner_circle2);
                 ImageView circle3 = (ImageView) activity.findViewById(R.id.inner_circle3);
 
-                int widthBeforeZoomIn1 = circle1.getWidth();
-                int widthBeforeZoomIn2 = circle2.getWidth();
-                int widthBeforeZoomIn3 = circle3.getWidth();
+                float scaleZoomIn1 = circle1.getScaleX();
+                float scaleZoomIn2 = circle2.getScaleX();
+                float scaleZoomIn3 = circle3.getScaleX();
 
-                zoomIn_btn.performClick();
-                assertTrue(circle1.getWidth() >= widthBeforeZoomIn1);
-                assertTrue(circle2.getWidth() >= widthBeforeZoomIn2);
-                assertTrue(circle3.getWidth() >= widthBeforeZoomIn3);
+                Presenter pr = activity.getPresenter();
+                int zoomSize = activity.getZoomSize();
+                pr.zoomUpdate(zoomSize + 1);
+
+                assertTrue(circle1.getScaleX() > scaleZoomIn1);
+                assertTrue(circle2.getScaleX() > scaleZoomIn2);
+                assertTrue(circle3.getScaleX() > scaleZoomIn3);
             });
         }
     }
@@ -67,19 +69,21 @@ public class MS2_US6 {
     public void testZoomOut(){
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                Button zoomOut_btn = (Button) activity.findViewById(R.id.zoom_in);
                 ImageView circle1 = (ImageView) activity.findViewById(R.id.inner_circle1);
                 ImageView circle2 = (ImageView) activity.findViewById(R.id.inner_circle2);
                 ImageView circle3 = (ImageView) activity.findViewById(R.id.inner_circle3);
 
-                int widthBeforeZoomIn1 = circle1.getWidth();
-                int widthBeforeZoomIn2 = circle2.getWidth();
-                int widthBeforeZoomIn3 = circle3.getWidth();
+                float scaleZoomIn1 = circle1.getScaleX();
+                float scaleZoomIn2 = circle2.getScaleX();
+                float scaleZoomIn3 = circle3.getScaleX();
 
-                zoomOut_btn.performClick();
-                assertTrue(circle1.getWidth() <= widthBeforeZoomIn1);
-                assertTrue(circle2.getWidth() <= widthBeforeZoomIn2);
-                assertTrue(circle3.getWidth() <= widthBeforeZoomIn3);
+                Presenter pr = activity.getPresenter();
+                int zoomSize = activity.getZoomSize();
+                pr.zoomUpdate(zoomSize - 1);
+
+                assertTrue(circle1.getScaleX() < scaleZoomIn1);
+                assertTrue(circle2.getScaleX() < scaleZoomIn2);
+                assertTrue(circle3.getScaleX() < scaleZoomIn3);
             });
         }
     }

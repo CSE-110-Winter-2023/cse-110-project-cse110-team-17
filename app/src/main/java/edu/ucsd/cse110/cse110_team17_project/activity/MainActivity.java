@@ -193,4 +193,7 @@ public class MainActivity extends AppCompatActivity {
         return zoomSubject.getValue();
     }
 
+    public Presenter getPresenter(){
+        return pr;
+    }
 }
