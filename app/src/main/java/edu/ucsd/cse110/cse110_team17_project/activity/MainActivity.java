@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         circles.add(findViewById(R.id.inner_circle1));
         circles.add(findViewById(R.id.inner_circle2));
         circles.add(findViewById(R.id.inner_circle3));
-        TextViewFactory factory = new TextViewFactory(findViewById(R.id.label_1), R.layout.activity_compass);
+        TextViewFactory factory = new TextViewFactory(findViewById(R.id.label_1));
         pr = new Presenter(factory, zoomSubject.getValue(), circles);
         new UserDisplayView(pr, findViewById(R.id.label_1));
         new UserDisplayView(pr, findViewById(R.id.label_2));

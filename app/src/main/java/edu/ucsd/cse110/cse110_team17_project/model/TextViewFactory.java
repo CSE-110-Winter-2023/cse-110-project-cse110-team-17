@@ -8,11 +8,9 @@ import edu.ucsd.cse110.cse110_team17_project.R;
 
 public class TextViewFactory {
     TextView sample;
-    int layout;
 
-    public TextViewFactory(TextView tv, int layout){
-        this.layout = layout;
-        this.sample = tv;
+    public TextViewFactory(TextView sample){
+        this.sample = sample;
     }
     public TextView makeTextView(){
         TextView textView = new TextView(sample.getContext());
