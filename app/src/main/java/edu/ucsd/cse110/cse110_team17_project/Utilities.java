@@ -101,7 +101,7 @@ public class Utilities {
     }
 
     public static boolean isValidUID(String uid) {
-        if (uid.length() != 18 || !uid.matches("^[a-zA-Z0-9]*$")) {
+        if (uid.length() == 0 || !uid.matches("^[a-zA-Z0-9]*$")) {
             return false;
         }
         return true;

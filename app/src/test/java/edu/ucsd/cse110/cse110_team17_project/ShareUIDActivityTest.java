@@ -21,7 +21,7 @@ public class ShareUIDActivityTest {
 
     private static final String INVALID_UID_1 = "123456789-12345678";
 
-    private static final String INVALID_UID_2 = "12345678912345";
+    private static final String INVALID_UID_2 = "";
 
     private static final String INVALID_UID_3 = "123456-*%9123";
 
