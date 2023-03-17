@@ -47,7 +47,6 @@ public class MS2_US6 {
     public void testZoomIn(){
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                Button zoomIn_btn = (Button) activity.findViewById(R.id.zoom_in);
                 ImageView circle1 = (ImageView) activity.findViewById(R.id.inner_circle1);
                 ImageView circle2 = (ImageView) activity.findViewById(R.id.inner_circle2);
                 ImageView circle3 = (ImageView) activity.findViewById(R.id.inner_circle3);
@@ -70,7 +69,6 @@ public class MS2_US6 {
     public void testZoomOut(){
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                Button zoomOut_btn = (Button) activity.findViewById(R.id.zoom_in);
                 ImageView circle1 = (ImageView) activity.findViewById(R.id.inner_circle1);
                 ImageView circle2 = (ImageView) activity.findViewById(R.id.inner_circle2);
                 ImageView circle3 = (ImageView) activity.findViewById(R.id.inner_circle3);
@@ -81,11 +79,11 @@ public class MS2_US6 {
 
                 Presenter pr = activity.getPresenter();
                 int zoomSize = activity.getZoomSize();
-                pr.zoomUpdate(zoomSize + 1);
+                pr.zoomUpdate(zoomSize - 1);
 
-                assertTrue(circle1.getScaleX() > scaleZoomIn1);
-                assertTrue(circle2.getScaleX() > scaleZoomIn2);
-                assertTrue(circle3.getScaleX() > scaleZoomIn3);
+                assertTrue(circle1.getScaleX() < scaleZoomIn1);
+                assertTrue(circle2.getScaleX() < scaleZoomIn2);
+                assertTrue(circle3.getScaleX() < scaleZoomIn3);
             });
         }
     }
