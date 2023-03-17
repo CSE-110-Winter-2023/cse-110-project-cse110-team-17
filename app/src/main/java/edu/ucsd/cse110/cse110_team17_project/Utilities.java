@@ -101,7 +101,7 @@ public class Utilities {
     }
 
     public static boolean isValidUID(String uid) {
-        if (uid.length() == 0 || !uid.matches("^[a-zA-Z0-9]*$")) {
+        if (uid.length() == 0 || uid.contains("~")) {
             return false;
         }
         return true;
@@ -111,7 +111,7 @@ public class Utilities {
         if (friendListString.isEmpty()) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(Arrays.asList(friendListString.split("-")));
+        return new ArrayList<>(Arrays.asList(friendListString.split("~")));
     }
 
     public static String buildFriendListString(List<String> friendList){
@@ -123,7 +123,7 @@ public class Utilities {
 //        for(String friend : friendList){
 //
 //        }
-        return String.join("-", friendList);
+        return String.join("~", friendList);
     }
     
     // calculate distance in miles

@@ -90,7 +90,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         String newFriendUid = newFriendText.getText().toString();
 
         if (!Utilities.isValidUID(newFriendUid)) {
-            Utilities.showError(this, "Please enter a valid UID.");
+            Utilities.showError(this, "Please enter a nonempty UID without a ~.");
         }
         else if (friendList.contains(newFriendUid)) {
             Utilities.showError(this, "You have already added this friend.");

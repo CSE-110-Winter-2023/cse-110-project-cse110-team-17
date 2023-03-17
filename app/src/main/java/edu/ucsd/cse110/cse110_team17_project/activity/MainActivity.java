@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static final Integer INITIAL_ZOOM = 1;
     public OrientationService orientationService;
     private LocationService locationService;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+
     private LiveData<List<UserInfo>> userInfos; // Default 3 elements for now
     // defaults to San Diego (fix that later)
     public UserInfo curUserInfo;
@@ -48,9 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        editor = preferences.edit();
-
+//        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.clear();
+//        editor.apply();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
