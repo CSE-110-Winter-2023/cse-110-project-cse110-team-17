@@ -1,28 +1,22 @@
 package edu.ucsd.cse110.cse110_team17_project.activity;
 
+import static java.lang.String.valueOf;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,126 +25,76 @@ import edu.ucsd.cse110.cse110_team17_project.R;
 
 import edu.ucsd.cse110.cse110_team17_project.Utilities;
 import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
+import edu.ucsd.cse110.cse110_team17_project.model.UserRepository;
 import edu.ucsd.cse110.cse110_team17_project.services.LocationService;
 import edu.ucsd.cse110.cse110_team17_project.services.OrientationService;
-import edu.ucsd.cse110.cse110_team17_project.viewmodel.CompassViewModel;
+import edu.ucsd.cse110.cse110_team17_project.view.UserDisplayView;
+import edu.ucsd.cse110.cse110_team17_project.viewmodel.Presenter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final Integer INITIAL_ZOOM = 1;
     public OrientationService orientationService;
-//    private boolean isSensorActivated = false;
-
-    private float compassNorthAngle = 0;
-
     private LocationService locationService;
 
     private LiveData<List<UserInfo>> userInfos; // Default 3 elements for now
-
     // defaults to San Diego (fix that later)
-    private Pair<Double, Double> currentLocation = new Pair<>(32.715736, -117.161087);
-    private UserInfo curUserInfo;
-
-    private String label;
-    private String uid;
-
-    MutableLiveData<Float> zoomSubject;
-    int screenWidth;
-
+    public UserInfo curUserInfo;
+    MutableLiveData<Integer> zoomSubject;
+    Presenter pr;
+    public boolean isMockLocationTesting = false;
+    public UserRepository userrepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.clear();
+//        editor.apply();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-
-        screenWidth= this.getResources().getDisplayMetrics().widthPixels;
-
-        // here is for Zoom part, will be refact later
-        zoomSubject = new MutableLiveData<>(1F);
-        ImageView innerCircle = findViewById(R.id.inner_circle1);
-        ImageView outerCircle = findViewById(R.id.circle_rim);
-        View Constra = findViewById(R.id.rotateConstraint);
-        Button zoomInBtn = findViewById(R.id.zoom_in);
-        Button zoomOutBtn = findViewById(R.id.zoom_out);
-        zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
-        zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-        }
-        locationService = LocationService.singleton(this);
-        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
-        label = preferences.getString("username", "");
-        uid = preferences.getString("myUID", "");
-
-        // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
-        if (label.isEmpty()) {
-            startEnterNameActivity();
-        }
-
-
-        curUserInfo = new UserInfo("17testUser1", label, "17testUser1");
-
-        // TODO: Wierd Delay, Ask for assistance maybe?
-        locationService.getLocation().observe(this, loc->{
-            System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
-            curUserInfo.latitude = loc.first.doubleValue();
-            curUserInfo.longitude = loc.second.doubleValue();
-            currentLocation = loc;
-        });
-
-
-        var viewModel = setupViewModel();
-        List<String> keys = new ArrayList<>();
-        keys.add("group17test1");
-        keys.add("group17test2");
-        keys.add("group17test3");
-
-        userInfos = viewModel.getUserInfos(keys);
-        viewModel.postUserInfo(curUserInfo);
-
-        userInfos.observe(this, this::onUserInfoChanged);
-
-        zoomSubject.observe(this, (num)->{
-            innerCircle.setScaleX(num);
-            innerCircle.setScaleY(num);
-            outerCircle.setScaleX(num);
-            outerCircle.setScaleY(num);
-            try {
-                onUserInfoChanged(userInfos.getValue());
-            }catch (Exception e)
-            {
-                var a = 1;
-            }
-        });
+        userrepo = new UserRepository();
+        userInfos = new MutableLiveData<>();
     }
-
 
     private void startEnterNameActivity() {
         Intent intent = new Intent(this, EnterNameActivity.class);
         startActivity(intent);
     }
 
-    private void onUserInfoChanged(List<UserInfo> userInfos) {
-        var userInfo1 = userInfos.get(0);
-        TextView name_label1 = (TextView) findViewById(R.id.label_1);
-        var userInfo2 = userInfos.get(1);
-        TextView name_label2 = (TextView) findViewById(R.id.label_2);
-        var userInfo3 = userInfos.get(2);
-        TextView name_label3 = (TextView) findViewById(R.id.label_3);
-
-        setViewLocation(name_label1, userInfo1);
-        setViewLocation(name_label2, userInfo2);
-        setViewLocation(name_label3, userInfo3);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        orientationService = OrientationService.singleton(this);
-        startOrientationSensor(orientationService);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        String label = preferences.getString("username", "");
+        String uid = preferences.getString("myUID", "");
+        // Check if all of them is empty, if yes, we have no input yet and need to go to InputActivity
+        if (label.isEmpty()) {
+            startEnterNameActivity();
+        }
+
+        zoomSubject = new MutableLiveData<>(preferences.getInt("zoomPosition", 1));
+        // TODO: Change this after UID works
+        curUserInfo = new UserInfo(uid, label, uid);
+        userrepo.postLocalUserInfo(curUserInfo);
+
+        setUpUser(userrepo);
+        setUpPresenter();
+        setLocationService();
+        setOrientationSensor();
+        setZoomObservations();
+    }
+
+    private void setUpUser(UserRepository us) {
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        String friendListString = preferences.getString("friendListString", "");
+        List<String> friendList = Utilities.parseFriendListString(friendListString);
+        System.out.println("Friend List: " + friendList);
+        userInfos = us.getRemoteUserInfo(friendList, isMockLocationTesting);
+        userInfos.observe(this, infos -> {pr.infosUpdate(infos);});
     }
 
     @Override
@@ -160,74 +104,93 @@ public class MainActivity extends AppCompatActivity {
         orientationService.unregisterSensorListeners();
     }
 
-    private CompassViewModel setupViewModel() {
-        return new ViewModelProvider(this).get(CompassViewModel.class);
+    private void startUIDActivity() {
+        Intent intent = new Intent(this, UIDActivity.class);
+        startActivity(intent);
     }
 
-    // This method starts the orientation sensor
-    private void startOrientationSensor(OrientationService orientationService) {
-        orientationService.registerSensorListeners();
+    private void setLocationService() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        }
+        LocationService.singleton(this).getLocation().observe(this, loc->{
+            System.out.println(Double.toString(loc.first) + ", " + Double.toString(loc.second));
+            curUserInfo.latitude = loc.first.doubleValue();
+            curUserInfo.longitude = loc.second.doubleValue();
+            pr.updateLocation(loc);
+        });
 
-        orientationService.getOrientation().observe(this, orientation -> {
-            float actualAngle = -orientation / (float) Math.PI * 180;
-            setAllLabelRotations(actualAngle);
+    }
+    private void setUpPresenter(){
+        List<ImageView> circles = new ArrayList<>();
+        circles.add(findViewById(R.id.inner_circle1));
+        circles.add(findViewById(R.id.inner_circle2));
+        circles.add(findViewById(R.id.inner_circle3));
+        pr = new Presenter(zoomSubject.getValue(), circles);
+        new UserDisplayView(pr, findViewById(R.id.label_1));
+        new UserDisplayView(pr, findViewById(R.id.label_2));
+        new UserDisplayView(pr, findViewById(R.id.label_3));
+        new UserDisplayView(pr, findViewById(R.id.label_4));
+        new UserDisplayView(pr, findViewById(R.id.label_5));
+        new UserDisplayView(pr, findViewById(R.id.label_6));
+        new UserDisplayView(pr, findViewById(R.id.label_7));
+    }
+    
+    private void setZoomObservations() {
+        Button zoomInBtn = findViewById(R.id.zoom_in);
+        Button zoomOutBtn = findViewById(R.id.zoom_out);
+        zoomInBtn.setOnClickListener(this::clickedOnZoomIn);
+        zoomOutBtn.setOnClickListener(this::clickedOnZoomOut);
+        zoomSubject.observe(this, (num) -> {
+            pr.zoomUpdate(num);
         });
     }
 
-    // This method sets the rotation angle to the angle provided
-    public void setAllLabelRotations(float angle) {
-        View rotateConstraint = (View) findViewById(R.id.rotateConstraint);
-        rotateConstraint.setRotation(angle);
-
-
-        TextView name_label1 = (TextView) findViewById(R.id.label_1);
-        TextView name_label2 = (TextView) findViewById(R.id.label_2);
-        TextView name_label3 = (TextView) findViewById(R.id.label_3);
-
-        name_label1.setRotation(-angle);
-        name_label2.setRotation(-angle);
-        name_label3.setRotation(-angle);
+    // This method starts the orientation sensor
+    private void setOrientationSensor() {
+        orientationService = OrientationService.singleton(this);
+        orientationService.registerSensorListeners();
+        orientationService.getOrientation().observe(this, orientation -> {
+            pr.updateRotation(-orientation / (float) Math.PI * 180);
+        });
     }
 
-    private void setViewLocation(TextView label, UserInfo userInfo) {
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-        Context context = this;
-        if (userInfo == null) return;
-
-        float angle = (float) Utilities.updateAngle(currentLocation.first.floatValue(), currentLocation.second.floatValue(),
-                (float)userInfo.latitude, (float)userInfo.longitude);
-
-        double distance = Utilities.distance(currentLocation.first.doubleValue(), currentLocation.second.doubleValue(),
-                userInfo.latitude, userInfo.longitude);
-        int radius = (int) (Utilities.distanceToViewRadius(distance) * zoomSubject.getValue());
-
-
-        int maxRadius = screenWidth/2;
-
-        if (radius < maxRadius) {
-            label.setText(userInfo.label);
-            label.setTextSize(15.0F);
-            Log.i("ALERT", "No dot is called");
-        }
-        else {
-            radius = maxRadius;
-            label.setText("·");
-            label.setTextSize(100.0F);
-            Log.i("ALERT", String.valueOf(radius));
-        }
-        layoutParams.circleConstraint = R.id.status_dot;
-        layoutParams.circleRadius = radius;
-        layoutParams.circleAngle = angle;
-
-        label.setLayoutParams(layoutParams);
+    public void onBackClicked(View view) {
+        Intent addFriendsIntent = new Intent(this, AddFriendsActivity.class);
+        startActivity(addFriendsIntent);
     }
 
     private void clickedOnZoomOut(View view) {
-        zoomSubject.postValue(zoomSubject.getValue() * 1.1F);
+        int zoomNum = zoomSubject.getValue();
+        if (zoomNum > 0){
+            zoomSubject.postValue(--zoomNum);
+        }
+        putDefaultZoomPosition(zoomNum);
     }
 
     private void clickedOnZoomIn(View view) {
-        zoomSubject.postValue(zoomSubject.getValue() / 1.1F);
+        int zoomNum = zoomSubject.getValue();
+        if (zoomNum < 2){
+            zoomSubject.postValue(++zoomNum);
+        }
+
+        putDefaultZoomPosition(zoomNum);
+    }
+
+    private void putDefaultZoomPosition(int num) {
+        SharedPreferences preferences = getSharedPreferences("MAIN", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("zoomPosition", num);
+        editor.apply();
+    }
+
+    public MutableLiveData<Integer> getZoomSubject(){
+        return zoomSubject;
+    }
+
+    public Integer getZoomSize(){
+        return zoomSubject.getValue();
     }
 
 }

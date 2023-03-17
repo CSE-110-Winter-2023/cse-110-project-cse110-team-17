@@ -17,24 +17,37 @@ import edu.ucsd.cse110.cse110_team17_project.model.UserInfo;
 public class UserRepository {
 
     UserInfoAPI uApi = UserInfoAPI.provide();
+    public MutableLiveData<List<UserInfo>> userInfoList;
+
     public UserRepository() {
-
+        userInfoList = new MutableLiveData<>();
     }
 
-    public LiveData<List<UserInfo>> getRemoteUserInfo(List<String> publicCodes) {
-        var resultList = new MutableLiveData<List<UserInfo>>();
-        var executor = Executors.newSingleThreadScheduledExecutor();
+    public void setData(List<UserInfo> userInfos) {
+        userInfoList.setValue(userInfos);
+    }
 
-        var Future = executor.scheduleAtFixedRate(() -> {
-            var tempList = new ArrayList<UserInfo>();
-            for (String publicCode: publicCodes) {
-                String json = uApi.getUser(publicCode);
-                tempList.add(UserInfo.formJSON(json));
+    public LiveData<List<UserInfo>> getRemoteUserInfo(List<String> publicCodes, boolean isTesting) {
+            var executor = Executors.newSingleThreadScheduledExecutor();
+            var resultList = new MutableLiveData<List<UserInfo>>();
+            if (!isTesting) {
+                var Future = executor.scheduleAtFixedRate(() -> {
+                        var tempList = new ArrayList<UserInfo>();
+                        for (String publicCode : publicCodes) {
+                            String json = uApi.getUser(publicCode);
+                            tempList.add(UserInfo.formJSON(json));
+                        }
+                        resultList.postValue(tempList);
+                }, 0, 5000, TimeUnit.MILLISECONDS);
+                return resultList;
             }
-            resultList.postValue(tempList);
-        }, 0, 5000, TimeUnit.MILLISECONDS);
-        return resultList;
+            else {
+                return userInfoList;
+            }
     }
+
+
+
 
     public void postLocalUserInfo(UserInfo uI) {
         var executor = Executors.newSingleThreadScheduledExecutor();

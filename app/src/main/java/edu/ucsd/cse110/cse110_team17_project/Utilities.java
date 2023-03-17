@@ -101,7 +101,7 @@ public class Utilities {
     }
 
     public static boolean isValidUID(String uid) {
-        if (uid.length() != 18 || !uid.matches("^[a-zA-Z0-9]*$")) {
+        if (uid.length() == 0 || uid.contains("~")) {
             return false;
         }
         return true;
@@ -111,7 +111,7 @@ public class Utilities {
         if (friendListString.isEmpty()) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(Arrays.asList(friendListString.split("-")));
+        return new ArrayList<>(Arrays.asList(friendListString.split("~")));
     }
 
     public static String buildFriendListString(List<String> friendList){
@@ -123,7 +123,7 @@ public class Utilities {
 //        for(String friend : friendList){
 //
 //        }
-        return String.join("-", friendList);
+        return String.join("~", friendList);
     }
     
     // calculate distance in miles
@@ -149,15 +149,34 @@ public class Utilities {
 
     //TODO: Change to 4 zones later!
     public static double distanceToViewRadius(double distance) {
-        if (distance < 10) {
-            return distance / 10.0 * 200.0;
+
+        //Zone 1: 0-1 miles
+        if (distance < 1) {
+            return distance * 180.0;
         }
-        else if (distance < 100) {
-            return 200.0 + ((distance - 10) / 90.0 * 250.0);
+        //Zone 2: 1-10 miles
+        else if (distance < 10) {
+            distance -= 1.0;
+            return 180.0 + (distance / (10.0-1.0)  * (330.0-180.0));
         }
-        else {
-            return 450.0;
+        //Zone 3: 10-100 miles
+        else if (distance < 500) {
+            distance -= 10.0;
+            return 330.0 + (distance / (500.0-10.0)  * (500.0-330.0));
         }
+        //Zone 5: 1000+ miles
+        else return 550.0;
     }
+
+//    public static float correctZoomRatio(int zoomPosition) {
+//        switch (zoomPosition) {
+//            case 1:
+//                return 1.5F;
+//            case 2:
+//                return 3F;
+//            default:
+//                return 1F;
+//        }
+//    }
 
 }

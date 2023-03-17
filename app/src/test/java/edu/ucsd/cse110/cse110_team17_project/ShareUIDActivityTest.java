@@ -19,13 +19,13 @@ public class ShareUIDActivityTest {
 
     private static final String DEFAULT_UID_TEXT = "Generating UID";
 
-    private static final String INVALID_UID_1 = "123456789-12345678";
+    private static final String INVALID_UID_1 = "123456789~12345678";
 
-    private static final String INVALID_UID_2 = "12345678912345";
+    private static final String INVALID_UID_2 = "";
 
-    private static final String INVALID_UID_3 = "123456-*%9123";
+    private static final String INVALID_UID_3 = "123456-*%~9123";
 
-    private static final String INVALID_UID_4 = "12ab56789 123cf678";
+    private static final String VALID_UID_2 = "12ab56789 123cf678";
 
     private static final String VALID_UID = "123456789abcDeFghi";
 
@@ -34,7 +34,7 @@ public class ShareUIDActivityTest {
         assertFalse(Utilities.isValidUID(INVALID_UID_1));
         assertFalse(Utilities.isValidUID(INVALID_UID_2));
         assertFalse(Utilities.isValidUID(INVALID_UID_3));
-        assertFalse(Utilities.isValidUID(INVALID_UID_4));
+        assertTrue(Utilities.isValidUID(VALID_UID_2));
         assertTrue(Utilities.isValidUID(VALID_UID));
     }
 

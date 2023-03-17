@@ -33,7 +33,6 @@ public class AddFriendsActivity extends AppCompatActivity {
     private EditText newFriendText;
     public UserRepository userRepository;
     public FriendListAdapter adapter;
-
     public String friendListString;
     public List<String> friendList;
 
@@ -61,7 +60,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         // TODO: is there a way to get one remote UserInfo?
         //  What happens if one of your friends leaves the app and is no longer on the remote server?
         setUpRecyclerView(new ArrayList<>());
-        userInfoList = userRepository.getRemoteUserInfo(friendList);
+        userInfoList = userRepository.getRemoteUserInfo(friendList, false);
         userInfoList.observe(this, this::onUserInfoChanged);
     }
 
@@ -91,7 +90,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         String newFriendUid = newFriendText.getText().toString();
 
         if (!Utilities.isValidUID(newFriendUid)) {
-            Utilities.showError(this, "Please enter a valid UID.");
+            Utilities.showError(this, "Please enter a nonempty UID without a ~.");
         }
         else if (friendList.contains(newFriendUid)) {
             Utilities.showError(this, "You have already added this friend.");
