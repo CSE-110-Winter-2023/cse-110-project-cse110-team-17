@@ -141,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
         new UserDisplayView(pr, findViewById(R.id.label_3));
         new UserDisplayView(pr, findViewById(R.id.label_4));
         new UserDisplayView(pr, findViewById(R.id.label_5));
+        new UserDisplayView(pr, findViewById(R.id.label_6));
+        new UserDisplayView(pr, findViewById(R.id.label_7));
+        new UserDisplayView(pr, findViewById(R.id.label_8));
+        new UserDisplayView(pr, findViewById(R.id.label_9));
     }
     
     private void setZoomObservations() {
